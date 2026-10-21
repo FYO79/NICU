@@ -135,3 +135,12 @@ Handover and work-plan cards include all the new data.
   Neuro (seizures, anticonvulsants, abnormal exam, cranial US, Sarnat / Thompson score, cooling, aEEG / NIRS, ROP),
   Infection (sepsis status, antibiotics with day, cultures, last antibiotic change), Jaundice (if relevant), Last labs, Imaging (abnormal),
   Transfusions (if any), Lines with days in place, all current Medications with day count, Consults, If / then, Parents update, then the tasks for this shift.
+
+## Update 17 (sw v33)
+- Spell check: free-text boxes (notes, plans, details, indications) use the device spell check – misspelt words are underlined and tapping them shows suggestions. It is switched off for name, ID, times, dates, lab cells and drug / organism boxes (those have their own suggestions).
+- Maternal antibiotic courses: type any antibiotic; suggestions appear as you type (penicillins, cephalosporins, macrolides, aminoglycosides, carbapenems, etc.).
+- Respiratory: **POCUS lung ultrasound score** table just before Respiratory notes – 6 zones (upper anterior, lower anterior, lateral, each side) scored 0–3, total 0–18 worked out automatically; one column per scan (+ New score). "How to score" box (Brat 2015). The latest score goes to the handover and work plan.
+- Blood pressure readings: date is day/month only with the time, so it takes less space; SBP / DBP / mean boxes are larger with large numbers.
+- Inotropes: start date is day/month only (no year).
+- Drug logs (antibiotic and inotrope): one line per event – "Ampicillin 100 mg/kg/dose q8h started", "Ampicillin 150 mg/kg/dose q8h" (new dose), "Ampicillin stopped (day 3)". A dose typed soon after starting completes the "started" line; changing the start time moves that line instead of adding a new one.
+- Transfusions: the number (#1, #2…) sits in its own box beside the product; "Received so far" shows the count in a box beside each product.

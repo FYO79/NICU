@@ -172,6 +172,8 @@ details.calcref .tblwrap{margin:0 10px 8px}details.calcref .hint{padding:0 12px}
 .auto li small{font-size:11.5px;color:var(--accent);background:var(--accent-soft);border-radius:99px;padding:2px 8px;white-space:nowrap}
 .auto li b{font-weight:400}
 .auto li b em{font-style:normal;font:600 12.5px var(--f-mono);color:var(--accent);margin-left:6px}
+.auto li.txc{grid-template-columns:minmax(0,1fr) 64px auto}
+.auto li.txc .cnt{justify-content:center;text-align:center;font-weight:700;min-height:32px;height:32px}
 .auto .empty{display:block;background:none;border:0;color:var(--muted);font-size:13px;padding:0}
 
 .log{list-style:none;margin:0;padding:0 14px 6px;display:flex;flex-direction:column;gap:2px}
@@ -365,7 +367,8 @@ table.sheet .inp:not(textarea){height:34px;min-height:34px}
 .log li .ld{font:12px var(--f-mono);color:var(--muted)}
 .log li .inp{height:32px!important;min-height:32px;padding:2px 6px;font-size:15px}
 .log li.empty{display:block}
-.row.tx{grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr) 84px 96px 60px 32px;align-items:end}
+.row.tx{grid-template-columns:minmax(0,1.3fr) 64px minmax(0,1.5fr) 84px 96px 32px;align-items:end}
+.calc.txn{justify-content:center;text-align:center;font-weight:700}
 .row.tx .res{grid-column:1/-1;min-height:38px}
 .row.tx+.row.tx,.row.cult+.row.cult{border-top:1px solid var(--line);padding-top:6px}
 .row.cult{grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) minmax(0,1.1fr) minmax(0,1.6fr) minmax(0,1.1fr) 32px;align-items:end}
@@ -378,7 +381,7 @@ table.sheet .inp:not(textarea){height:34px;min-height:34px}
 .pill.warn{background:var(--warn-soft);color:var(--warn)}
 .wpgrid{grid-template-columns:1fr!important}
 .wpc dl{grid-template-columns:100px minmax(0,1fr)}
-@media (max-width:520px){.row.tx{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 32px}.row.tx .nm{grid-column:1/-1}.row.cult{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 32px}.log li{grid-template-columns:40px 96px minmax(0,1fr) 28px}.wpc dl{grid-template-columns:74px minmax(0,1fr)}}
+@media (max-width:520px){.row.tx{grid-template-columns:minmax(0,1fr) 64px 32px}.row.tx .dtl{grid-column:1/-1}.row.cult{grid-template-columns:minmax(0,1fr) minmax(0,1fr) 32px}.log li{grid-template-columns:40px 96px minmax(0,1fr) 28px}.wpc dl{grid-template-columns:74px minmax(0,1fr)}}
 @media print{body.pwp #main{display:block!important}body.pwp #printout{display:none!important}
  .pwp .wpadd,.pwp .wpfam,.pwp .btns,.pwp .foot,.pwp .babyhead .tools{display:none!important}
  .pwp .wpc{break-inside:avoid;border:1px solid #999;border-left-width:4px;padding:4px 8px;margin-bottom:4px;gap:3px}
@@ -397,10 +400,12 @@ table.sheet .inp:not(textarea){height:34px;min-height:34px}
 .row.todo{grid-template-columns:28px 96px minmax(0,1fr) 36px}
 .inoch{min-width:390px}
 @media (max-width:520px){.log li{grid-template-columns:40px 150px minmax(0,1fr) 28px}}
-.row.bpr{grid-template-columns:minmax(0,1.6fr) 74px 74px 74px 32px;align-items:end}
+.row.bpr{grid-template-columns:auto repeat(3,minmax(84px,150px)) 32px;justify-content:start;align-items:end;column-gap:10px}
+.row.bpr input[type=number]{font-size:20px;font-weight:600;text-align:center;font-variant-numeric:tabular-nums}
+.row.bpr .res{grid-column:1/-1;max-width:none}
 .row.bpr .res{grid-column:1/-1}
 .row.bpr+.row.bpr{border-top:1px solid var(--line);padding-top:6px}
-@media (max-width:520px){.row.bpr{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) 32px}.row.bpr .nm{grid-column:1/-1}}
+@media (max-width:520px){.row.bpr{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr) 32px}.row.bpr .nm{grid-column:1/-1}.row.bpr input[type=number]{font-size:18px}}
 .sb .hl{position:relative;padding-left:14px}
 .sb .hl::before{content:"•";position:absolute;left:2px;color:var(--accent);font-weight:700}
 .sb .hl.ind{padding-left:32px;font-size:14px}
@@ -581,8 +586,8 @@ const SARN_ROWS=[
  {k:"aut",l:"Autonomic (pupils, HR)",o:["","1 Sympathetic (dilated, tachycardia)","2 Parasympathetic (small, bradycardia)","3 Both depressed"]},
  {k:"sz",l:"Seizures",o:["","1 None","2 Common","3 Uncommon"]},
  {k:"_st",l:"Stage",calc:true}];
-const SHEETS={sarn:{btn:"+ New stage",empty:"No Sarnat staging yet. Tap + New stage.",newT:ddmm},thomp:{btn:"+ New score",empty:"No Thompson scores yet. Tap + New score.",newT:ddmm},gases:{btn:"+ New gas",empty:"No gases yet. Tap + New gas.",newT:stamp},inv:{btn:"+ New date",empty:"No results yet. Tap + New date.",newT:ddmm}};
-const sheetRows=(key,b)=>key==="gases"?GAS_ROWS:key==="thomp"?THOMP_ROWS:key==="sarn"?SARN_ROWS:[...INV_ROWS,{g:"Special investigations"},{k:"tg",l:"TG"},...b.invx.map(x=>({k:"x_"+x.id,l:x.name,x:x.id}))];
+const SHEETS={lus:{btn:"+ New score",empty:"No lung ultrasound scores yet. Tap + New score.",newT:ddmm},sarn:{btn:"+ New stage",empty:"No Sarnat staging yet. Tap + New stage.",newT:ddmm},thomp:{btn:"+ New score",empty:"No Thompson scores yet. Tap + New score.",newT:ddmm},gases:{btn:"+ New gas",empty:"No gases yet. Tap + New gas.",newT:stamp},inv:{btn:"+ New date",empty:"No results yet. Tap + New date.",newT:ddmm}};
+const sheetRows=(key,b)=>key==="gases"?GAS_ROWS:key==="lus"?LUS_ROWS:key==="thomp"?THOMP_ROWS:key==="sarn"?SARN_ROWS:[...INV_ROWS,{g:"Special investigations"},{k:"tg",l:"TG"},...b.invx.map(x=>({k:"x_"+x.id,l:x.name,x:x.id}))];
 const LINE_TYPES=["","UVC","UAC","PICC","Peripheral IV (PIV)","Central line (other)","ETT (oral)","ETT (nasal)","NIV prongs / mask","NG tube","OG tube","Chest drain","Urinary catheter","Surgical drain","Stoma","Other"];
 const CONS_TYPES=["","Paediatric surgery","Neurology","Neurosurgery","Haematology","Cardiology","Nephrology","Ophthalmology (ROP)","ENT","Genetics","Metabolic","Endocrine","GI / hepatology","Orthopaedics","Plastic surgery","Urology","Dermatology","Physiotherapy","Nutrition / dietitian","Social work","Palliative care","Other"];
 const IMG_TYPES=["","Cranial US","Abdominal US","Renal US","Hip US","X-ray","CT","MRI","Echo","Other"];
@@ -594,8 +599,18 @@ const BASES=["/kg/dose","/kg/day","/kg/h","/kg/min","/dose","/day"];
 const DRUGS={"Ampicillin": ["mg", "/kg/dose", "q8–12h (by GA / postnatal age)"], "Amoxicillin": ["mg", "/kg/dose", "q8–12h"], "Gentamicin": ["mg", "/kg/dose", "q24–48h (by GA / postnatal age; check levels)"], "Amikacin": ["mg", "/kg/dose", "q24–48h (check levels)"], "Cefotaxime": ["mg", "/kg/dose", "q8–12h"], "Ceftazidime": ["mg", "/kg/dose", "q8–12h"], "Ceftriaxone": ["mg", "/kg/dose", "q24h"], "Cloxacillin": ["mg", "/kg/dose", "q8–12h"], "Flucloxacillin": ["mg", "/kg/dose", "q8–12h"], "Meropenem": ["mg", "/kg/dose", "q8–12h"], "Piperacillin-tazobactam": ["mg", "/kg/dose", "q8–12h"], "Vancomycin": ["mg", "/kg/dose", "q8–24h (by GA / levels)"], "Colistin": ["mg", "/kg/dose", "q8–12h"], "Metronidazole": ["mg", "/kg/dose", "q8–24h"], "Azithromycin": ["mg", "/kg/dose", "q24h"], "Erythromycin": ["mg", "/kg/dose", "q6–8h"], "Fluconazole": ["mg", "/kg/dose", "q24–72h (by GA / postnatal age)"], "Amphotericin B": ["mg", "/kg/dose", "q24h"], "Acyclovir": ["mg", "/kg/dose", "q8–12h"], "Caffeine citrate": ["mg", "/kg/day", "q24h"], "Paracetamol": ["mg", "/kg/dose", "q6–12h (by GA)"], "Ibuprofen": ["mg", "/kg/dose", "q24h"], "Indomethacin": ["mg", "/kg/dose", "q12–24h"], "Phenobarbitone": ["mg", "/kg/day", "q12–24h (loading: once)"], "Levetiracetam": ["mg", "/kg/dose", "q12h"], "Phenytoin": ["mg", "/kg/dose", "q8–12h"], "Midazolam": ["mcg", "/kg/h", "continuous"], "Morphine": ["mcg", "/kg/h", "continuous"], "Fentanyl": ["mcg", "/kg/h", "continuous"], "Furosemide": ["mg", "/kg/dose", "q12–24h"], "Spironolactone": ["mg", "/kg/day", "q12–24h"], "Hydrochlorothiazide": ["mg", "/kg/day", "q12h"], "Hydrocortisone": ["mg", "/kg/dose", "q6–12h"], "Dexamethasone": ["mg", "/kg/dose", "q12h"], "Vitamin D": ["IU", "/day", "q24h"], "Iron (elemental)": ["mg", "/kg/day", "q24h"], "Omeprazole": ["mg", "/kg/dose", "q12–24h"], "Ranitidine": ["mg", "/kg/dose", "q8–12h"], "Calcium gluconate": ["mL", "/kg/dose", "q6–12h"], "Sodium bicarbonate": ["mmol", "/kg/dose", "once / PRN"], "Vitamin K": ["mg", "/dose", "once"], "Sildenafil": ["mg", "/kg/dose", "q6–8h"], "Propranolol": ["mg", "/kg/dose", "q6–8h"], "Cholecalciferol": ["IU", "/day", "q24h"]};
 const DRUGKEY=Object.fromEntries(Object.keys(DRUGS).map(k=>[k.toLowerCase(),DRUGS[k]]));
 const NATS=["Afghan", "Albanian", "Algerian", "American", "Angolan", "Argentine", "Armenian", "Australian", "Austrian", "Azerbaijani", "Bahraini", "Bangladeshi", "Belarusian", "Belgian", "Beninese", "Bhutanese", "Bolivian", "Bosnian", "Brazilian", "British", "Bruneian", "Bulgarian", "Burkinabe", "Burmese", "Burundian", "Cambodian", "Cameroonian", "Canadian", "Chadian", "Chilean", "Chinese", "Colombian", "Comoran", "Congolese", "Croatian", "Cuban", "Cypriot", "Czech", "Danish", "Djiboutian", "Dutch", "Ecuadorian", "Egyptian", "Emirati", "Eritrean", "Estonian", "Ethiopian", "Filipino", "Finnish", "French", "Gabonese", "Gambian", "Georgian", "German", "Ghanaian", "Greek", "Guatemalan", "Guinean", "Haitian", "Honduran", "Hungarian", "Icelandic", "Indian", "Indonesian", "Iranian", "Iraqi", "Irish", "Italian", "Ivorian", "Jamaican", "Japanese", "Jordanian", "Kazakh", "Kenyan", "Korean", "Kuwaiti", "Kyrgyz", "Lao", "Latvian", "Lebanese", "Liberian", "Libyan", "Lithuanian", "Macedonian", "Malagasy", "Malawian", "Malaysian", "Maldivian", "Malian", "Maltese", "Mauritanian", "Mauritian", "Mexican", "Moldovan", "Mongolian", "Moroccan", "Mozambican", "Namibian", "Nepalese", "New Zealander", "Nicaraguan", "Nigerian", "Nigerien", "Norwegian", "Omani", "Pakistani", "Palestinian", "Panamanian", "Paraguayan", "Peruvian", "Polish", "Portuguese", "Qatari", "Romanian", "Russian", "Rwandan", "Saudi", "Senegalese", "Serbian", "Sierra Leonean", "Singaporean", "Slovak", "Slovenian", "Somali", "South African", "Spanish", "Sri Lankan", "Sudanese", "Swedish", "Swiss", "Syrian", "Taiwanese", "Tajik", "Tanzanian", "Thai", "Togolese", "Tunisian", "Turkish", "Turkmen", "Ugandan", "Ukrainian", "Uruguayan", "Uzbek", "Venezuelan", "Vietnamese", "Yemeni", "Zambian", "Zimbabwean", "Stateless (Bedoon)", "Other"];
-const AC={nat:NATS,drug:Object.keys(DRUGS)};
+const MAB=["Ampicillin","Ampicillin + Erythromycin","Ampicillin + Azithromycin","Ampicillin + Gentamicin","Amoxicillin","Amoxicillin + Clavulanate (Augmentin)","Azithromycin","Benzylpenicillin (Penicillin G)","Cefazolin","Cefuroxime","Ceftriaxone","Cefotaxime","Ceftazidime","Cefepime","Clindamycin","Erythromycin","Gentamicin","Amikacin","Metronidazole","Nitrofurantoin","Fosfomycin","Trimethoprim","Co-trimoxazole","Ciprofloxacin","Levofloxacin","Piperacillin-tazobactam (Tazocin)","Meropenem","Imipenem","Ertapenem","Vancomycin","Teicoplanin","Linezolid","Doxycycline","Clarithromycin","Anti-TB treatment","Other"];
+const AC={nat:NATS,drug:Object.keys(DRUGS),mab:MAB};
 // Thompson HIE score: 9 items, total 0-22 (mild 1-10, moderate 11-14, severe 15-22)
+const LUSO=["","0","1","2","3"];
+const LUS_ROWS=[{k:"rua",l:"Right upper anterior",o:LUSO},{k:"rla",l:"Right lower anterior",o:LUSO},{k:"rl",l:"Right lateral",o:LUSO},
+ {k:"lua",l:"Left upper anterior",o:LUSO},{k:"lla",l:"Left lower anterior",o:LUSO},{k:"ll",l:"Left lateral",o:LUSO},{k:"tot",l:"Total (0–18)",calc:true}];
+function lusTot(c){let n=0,s=0;LUS_ROWS.forEach(r=>{if(!r.calc&&c[r.k]){n++;s+=parseInt(c[r.k],10)||0}});return n?{s,n}:null}
+function lusLatest(b){const L=b.lus||[];for(let i=L.length-1;i>=0;i--){const t=lusTot(L[i]);if(t)return Object.assign({t:L[i].t},t)}return null}
+const lusTxt=b=>{const t=lusLatest(b);return t?`lung US score ${t.s}/18${t.n<6?` (${t.n}/6 zones)`:""}${t.t?" on "+t.t:""}`:""};
+function lusRef(){return `<details class="calcref"><summary>How to score: 0–3 per zone (lung ultrasound score, Brat 2015)</summary><div class="tblwrap"><table class="sheet ref"><thead><tr><th>Score</th><th>Pattern in each zone</th></tr></thead><tbody>
+<tr><th>0</th><td>A-lines only (normal aeration)</td></tr><tr><th>1</th><td>≥ 3 well-spaced B-lines</td></tr><tr><th>2</th><td>Crowded / coalescent B-lines, with or without consolidation limited to the subpleural space</td></tr><tr><th>3</th><td>Extended consolidation</td></tr></tbody></table></div>
+<p class="hint">6 zones: upper anterior, lower anterior and lateral on each side, each 0–3; total 0–18. Higher score = less aeration. Use your unit's protocol for any surfactant threshold.</p></details>`}
 const THOMP_ROWS=[
  {k:"tone",l:"Tone",o:["","0 Normal","1 Hyper","2 Hypo","3 Flaccid"]},
  {k:"loc",l:"Level of consciousness",o:["","0 Normal","1 Hyperalert","2 Lethargic","3 Comatose"]},
@@ -701,7 +716,7 @@ const SECTIONS=[
   H("Inotropes"),
   ...range(3).flatMap(i=>{const on=f=>!!(f["ino"+i]||"").trim();return[
     R(F("ino"+i,"Drug "+i,"dl",{dl:"inodrugs",g:1.2,mw:120}),
-      F("ino"+i+"st","Started (date & time)","dt",{show:on,g:1.4,mw:190}),
+      F("ino"+i+"st","Started (date & time)","dtdm",{show:on,g:1.2,mw:220}),
       F("ino"+i+"d","Dose","numu",{u:"mcg/kg/min",g:1.2,mw:150}),
       F("ich"+i,"","inoch",{i,show:on}),
       F("dc"+i,"","dc",{i,show:on})),
@@ -817,7 +832,7 @@ const BGCOLS=[["c1","Cord 1"],["c2","Cord 2"],["ad","Admission"]];
 const BGPAR=[["ph","pH"],["pco2","pCO₂"],["po2","pO₂"],["hco3","HCO₃"],["be","BE"],["lac","Lact."]];
 
 /* ---------- state ---------- */
-const LISTS=["bps","abx","meds","prev","lines","todos","gases","inv","img","cons","rlog","ilog","thomp","sarn","abcl","roplog","linelog","cults","tx","flog","abxlog"];
+const LISTS=["lus","bps","abx","meds","prev","lines","todos","gases","inv","img","cons","rlog","ilog","thomp","sarn","abcl","roplog","linelog","cults","tx","flog","abxlog"];
 function snapR(f){const o={};["resp",...Object.keys(RP).map(k=>"rp_"+k)].forEach(k=>o[k]=f[k]??"");return o}
 function snapI(f,s){const o={};range(3).forEach(i=>o[i]={d:f["ino"+i]??"",x:f["ino"+i+"d"]??"",s:s||""});return o}
 const blankX=()=>range(3).map(()=>({id:uid(),name:""}));
@@ -954,7 +969,7 @@ const cultsWait=b=>b.cults.filter(c=>c.st==="Awaiting result");
 function txNth(b,i){const it=b.tx[i];if(!it||!it.p)return"—";return "#"+b.tx.filter((x,q)=>x.p===it.p&&((x.d||"")<(it.d||"")||((x.d||"")===(it.d||"")&&q<=i))).length}
 function txSum(b){const m=new Map();b.tx.filter(x=>x.p).forEach(x=>{const o=m.get(x.p)||{n:0,last:""};o.n++;if((x.d||"")>o.last)o.last=x.d||"";m.set(x.p,o)});return[...m].map(([p,o])=>({p,n:o.n,last:o.last}))}
 const txTxt=b=>txSum(b).map(x=>`${x.p} ×${x.n}${x.last?" (last "+fmtDT(x.last)+")":""}`).join(", ");
-function renderTx(b){const el=$("#txsum");if(!el)return;const t=txSum(b);el.innerHTML=t.length?t.map(x=>`<li><b>${esc(x.p)}<em>${x.n} ${x.n>1?"times":"time"}</em></b><small>${x.last?"last "+esc(fmtDT(x.last)):"no date"}</small></li>`).join(""):`<li class="empty">No transfusions recorded.</li>`}
+function renderTx(b){const el=$("#txsum");if(!el)return;const t=txSum(b);el.innerHTML=t.length?t.map(x=>`<li class="txc"><b>${esc(x.p)}</b><span class="calc cnt" title="Times received">${x.n}</span><small>${x.last?"last "+esc(fmtDT(x.last)):"no date"}</small></li>`).join(""):`<li class="empty">No transfusions recorded.</li>`}
 const cenBirth=f=>ordj([f.bw_c&&`Wt ${f.bw_c}`,f.blen_c&&`Len ${f.blen_c}`,f.bhc_c&&`HC ${f.bhc_c}`]);
 
 /* --- Sarnat / Thompson, ROP, neuro, aspirate helpers --- */
@@ -1016,18 +1031,24 @@ const hm12=(v,A)=>{const s=String(v||"").trim();if(!s)return"";const m=s.match(/
   if(h===0||h>12){A.value=h>=12?"PM":"AM";return pad(h)+":"+pad(mi)}
   if(!A.value)A.value=nowAt().getHours()>=12?"PM":"AM";
   return pad(h%12+(A.value==="PM"?12:0))+":"+pad(mi)};
-function enhance(root){
+// device spell check (red underline + suggestions) on free-text boxes; off for names, IDs, times, drug / organism pick boxes and lab cells
+function spellify(root){(root||document).querySelectorAll('textarea:not([data-sp]),input:not([type]):not([data-sp]),input[type=text]:not([data-sp])').forEach(x=>{x.dataset.sp="1";
+  const off=x.classList.contains("t24")||x.classList.contains("dm")||x.dataset.ac||x.hasAttribute("list")||x.dataset.s||x.dataset.xname||x.dataset.logt||x.inputMode==="numeric"||/^f_(name|mrn|bedno|station|floor)$/.test(x.id)||(x.dataset.l==="todos"&&x.dataset.p==="a");
+  x.spellcheck=!off;x.setAttribute("autocorrect",off?"off":"on");x.setAttribute("autocapitalize",off?(x.id==="f_name"?"words":"off"):"sentences")})}
+function enhance(root){spellify(root);
   (root||document).querySelectorAll('input[type=time]:not([data-enh]),input[type=datetime-local]:not([data-enh]),input[type=date][data-dm]:not([data-enh])').forEach(o=>{
     o.dataset.enh="1";const t=o.type,v=o.value||"",w=document.createElement("span");w.className="t24w";
     if(t==="time")w.innerHTML=tPart(v);
     else if(t==="date")w.innerHTML=`<input class="inp dm" type="text" inputmode="numeric" maxlength="5" placeholder="dd/mm" autocomplete="off" value="${v?v.slice(8,10)+"/"+v.slice(5,7):""}" aria-label="Date, day/month">`;
+    else if(o.dataset.dm)w.innerHTML=`<input class="inp dm" type="text" inputmode="numeric" maxlength="5" placeholder="dd/mm" autocomplete="off" value="${v?v.slice(8,10)+"/"+v.slice(5,7):""}" aria-label="Date, day/month">`+tPart(v.slice(11,16));
     else w.innerHTML=`<input class="inp" type="date" value="${esc(v.slice(0,10))}" aria-label="Date">`+tPart(v.slice(11,16));
     o.style.display="none";o.after(w);o._lc=o.value;
-    const P=[...w.querySelectorAll("input,select")],D=w.querySelector("input[type=date]"),T=w.querySelector(".t24"),A=w.querySelector(".ap");
+    const P=[...w.querySelectorAll("input,select")],D=w.querySelector("input[type=date]"),DM=t!=="date"?w.querySelector(".dm"):null,T=w.querySelector(".t24"),A=w.querySelector(".ap");
     const compose=()=>{
       if(t==="date")return dm2iso(P[0].value);
       const tm=hm12(T.value,A);if(tm===null)return null;
       if(t==="time")return tm;
+      if(DM){let d=dm2iso(DM.value);if(d===null)return null;if(!d&&!tm)return"";if(!d){d=today();DM.value=d.slice(8,10)+"/"+d.slice(5,7)}return d+"T"+(tm||"00:00")}
       let d=D.value;if(!d&&!tm)return"";if(!d){d=today();D.value=d}return d+"T"+(tm||"00:00")};
     const push=ev=>{const nv=compose();if(ev==="change"&&T&&nv){const tm=t==="time"?nv:nv.slice(11,16);if(tm&&T.value){const h=+tm.slice(0,2);T.value=(h%12||12)+":"+tm.slice(3,5)}}P.forEach(x=>x.classList.toggle("bad",nv===null&&ev==="change"&&!!x.value&&x.type==="text"));if(nv==null)return;
       if(o.value!==nv){o.value=nv;o.dispatchEvent(new Event("input",{bubbles:true}))}
@@ -1080,6 +1101,7 @@ function fieldHTML(d,b){
   else if(t==="area")ctl=`<textarea class="inp${d.big?" big":""}" id="${id}" data-k="${k}" placeholder="${esc(ph||"")}"></textarea>`;
   else if(t==="date")ctl=`<input class="inp" type="date" id="${id}" data-k="${k}">`;
   else if(t==="dt")ctl=`<input class="inp" type="datetime-local" id="${id}" data-k="${k}">`;
+  else if(t==="dtdm")ctl=`<input class="inp" type="datetime-local" data-dm="1" id="${id}" data-k="${k}">`;
   else if(t==="time")ctl=`<input class="inp" type="time" id="${id}" data-k="${k}">`;
   else if(t==="num")ctl=`<input class="inp" type="number" inputmode="decimal" step="any" id="${id}" data-k="${k}" placeholder="${esc(ph||"")}">`;
   else ctl=`<input class="inp" type="text" id="${id}" data-k="${k}" placeholder="${esc(ph||"")}"${d.dl?` list="${d.dl}" autocomplete="off"`:""}${d.ac?` data-ac="${d.ac}" autocomplete="off"`:""}>`;
@@ -1106,7 +1128,7 @@ function listHTML(L,b){
       <input class="inp" type="date" ${a} data-p="d" value="${esc(it.d)}" aria-label="${L.ph[1]} date">
       <div class="day" data-day="${L.key}-${i}">${it.d?"Day "+dayN(it.d):"—"}</div>
       ${L.stop?`<button class="btn ghost sm" data-stop="${L.key}" data-i="${i}">Stop</button>`:"<span></span>"}${del}</div>`;
-    if(L.kind==="bp"){const mp=bpMean(Object.assign({},it,{m:""}));return `<div class="row bpr"><label class="mini nm">Date &amp; time<input class="inp" type="datetime-local" ${a} data-p="d" value="${esc(it.d)}"></label>
+    if(L.kind==="bp"){const mp=bpMean(Object.assign({},it,{m:""}));return `<div class="row bpr"><label class="mini nm">Date &amp; time<input class="inp" type="datetime-local" data-dm="1" ${a} data-p="d" value="${esc(it.d)}"></label>
       <label class="mini">SBP<input class="inp" type="number" inputmode="numeric" ${a} data-p="s" value="${esc(it.s)}"></label>
       <label class="mini">DBP<input class="inp" type="number" inputmode="numeric" ${a} data-p="di" value="${esc(it.di)}"></label>
       <label class="mini">Mean<input class="inp" type="number" inputmode="numeric" ${a} data-p="m" value="${esc(it.m)}" placeholder="${mp!=null?"≈ "+mp:""}"></label>${del}
@@ -1116,18 +1138,18 @@ function listHTML(L,b){
       <label class="mini">Removed<input class="inp" type="datetime-local" ${a} data-p="e" value="${esc(it.e)}"></label>
       <label class="mini">Days<div class="calc" data-day="${L.key}-${i}">${lineDayTxt(it)}</div></label>${del}</div>`;
     const opt=(arr,cur,ph)=>(arr.includes(cur)||!cur?arr:[...arr,cur]).map(o=>`<option value="${esc(o)}"${cur===o?" selected":""}>${esc(o||ph)}</option>`).join("");
-    if(L.kind==="tx")return `<div class="row tx"><select class="inp nm" ${a} data-p="p" aria-label="Product">${opt(TX_TYPES,it.p||"","Product…")}</select>
-      <label class="mini">Date &amp; time<input class="inp" type="datetime-local" ${a} data-p="d" value="${esc(it.d)}"></label>
+    if(L.kind==="tx")return `<div class="row tx"><label class="mini nm">Product<select class="inp" ${a} data-p="p" aria-label="Product">${opt(TX_TYPES,it.p||"","Product…")}</select></label>
+      <label class="mini">No.<div class="calc txn" title="Number of this product so far">${txNth(b,i)}</div></label>
+      <label class="mini dtl">Date &amp; time<input class="inp" type="datetime-local" ${a} data-p="d" value="${esc(it.d)}"></label>
       <label class="mini">Dose<input class="inp" type="number" inputmode="decimal" step="any" ${a} data-p="ds" value="${esc(it.ds)}"></label>
-      <label class="mini">Unit<select class="inp" ${a} data-p="u">${opt(TX_UNITS,it.u||"","—")}</select></label>
-      <label class="mini">No.<div class="calc">${txNth(b,i)}</div></label>${del}
+      <label class="mini">Unit<select class="inp" ${a} data-p="u">${opt(TX_UNITS,it.u||"","—")}</select></label>${del}
       <input class="inp res" ${a} data-p="n" value="${esc(it.n)}" placeholder="Indication, Hb / platelets before, reaction" aria-label="Transfusion notes"></div>`;
     if(L.kind==="cult")return `<div class="row cult"><select class="inp" ${a} data-p="s" aria-label="Culture site">${opt(CULT_SITES,it.s||"","Site…")}</select>
       <label class="mini">Sent<input class="inp" type="datetime-local" ${a} data-p="d" value="${esc(it.d)}"></label>
       <label class="mini">Status<select class="inp" ${a} data-p="st">${opt(CULT_ST,it.st||"","—")}</select></label>
       <label class="mini">Organism<input class="inp" list="orgs" autocomplete="off" ${a} data-p="o" value="${esc(it.o)}" placeholder="choose or type"></label>
       <label class="mini">Result date<input class="inp" type="date" ${a} data-p="rd" value="${esc(it.rd)}"></label>${del}</div>`;
-    if(L.kind==="abc")return `<div class="row abc"><select class="inp" ${a} data-p="a" aria-label="Antibiotic course">${(ABC_OPTS.includes(it.a)||!it.a?ABC_OPTS:[...ABC_OPTS,it.a]).map(o=>`<option value="${esc(o)}"${it.a===o?" selected":""}>${esc(o||"Antibiotic…")}</option>`).join("")}</select>
+    if(L.kind==="abc")return `<div class="row abc"><input class="inp" ${a} data-p="a" data-ac="mab" autocomplete="off" value="${esc(it.a)}" placeholder="Antibiotic (type – suggestions appear)" aria-label="Antibiotic">
       <input class="inp" ${a} data-p="e" value="${esc(it.e)}" placeholder="Dose, duration, dates" aria-label="Course details">${del}</div>`;
     if(L.kind==="prev")return `<div class="row prev"><input class="inp nm" ${a} data-p="a" value="${esc(it.a)}" placeholder="Drug + dose" aria-label="Medication">
       <label class="mini">Started<input class="inp" type="date" ${a} data-p="d" value="${esc(it.d)}"></label>
@@ -1176,6 +1198,12 @@ function logAdd(b,key,x,when,pre){const L=b[key],K=when||isoAt(),T=when?fmtD(new
   if(!when&&last&&last.k&&!last.m&&Math.abs(new Date(K)-new Date(last.k))<=180000){const parts=last.x.split("; ");if(parts.includes(x))return;
     const ix=pre?parts.findIndex(p=>p.startsWith(pre)):-1;if(ix>=0)parts[ix]=x;else parts.push(x);last.x=parts.join("; ");last.k=K;last.t=T}
   else L.push({t:T,x,k:K})}
+// drug logs (antibiotics, inotropes): every event on its own line
+// kind: "start" | "dose" | "stop"; a dose typed within 30 min of starting completes the start line instead of adding a new one
+function drugLog(b,key,drug,x,kind,when){const L=b[key],now=Date.now(),K=when||isoAt(),T=fmtD(new Date(K));
+  if(kind==="dose"&&!when){let e=null;for(let i=L.length-1;i>=0;i--)if(L[i].dr===drug){e=L[i];break}
+    if(e&&e.c&&((e.ty==="start"&&now-e.c<1800000)||(e.ty==="dose"&&now-e.c<180000))){e.x=e.ty==="start"?x+" started":x;return}}
+  L.push({t:T,x:kind==="start"?x+" started":x,k:K,dr:drug,ty:kind,c:now})}
 const byWhen=arr=>arr.map((e,i)=>({e,i})).sort((a,c)=>(a.e.k||"").localeCompare(c.e.k||"")||a.i-c.i);
 function renderLog(b,key,id,empty){
   const el=document.getElementById(id);if(!el)return;
@@ -1202,7 +1230,7 @@ function renderBaby(){
     if(s.custom==="nutref")h+=logHTML("flog","Fluid & feed change log","IVF, fluid type and feed changes are recorded here automatically.")+`<details class="calcref"><summary>Values used for calculations</summary><p class="hint">Typical values per 100 ml. Brands vary, so check against the products in your unit. The selected milk is highlighted.</p>
     <div class="tblwrap"><table class="sheet ref"><thead><tr><th>Milk</th><th>kcal / 100 ml</th><th>Carbs g / 100 ml</th></tr></thead><tbody>${Object.entries(MILK).map(([n,v])=>`<tr data-milk="${n}"><th scope="row">${n}</th><td>${v.k}</td><td>${v.c.toFixed(1)}</td></tr>`).join("")}</tbody></table></div>
     <p class="hint">IV: dextrose 3.4 kcal/g · amino acids 4 kcal/g · lipid 10 kcal/g.<br>GIR = dextrose % × IVF ml/kg/d ÷ 144. Glucose from feeds = carbs g/kg/d × 1000 ÷ 1440 (mg/kg/min).</p></details>`;
-    if(s.custom==="resp")h+=sheetHTML("gases","Blood gases",b)+logHTML("rlog","Ventilation change log","Mode and setting changes are recorded here automatically with the time.")+`<div class="grid">${fieldHTML(F("rnote","Respiratory notes","area"))}</div>`;
+    if(s.custom==="resp")h+=sheetHTML("gases","Blood gases",b)+logHTML("rlog","Ventilation change log","Mode and setting changes are recorded here automatically with the time.")+sheetHTML("lus","POCUS lung ultrasound score",b)+lusRef()+`<div class="grid">${fieldHTML(F("rnote","Respiratory notes","area"))}</div>`;
     if(s.custom==="cvs")h+=logHTML("ilog","Inotrope log","Starting, changing a dose or DC above (Change / DC time blank = now) is recorded here and in that drug's Changes box automatically.")+`<div class="grid">${fieldHTML(F("inoo","Other drugs","text",{wide:true,}))}${fieldHTML(F("cnote","CVS notes","area"))}</div>`;
     if(s.custom==="curmeds")h+=`<div class="tblbar"><div class="sub">From other sections</div></div><p class="hint">Updates automatically from Infection, Cardiovascular, Respiratory (caffeine) and Neuro. Change them there.</p><ul class="auto" id="automeds"></ul><div class="tblbar"><div class="sub">Other medications</div></div>`;
     if(s.custom==="inv")h+=sheetHTML("inv","Blood investigations",b)+`<div class="tblbar"><div class="sub">Imaging</div></div>`+listHTML({key:"img",kind:"img",btn:"+ Imaging"},b);
@@ -1281,6 +1309,7 @@ function refresh(){
   setCalc("CALC_coolage",c.coolAge!=null?r1(c.coolAge)+" h of life"+(c.coolAge>6?" <small>started after 6 h</small>":""):null);
   document.querySelectorAll("[data-tt]").forEach(td=>{const key=td.dataset.ts,col=b[key][+td.dataset.tt]||{};let s="";
     if(key==="thomp"){const t=thompTot(col);s=t?t.s+(t.n<9?"*":""):""}
+    else if(key==="lus"){const t=lusTot(col);s=t?t.s+(t.n<6?"*":""):""}
     else if(key==="sarn"){const t=sarnTot(col);s=t?"Stage "+t.st+(t.n<6?"*":""):""}
     else if(key==="gases"){const o=oiCalc(col,td.dataset.tr);s=o||""}
     td.textContent=s});
@@ -1319,7 +1348,7 @@ function wpRows(b){
   add("Problems",items(f.cprob),"key");
   // respiratory: current support, last BGA only, last ventilation change
   const g=lastGasOne(b);
-  add("Resp",[respStr(f)||"—",+f.surf>0&&`Surfactant ×${f.surf}`,g&&{h:`<span class="mono">Last BGA ${E(gasLine(g))}</span>`},...chg(lastLog(b,"rlog"))]);
+  add("Resp",[respStr(f)||"—",+f.surf>0&&`Surfactant ×${f.surf}`,lusTxt(b)&&lusTxt(b).replace(/^l/,"L"),g&&{h:`<span class="mono">Last BGA ${E(gasLine(g))}</span>`},...chg(lastLog(b,"rlog"))]);
   // cardiovascular: last BP (+ action), inotropes with last change, PDA
   const bl=bpLast(b),pda=f.pda&&!/^(No PDA|Closed)$/.test(f.pda)?`PDA ${f.pda}${f.pdasz?" "+f.pdasz+" mm":""}${f.pdatx?" ("+pdaTxStr(f)+")":""}`:"";
   add("CVS",[bl&&`Last BP ${bpOne(bl)}${bl.d?" at "+fmtDT(bl.d):""}${bl.a?" → "+bl.a:""}`,...inoList(f),f.inoo,pda,...chg(lastLog(b,"ilog"))]);
@@ -1424,7 +1453,7 @@ function handover(b){
   pt("Blood group",j([f.bgp,f.dct&&`DCT ${f.dct}`,f.g6pd==="Deficient"&&"G6PD deficient",f.m_bg&&`mother ${f.m_bg}`]));
   // A – system by system, with changes from today / yesterday
   L.push("A – ASSESSMENT");
-  pt("Resp",j([respStr(f),+f.surf>0&&`surfactant ×${f.surf}`,isCaff(f)&&`caffeine${caffStr(f)}${f.caffs?" (D"+dayN(f.caffs)+")":""}`]),
+  pt("Resp",j([respStr(f),+f.surf>0&&`surfactant ×${f.surf}`,lusTxt(b),isCaff(f)&&`caffeine${caffStr(f)}${f.caffs?" (D"+dayN(f.caffs)+")":""}`]),
     [lastGas(b)&&"Last gas "+lastGas(b),...chg(recentLog(b,"rlog"))]);
   const ino=inoList(f),pda=f.pda&&!/^(No PDA|Closed)$/.test(f.pda)?`PDA ${f.pda}${f.pdasz?" "+f.pdasz+" mm":""}${f.pdatx?" – "+pdaTxStr(f):""}`:f.pda;
   pt("CVS",j([bpStr(b),ino.length&&"inotropes: "+ino.join(", "),pda,f.inoo]),[...bpActs(b),...chg(recentLog(b,"ilog"))]);
@@ -1518,12 +1547,14 @@ function inoChange(b,i,when){
   const ap=t=>{ch=inoAp(ch,t)};
   const old=`${o.d}${o.x?" "+o.x+U:""}`;
   const st0=when?when.slice(0,16):nowDT();
-  if(!o.d&&nd){x=nx?`${nd} started at ${nx}${U}`:`${nd} started`;if(!b.f["ino"+i+"st"])b.f["ino"+i+"st"]=st0;s=b.f["ino"+i+"st"];ch=`${T} ${nd} started${nx?" at "+nx:""}`}
-  else if(o.d&&!nd){x=`${o.d} DC`;toPrev(b,old,b.f["ino"+i+"st"]||o.s);s="";b.f["ino"+i+"st"]="";ap(`${T} ${o.d} DC`)}
-  else if(o.d!==nd){x=`${o.d} DC, changed to ${nd}${nx?" at "+nx+U:""}`;toPrev(b,old,b.f["ino"+i+"st"]||o.s);b.f["ino"+i+"st"]=st0;s=st0;ap(`${T} ${o.d} DC → ${nd}${nx?" at "+nx:""}`)}
-  else if(!o.x){x=`${nd} dose set ${nx}${U}`;ap(`${T} dose ${nx}`)}
-  else{x=nx?`${nd} ${o.x} → ${nx}${U}`:`${nd} dose cleared`;ap(`${T} dose ${o.x} → ${nx||"cleared"}`)}
-  b.f["ino"+i+"c"]=ch;b.ilast[i]={d:nd,x:nx,s};if(x)logAdd(b,"ilog",x,when);delete b.example;
+  const lab=(d,v)=>d+(v?" "+v+U:"");
+  if(!o.d&&nd){if(!b.f["ino"+i+"st"])b.f["ino"+i+"st"]=st0;s=b.f["ino"+i+"st"];drugLog(b,"ilog",nd,lab(nd,nx),"start",when||s+":00");ch=`${fmtD(new Date(s+":00"))} ${lab(nd,nx)} started`}
+  else if(o.d&&!nd){toPrev(b,old,b.f["ino"+i+"st"]||o.s);s="";b.f["ino"+i+"st"]="";drugLog(b,"ilog",o.d,`${o.d} DC`,"stop",when);ap(`${T} ${o.d} DC`)}
+  else if(o.d!==nd){toPrev(b,old,b.f["ino"+i+"st"]||o.s);b.f["ino"+i+"st"]=st0;s=st0;drugLog(b,"ilog",o.d,`${o.d} DC`,"stop",when);drugLog(b,"ilog",nd,lab(nd,nx),"start",when);ap(`${T} ${o.d} DC`);ap(`${T} ${lab(nd,nx)} started`)}
+  else if(!o.x&&nx){drugLog(b,"ilog",nd,lab(nd,nx),"dose",when);const Lc=ch.split("\n"),li=Lc.length-1,re=new RegExp(" "+nd.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+"( [^\\n]*)? started$");
+    if(!when&&li>=0&&re.test(Lc[li])){Lc[li]=Lc[li].replace(re," "+lab(nd,nx)+" started");ch=Lc.join("\n")}else ap(`${T} ${lab(nd,nx)}`)}
+  else{drugLog(b,"ilog",nd,nx?lab(nd,nx):`${nd} dose cleared`,"dose",when);ap(nx?`${T} ${lab(nd,nx)}`:`${T} ${nd} dose cleared`)}
+  b.f["ino"+i+"c"]=ch;b.ilast[i]={d:nd,x:nx,s};delete b.example;
   return true;
 }
 const main=$("#main");
@@ -1562,10 +1593,10 @@ main.addEventListener("change",e=>{
     save();if(/^(p|d|o)$/.test(t.dataset.p))render();else refresh()}return}
   if(t.dataset.l==="abx"&&!S.view){const b0=cur(),it=b0.abx[+t.dataset.i];if(it){const p=t.dataset.p;let x="",pre;
     if(p==="a"){const d=DRUGKEY[(it.a||"").trim().toLowerCase()];if(d){if(!it.un)it.un=d[0];if(!it.bs)it.bs=d[1]}
-      if(it.a)x=it.lg&&it.lg!==it.a?`${it.lg} changed to ${it.a}`:!it.lg?`${it.a} started${it.d?" "+fmtDT(it.d):""}`:"";it.lg=it.a||""}
-    else if(/^(ds|un|bs|iv)$/.test(p)&&it.a){x=`${it.a} dose ${medLabel(it).slice(it.a.length).trim()||"cleared"}`;pre=`${it.a} dose`}
-    else if(p==="d"&&it.a&&it.d)x=`${it.a} start time ${fmtDT(it.d)}`;
-    if(x)logAdd(b0,"abxlog",x,null,pre);save();if(p==="a")render();else{renderLogs(b0);refresh()}}return}
+      if(it.a&&it.lg!==it.a){if(it.lg)drugLog(b0,"abxlog",it.lg,`${it.lg} stopped`,"stop");drugLog(b0,"abxlog",it.a,medLabel(it),"start",it.d&&!it.lg?it.d+":00":null)}it.lg=it.a||""}
+    else if(/^(ds|un|bs|iv)$/.test(p)&&it.a)drugLog(b0,"abxlog",it.a,medLabel(it)===it.a?`${it.a} dose cleared`:medLabel(it),"dose");
+    else if(p==="d"&&it.a&&it.d){const e=[...b0.abxlog].reverse().find(e=>e.dr===it.a&&e.ty==="start");if(e){e.k=it.d+":00";e.t=fmtD(new Date(e.k))}}
+    save();if(p==="a")render();else{renderLogs(b0);refresh()}}return}
   if(t.dataset.l==="lines"&&!S.view){const b0=cur(),it=b0.lines[+t.dataset.i];if(it){const p=t.dataset.p,nm=it.a||"Line";let x="";
     if(p==="a"&&it.a)x=`${it.a} inserted${it.d?" "+fmtDT(it.d):""}`;
     else if(p==="d"&&it.a&&it.d)x=`${nm} inserted ${fmtDT(it.d)}`;
@@ -1589,9 +1620,9 @@ main.addEventListener("change",e=>{
     logAdd(b,"flog",o?`${l} ${o} → ${n||"—"}${uu}`:`${l} ${n}${uu}`);b.flast[q]=n;n_++});if(!n_)return;
   }else{
     const sm=k.match(/^ino(\d)st$/);if(sm){const i=sm[1],v=b.f[k],dname=(b.f["ino"+i]||"").trim();if(!v||!dname)return;
-      const e2=[...b.ilog].reverse().find(e=>e.x.split("; ").some(p=>p.startsWith(dname+" started")));
-      if(e2){e2.k=v+":00";e2.t=fmtD(new Date(v))}else logAdd(b,"ilog",`${dname} started`,v+":00");
-      {const T=fmtD(new Date(v)),ch=b.f["ino"+i+"c"]||"",re=new RegExp("^\\d{2}/\\d{2} \\d{1,2}:\\d{2}(?: [AP]M)? "+dname.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+" started");
+      const dq=dname.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"),e2=[...b.ilog].reverse().find(e=>(e.dr===dname&&e.ty==="start")||e.x.split("; ").some(p=>p.startsWith(dname+" started")));
+      if(e2){e2.k=v+":00";e2.t=fmtD(new Date(v))}else drugLog(b,"ilog",dname,dname+(b.f["ino"+i+"d"]?" "+b.f["ino"+i+"d"]+" mcg/kg/min":""),"start",v+":00");
+      {const T=fmtD(new Date(v)),ch=b.f["ino"+i+"c"]||"",re=new RegExp("^\\d{2}/\\d{2} \\d{1,2}:\\d{2}(?: [AP]M)? "+dq+"( [^\\n]*)? started");
         b.f["ino"+i+"c"]=re.test(ch)?ch.replace(/^\d{2}\/\d{2} \d{1,2}:\d{2}(?: [AP]M)?/,T):`${T} ${dname} started`+(ch?"\n"+ch:"");const ce=$("#f_ino"+i+"c");if(ce)ce.value=b.f["ino"+i+"c"]}
       if(b.ilast[i])b.ilast[i].s=v;save();renderLogs(b);refresh();return}
     const m=k.match(/^ino(\d)d?$/);if(!m)return;if(!inoChange(b,m[1]))return;
@@ -1718,7 +1749,7 @@ document.addEventListener("click",e=>{
   if(el.dataset.delcol){if(!arm(el,"Tap × again to delete this column"))return;b[el.dataset.delcol].splice(+el.dataset.i,1);save();render();return}
   if(el.dataset.delrow){if(!arm(el,"Tap × again to delete this test"))return;const id=el.dataset.delrow;b.invx=b.invx.filter(x=>x.id!==id);b.inv.forEach(c=>delete c["x_"+id]);save();render();return}
   if(a==="addtest"){const x={id:uid(),name:""};b.invx.push(x);save();render();$(`[data-xname="${x.id}"]`)?.focus();return}
-  if(el.dataset.stop){const k=el.dataset.stop,it=b[k][+el.dataset.i];if(k==="abx"&&it.a)logAdd(b,"abxlog",`${it.a} stopped${it.d?` (day ${dayN(it.d)})`:""}`);toPrev(b,medLabel(it),it.d);b[k].splice(+el.dataset.i,1);save();render();toast("Moved to previous medications");return}
+  if(el.dataset.stop){const k=el.dataset.stop,it=b[k][+el.dataset.i];if(k==="abx"&&it.a)drugLog(b,"abxlog",it.a,`${it.a} stopped${it.d?` (day ${dayN(it.d)})`:""}`,"stop");toPrev(b,medLabel(it),it.d);b[k].splice(+el.dataset.i,1);save();render();toast("Moved to previous medications");return}
   if(el.dataset.add){const k=el.dataset.add;b[k].push(k==="todos"?{a:"",b:"",x:false}:k==="abcl"?{a:"",e:""}:k==="prev"?{a:"",d:"",e:today()}:(k==="img"||k==="cons")?{t:"",d:today(),a:""}:k==="lines"?{a:"",d:nowDT()}:k==="abx"?{a:"",d:nowDT(),lg:""}:k==="tx"?{p:"",d:nowDT(),ds:"",u:"",n:""}:k==="cults"?{s:"",d:nowDT(),st:"Awaiting result",o:"",rd:""}:k==="bps"?{d:nowDT(),s:"",di:"",m:"",a:""}:{a:"",d:today()});save();render();
     const rows=document.querySelectorAll(`[data-l="${k}"][data-p="${k==="todos"?"b":(k==="img"||k==="cons")?"t":k==="tx"?"p":k==="cults"?"s":k==="bps"?"s":"a"}"]`);rows[rows.length-1]?.focus();return}
   if(el.dataset.del){b[el.dataset.del].splice(+el.dataset.i,1);save();if(/log$/.test(el.dataset.del)){renderLogs(b);refresh()}else render();return}

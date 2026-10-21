@@ -1,5 +1,5 @@
 // NICU Duty Sheet – offline support. Bump VERSION whenever you upload new app files.
-const VERSION = "nicu-duty-v32";
+const VERSION = "nicu-duty-v33";
 const APP_FILES = ["./", "./index.html", "./manifest.webmanifest"];
 
 self.addEventListener("install", e => {
