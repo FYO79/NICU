@@ -884,7 +884,7 @@ function rfChips(b,k){const f=b.f;const t=v=>v?" "+fmtDT(v):"";let c=[];
   else if(k==="fl")c=[num(f.rf_tot)!=null&&`total ${f.rf_tot} ml/kg/d`,(num(f.rf_ivfv)!=null||f.rf_ftype)&&`IVF${num(f.rf_ivfv)!=null?" "+f.rf_ivfv+" ml/kg/d":""}${f.rf_ftype?" "+f.rf_ftype:""}${num(f.rf_dex)!=null&&!/Numeta|Normal saline/.test(f.rf_ftype||"")?" D"+f.rf_dex+"%":""}`,rfNPO(f)?"NPO":f.rf_fmlkg&&`feeds ${f.rf_fmlkg} ml/kg/d${f.rf_feedt?" "+f.rf_feedt:""}${f.rf_route?" "+f.rf_route:""}${f.rf_ff?" q"+f.rf_ff+"h":""}`,f.rf_ivf&&"IVF "+f.rf_ivf,f.rf_feed&&"feeds: "+f.rf_feed,num(f.rf_glu)!=null&&`lowest glucose ${f.rf_glu} mmol/L`,...items(f.rf_fln)];
   else if(k==="inf")c=[...rfAbx(b).map(x=>medLabel(x)+(x.d?" from"+t(x.d):"")),f.rf_cult==="Yes"&&`${f.rf_cults||"Blood"} culture sent${t(f.rf_cultt)}`,...items(f.rf_infn)];
   else if(k==="lines")c=[1,2].map(i=>f["rf_line"+i]&&f["rf_line"+i]+t(f["rf_line"+i+"t"])).concat(items(f.rf_linen));
-  else if(k==="neuro")c=[f.rf_seiz&&f.rf_seiz!=="None"&&"seizures "+f.rf_seiz.toLowerCase(),f.rf_ac&&f.rf_ac+(f.rf_acl?" "+f.rf_acl+" mg/kg":""),f.rf_cool&&f.rf_cool!=="Not cooled"&&f.rf_cool+t(f.rf_coolt),...items(f.rf_neuron)];
+  else if(k==="neuro")c=[f.rf_seiz&&f.rf_seiz!=="None"&&"seizures "+f.rf_seiz.toLowerCase(),f.rf_ac&&f.rf_ac+(f.rf_acl?" load "+f.rf_acl+" mg/kg":"")+(f.rf_acm?", maint "+f.rf_acm+(f.rf_aci?" "+f.rf_aci:""):""),f.rf_cool&&f.rf_cool!=="Not cooled"&&f.rf_cool+t(f.rf_coolt),...items(f.rf_neuron)];
   else if(k==="oth")c=[...items(f.rf_inv),...items(f.rf_drugs).map(x=>"given: "+x),...items(f.rf_othev)];
   return c.filter(Boolean)}
 // a carried item is marked done for the values it was carried with
@@ -1164,6 +1164,21 @@ const echoOn=(f,b)=>echoHas(f,b)||revOpen(b,"echo");
 const lossOn=(f,b)=>!!(f.l1t||f.l1v||f.l2t||f.l2v)||revOpen(b,"loss");
 const necOn=(f,b)=>!!f.nec||revOpen(b,"nec");
 const axrOn=(f,b)=>!!String(f.axr||"").trim()||revOpen(b,"axr");
+// usual neonatal anticonvulsant doses (BNFc / Neofax / Lexicomp neonatal) – a reminder only; the unit protocol and pharmacist decide
+const ACDOSE={"phenobarbitone":{l:"20 mg/kg IV over 20 min; if seizures continue a further 10–20 mg/kg (total max 40 mg/kg)",m:"2.5–5 mg/kg/day",i:"q24h",ll:20},
+ "phenobarbital":{l:"20 mg/kg IV over 20 min; if seizures continue a further 10–20 mg/kg (total max 40 mg/kg)",m:"2.5–5 mg/kg/day",i:"q24h",ll:20},
+ "levetiracetam":{l:"40–60 mg/kg IV over 15 min",m:"20–60 mg/kg/day (10–30 mg/kg/dose)",i:"q12h",ll:40},
+ "phenytoin":{l:"20 mg/kg IV over ≥ 20 min (max 1 mg/kg/min), ECG monitoring",m:"5–8 mg/kg/day – follow levels",i:"q12h",ll:20},
+ "fosphenytoin":{l:"20 mg PE/kg IV",m:"4–8 mg PE/kg/day",i:"q24h",ll:20},
+ "midazolam":{l:"0.15 mg/kg IV bolus",m:"infusion 0.06–0.4 mg/kg/h (60–400 mcg/kg/h)",i:"continuous",ll:0.15},
+ "lidocaine":{l:"2 mg/kg IV over 10 min",m:"infusion by weight, GA and cooling (unit protocol, stepped down over 2 days); not with phenytoin",i:"continuous",ll:2},
+ "topiramate":{l:"10 mg/kg PO (often used as first dose)",m:"5 mg/kg/day",i:"q24h",ll:10},
+ "pyridoxine":{l:"100 mg IV trial (with EEG monitoring)",m:"30 mg/kg/day PO (max 200 mg/day)",i:"q24h"}};
+const acDose=n=>ACDOSE[String(n||"").trim().toLowerCase()]||null;
+function acHint(f,dk,lk,mk,wt){const d=acDose(f[dk]);if(!d)return null;const lv=num(f[lk]),parts=[`<b>Usual loading:</b> ${esc(d.l)}`,`<b>Maintenance:</b> ${esc(d.m)} · ${esc(d.i)}`];
+  if(wt&&lv!=null)parts.push(`<b>This loading dose:</b> ${esc(f[lk])} mg/kg × ${Math.round(wt*1000)} g = <b>${rr(lv*wt)} mg</b>`);
+  else if(wt&&d.ll)parts.push(`${d.ll} mg/kg for ${Math.round(wt*1000)} g = ${rr(d.ll*wt)} mg`);
+  return bullets(parts)+`<small>Reminder only – check your unit protocol / pharmacist (adjust in cooling, liver or kidney impairment).</small>`}
 const acSecOn=(f,b)=>[1,2,3].some(i=>!!(f["ac"+i]||f["ac"+i+"l"]||f["ac"+i+"m"]))||revOpen(b,"ac");
 const acOn=i=>(f,b)=>i===1||!!(f["ac"+i]||f["ac"+i+"l"]||f["ac"+i+"m"])||revOpen(b,"ac"+i);
 const rfInoOn=i=>(f,b)=>i===1||!!String(f["rf_ino"+i]||"").trim()||!!f["rf_ino"+i+"d"]||revOpen(b,"rfino"+i);
@@ -1177,6 +1192,26 @@ const lineDayTxt=it=>it.d?(it.e?(daysBetween(it.d,it.e)+1)+" days":"Day "+dayN(i
 const ABC_OPTS=["","Ampicillin","Ampicillin + Erythromycin","Amoxicillin","Cephalosporin","Azithromycin","Clindamycin","Other"];
 // total intake = IVF + feeds: the two boxes typed last decide the third
 // dextrose % and GIR fill each other (the one typed last is kept when IV fluids or lipid change)
+// referring hospital fluids: total = IV + feeds (the two typed last decide the third), dextrose % <-> GIR
+function rfFluidSync(b,k){const f=b.f,npo=/^\s*npo/i.test(f.rf_fmlkg||""),M={rf_tot:"t",rf_ivfv:"i",rf_fmlkg:"m"};
+  if(M[k]){b.rfo=(b.rfo||[]).filter(x=>x!==k);b.rfo.push(k);if(b.rfo.length>2)b.rfo.shift();
+    if(b.rfo.length===2){const tg=Object.keys(M).find(x=>!b.rfo.includes(x)),v=x=>x==="rf_fmlkg"&&npo?0:num(f[x]);let r=null;
+      if(tg==="rf_tot"){const a=v("rf_ivfv"),c=v("rf_fmlkg");if(a!=null&&c!=null)r=a+c}else if(tg==="rf_ivfv"){const a=v("rf_tot"),c=v("rf_fmlkg");if(a!=null&&c!=null)r=a-c}else if(!npo){const a=v("rf_tot"),c=v("rf_ivfv");if(a!=null&&c!=null)r=a-c}
+      if(r!=null&&r>=0){f[tg]=String(Math.round(r*10)/10);const el=document.getElementById("f_"+tg);if(el)el.value=f[tg]}}}
+  if(/^(rf_dex|rf_girt|rf_ivfv|rf_ftype|rf_tot|rf_fmlkg)$/.test(k)){if(/Numeta|Normal saline/.test(f.rf_ftype||""))return;if(k==="rf_dex"||k==="rf_girt")b.rfGirLast=k;
+    const src=b.rfGirLast||(num(f.rf_dex)!=null?"rf_dex":"rf_girt"),aq=num(f.rf_ivfv);if(!aq)return;
+    if(src==="rf_dex"){const d=num(f.rf_dex);if(d==null)return;f.rf_girt=String(Math.round(d*aq/144*10)/10)}else{const g=num(f.rf_girt);if(g==null)return;f.rf_dex=String(Math.round(g*144/aq*10)/10)}
+    ["rf_girt","rf_dex"].forEach(x=>{if(x!==k){const el=document.getElementById("f_"+x);if(el)el.value=f[x]??""}})}}
+function rfFlHTML(b){const f=b.f,wt=(num(f.bw)||0)/1000,ivf=num(f.rf_ivfv),dex=/Numeta|Normal saline/.test(f.rf_ftype||"")?null:num(f.rf_dex),npo=/^\s*npo/i.test(f.rf_fmlkg||""),fm=npo?0:num(f.rf_fmlkg),mk=MILK[f.rf_feedt];
+  if(ivf==null&&fm==null)return null;const c=[];
+  if(wt&&ivf!=null)c.push(vbox("IV rate",r1(ivf*wt/24),"ml/h"));
+  const gir=ivf!=null&&dex!=null?dex*ivf/144:null,eg=fm===0?0:fm&&mk?fm*mk.c/100*1000/1440:null;
+  if(gir!=null)c.push(vbox("GIR from IVF",r1(gir),"mg/kg/min"));if(eg!=null&&eg>0)c.push(vbox("Glucose from feeds",r1(eg),"mg/kg/min"));
+  if(gir!=null||eg!=null)c.push(vbox("Total glucose",r1((gir||0)+(eg||0)),"mg/kg/min","calc"));
+  const kiv=ivf!=null&&dex!=null?dex/100*ivf*3.4:null,ken=fm===0?0:fm&&mk?fm*mk.k/100:null;
+  if(kiv!=null)c.push(vbox("Calories IVF",Math.round(kiv),"kcal/kg/d"));if(ken)c.push(vbox("Calories feeds",Math.round(ken),"kcal/kg/d"));
+  if(kiv!=null||ken!=null)c.push(vbox("Total calories",Math.round((kiv||0)+(ken||0)),"kcal/kg/d","calc"));
+  return c.length?`<div class="vchips">${c.join("")}</div>`+(wt?"":`<small>IV rate needs birth weight</small>`):null}
 function girSync(b,k){const f=b.f;if(isNum(f)||/Normal saline/.test(f.ftype||""))return;if(k==="dex"||k==="girt")b.girLast=k;
   const src=b.girLast||(num(f.dex)!=null?"dex":"girt"),aq=calc(b).aq;if(!aq)return;
   if(src==="dex"){const d=num(f.dex);if(d==null)return;f.girt=String(Math.round(d*aq/144*10)/10)}else{const g=num(f.girt);if(g==null)return;f.dex=String(Math.round(g*144/aq*10)/10)}
@@ -1571,10 +1606,12 @@ const SECTIONS=[
   F("rf_abdn","Other events","area",{wide:true,ph:"e.g. bilious vomiting, abdominal distension, anuria, antenatal hydronephrosis, surgical review"}),
   H("Fluids & feeds"),
   R(F("rf_tot","Total intake","num",{u:"ml/kg/d",g:1,mw:100}),F("rf_ivfv","IV fluids","num",{u:"ml/kg/d",g:1,mw:100}),
-    F("rf_ftype","Fluid type","sel",{o:FTYPES,g:1.6,mw:170}),F("rf_dex","Dextrose","num",{u:"%",show:f=>!!f.rf_ftype&&!/Numeta|Normal saline/.test(f.rf_ftype),g:.7,mw:80})),
+    F("rf_ftype","Fluid type","sel",{o:FTYPES,g:1.6,mw:170}),F("rf_dex","Dextrose","num",{u:"%",show:f=>!!f.rf_ftype&&!/Numeta|Normal saline/.test(f.rf_ftype),g:.7,mw:80}),
+    F("rf_girt","GIR","num",{u:"mg/kg/min",show:f=>!!f.rf_ftype&&!/Numeta|Normal saline/.test(f.rf_ftype),g:.8,mw:100})),
   R(F("rf_fmlkg","Feeds","dl",{dl:"feedopts",u:"ml/kg/d or NPO",g:1,mw:110}),F("rf_feedt","Feed type","sel",{o:FEEDS,show:f=>!!f.rf_fmlkg&&!/^\s*npo/i.test(f.rf_fmlkg),g:1.2,mw:130}),
     F("rf_route","Route","sel",{o:FROUTES,show:f=>!!f.rf_fmlkg&&!/^\s*npo/i.test(f.rf_fmlkg),g:1.1,mw:120}),F("rf_ff","Every","num",{u:"hours",show:f=>!!f.rf_fmlkg&&!/^\s*npo/i.test(f.rf_fmlkg),g:.6,mw:80})),
   R(F("rf_glu","Lowest glucose","num",{u:"mmol/L",g:.8,mw:100}),F("rf_ivf","IV fluid (earlier text)","text",{show:f=>!!f.rf_ivf,g:1.3,mw:140}),F("rf_feed","Feeds (earlier)","text",{show:f=>!!f.rf_feed,g:1,mw:120})),
+  F("CALC_rf_fl","Calculated (birth weight)","calc",{empty:"needs birth weight + IV fluids or feeds",wide:true}),
   F("rf_fln","Details","area",{wide:true,ph:"e.g. glucose 1.9 at 1 h → D10% 2 ml/kg bolus"}),
   H("Infection"),
   F("rfabxl","Antibiotics started there","list",{L:{key:"rfabx",kind:"dated",dose:true,dt:true,ph:["Antibiotic","start"],btn:"+ Antibiotic"}}),
@@ -1589,10 +1626,12 @@ const SECTIONS=[
   H("Neuro"),
   R(F("rf_seiz","Seizures","sel",{o:["","None","Suspected","Confirmed"],g:.9,mw:120}),F("rf_cool","Cooling","sel",{o:["","Not cooled","Passive cooling","Active cooling started"],g:1.2,mw:160}),
     F("rf_coolt","Cooling started at","dt",{show:f=>/cooling/i.test(f.rf_cool||""),g:1.2,mw:200})),
-  R(F("rf_ac","Anticonvulsant given","dl",{dl:"acdrugs",g:1.4,mw:140}),F("rf_acl","Loading dose","text",{u:"mg/kg",show:f=>!!f.rf_ac,g:.8,mw:90})),
+  R(F("rf_ac","Anticonvulsant given","dl",{dl:"acdrugs",g:1.4,mw:140}),F("rf_acl","Loading dose","text",{u:"mg/kg",show:f=>!!f.rf_ac,g:.8,mw:90}),
+    F("rf_acm","Maintenance dose","text",{u:"mg/kg/day (infusion: /h)",show:f=>!!f.rf_ac,g:.9,mw:110}),F("rf_aci","Interval","sel",{o:INTERVALS,show:f=>!!f.rf_ac,g:.8,mw:90})),
+  F("CALC_rfach","Usual doses","calc",{empty:"",show:f=>!!acDose(f.rf_ac),wide:true}),
   F("rf_neuron","Details","area",{wide:true,ph:"exam, seizures, drugs"}),
-  H("Investigations & drugs given"),
-  F("rf_inv","Investigations there","area",{wide:true,ph:"e.g. CBC: WBC 14, Hb 168, Plt 210. CRP 4. CXR: RDS grade 2"}),
+  H("Drugs given"),
+  F("rf_inv","Investigations there (earlier text)","area",{wide:true,show:f=>!!String(f.rf_inv||"").trim()}),
   F("rf_drugs","Other drugs given","area",{wide:true,ph:"one per line, e.g. Vitamin K 1 mg IM"}),
   H("Other events"),
   F("rf_othev","Other events at the referring hospital","area",{wide:true,ph:"anything else that happened there – one per line"})]},
@@ -1702,7 +1741,8 @@ const SECTIONS=[
   F("REV_neuro","","reveal",{items:[["ac","+ Anticonvulsants"]]}),
   H("Anticonvulsants",(f,b)=>acSecOn(f,b)),
   ...range(3).map(i=>{const sh=(f,b)=>acSecOn(f,b)&&acOn(i)(f,b);return R(F("ac"+i,"Drug "+i,"dl",{dl:"acdrugs",show:sh,g:1.4,mw:120}),F("ac"+i+"l","Loading dose","text",{u:"mg/kg",show:sh,g:.9,mw:80}),
-    F("ac"+i+"m","Maintenance dose","text",{u:"mg/kg/day",show:sh,g:.9,mw:90}),F("ac"+i+"i","Interval","sel",{o:INTERVALS,show:sh,g:.8,mw:80}))}),
+    F("ac"+i+"m","Maintenance dose","text",{u:"mg/kg/day (infusion: /h)",show:sh,g:.9,mw:110}),F("ac"+i+"i","Interval","sel",{o:INTERVALS,show:sh,g:.8,mw:80}))}),
+  ...range(3).map(i=>F("CALC_ach"+i,"Drug "+i+" – usual doses","calc",{empty:"",show:(f,b)=>acSecOn(f,b)&&!!acDose(f["ac"+i]),wide:true})),
   F("REV_ac","","reveal",{items:[["ac2","+ Drug 2"],["ac3","+ Drug 3"]]}),
   H("Seizures & neurological examination"),F("seiz","Seizures","sel",{o:["","None","Suspected","Confirmed"]}),
   F("n_loc","Level of consciousness","sel",{o:["","Alert","Hyperalert","Drowsy / lethargic","Stuporous","Comatose","Sedated"]}),
@@ -2527,7 +2567,7 @@ function refresh(){
   {const m=missingReq(f),el=$("#hReq");el.innerHTML=m.length?`<button type="button" class="reqchip" data-gotab="background" data-jump="patient">${m.length} required box${m.length>1?"es":""} empty: ${esc(m.join(", "))}</button>`:""}
   {const on=privAdm(f),sc=document.getElementById("sec-referral"),jb=document.querySelector('.jump [data-jump="referral"]');if(sc)sc.hidden=!on;if(jb)jb.hidden=!on;
    const ah=admAgeH(f);setCalc("CALC_admage",ah!=null?(ah<72?Math.floor(ah)+" h of life":"day "+(Math.floor(ah/24)+1)+" ("+Math.floor(ah)+" h)"):null);
-   setCalc("CALC_rfc_resp",rfCarryHTML(b,["surf"]));setCalc("CALC_rfc_cvs",rfCarryHTML(b,["ino1","ino2","ino3"]));setCalc("CALC_rfc_inf",rfCarryHTML(b,["abx","cult"]));setCalc("CALC_rfc_lines",rfCarryHTML(b,["line1","line2"]));
+   setCalc("CALC_rf_fl",rfFlHTML(b));{const wt=calc(b).wt;[1,2,3].forEach(i=>setCalc("CALC_ach"+i,acHint(f,"ac"+i,"ac"+i+"l","ac"+i+"m",wt)));setCalc("CALC_rfach",acHint(f,"rf_ac","rf_acl","rf_acm",(num(f.bw)||0)/1000))}setCalc("CALC_rfc_resp",rfCarryHTML(b,["surf"]));setCalc("CALC_rfc_cvs",rfCarryHTML(b,["ino1","ino2","ino3"]));setCalc("CALC_rfc_inf",rfCarryHTML(b,["abx","cult"]));setCalc("CALC_rfc_lines",rfCarryHTML(b,["line1","line2"]));
    document.querySelectorAll("[data-rf]").forEach(el=>{const c=on?rfChips(b,el.dataset.rf):[];el.hidden=!c.length;if(c.length)el.innerHTML=`<b class="t">Before transfer · ${esc(rfHosp(f))}</b>`+c.map(x=>`<span>${esc(x)}</span>`).join("")})}
   setCalc("CALC_admtemp",num(f.admtemp)!=null?(num(f.admtemp)<32?"Severe hypothermia (< 32 °C)":num(f.admtemp)<36?"Moderate hypothermia (32–35.9 °C)":num(f.admtemp)<36.5?"Mild hypothermia (36–36.4 °C)":num(f.admtemp)<=37.5?"Normal (36.5–37.5 °C)":"Hyperthermia (> 37.5 °C)")+" <small>WHO thermal categories</small>":null);
   {const x=lastXr(b);setCalc("CALC_xr",x?`${esc(x.d?dmy(x.d)+": ":"")}${esc(x.a)} <small>from Diagnostics → Imaging</small>`:null)}
@@ -2785,9 +2825,7 @@ function handover(b){
     f.cw&&`CW ${f.cw} g${f.cwd&&f.cwd<today()?" on "+dmy(f.cwd).slice(0,5):""}${c.wch!=null?` (${c.wch<0?r1(-c.wch)+"% below":c.wch>0?r1(c.wch)+"% above":"at"} BW)`:""}`]));
   pt("Severity",f.status||"not set");
   pt("Current problems","",items(f.cprob));
-  {const nt=nowAt().getTime(),SN={medlog:"Meds",rlog:"Resp",ilog:"CVS",flog:"Fluids",alog:"Abdomen",nlog:"Neuro",abxlog:"Infection",jlog:"Jaundice",linelog:"Lines",roplog:"ROP"};
-   const X=LOGORDER.flatMap(k=>(b[k]||[]).filter(e=>e.x&&e.k&&((nt-new Date(e.k).getTime()<864e5&&new Date(e.k).getTime()-nt<36e5)||(e.c&&Date.now()-e.c<864e5))).map(e=>({k:e.k,t:`${fmtD(new Date(e.k))} ${SN[k]}: ${e.x}`}))).sort((p,q)=>p.k.localeCompare(q.k));
-   pt("Changes – last 24 h",X.length?"":"none recorded",X.map(x=>x.t))}
+
   // B – the story that explains today
   L.push("B – BACKGROUND");
   const ap=[1,5,10,15,20].filter(m=>f["ap"+m]!=null&&f["ap"+m]!=="");
@@ -2986,7 +3024,7 @@ main.addEventListener("input",e=>{
     if(v&&v!==el.value.slice(0,16)){el.value=v;const dm=el.nextElementSibling&&el.nextElementSibling.querySelector(".dm");if(dm)dm.value=v.slice(8,10)+"/"+v.slice(5,7)}
     save(b);renderLogsRaw(b);refresh();return}
   if(el.dataset.k){
-    const k=el.dataset.k;const old=b.f[k];b.f[k]=el.value;delete b.example;if(k==="tot"||k==="ivf"||k==="fmlkg")fluidSync(b,k);if(/^(dex|girt|ivf|lip|ftype|tot|fmlkg)$/.test(k))girSync(b,k);
+    const k=el.dataset.k;const old=b.f[k];b.f[k]=el.value;delete b.example;if(k==="tot"||k==="ivf"||k==="fmlkg")fluidSync(b,k);if(/^(dex|girt|ivf|lip|ftype|tot|fmlkg)$/.test(k))girSync(b,k);if(/^rf_(tot|ivfv|fmlkg|dex|girt|ftype)$/.test(k))rfFluidSync(b,k);
     // the same box can appear twice (Diagnosis / Current problems in Today and Patient): keep the copies in step
     document.querySelectorAll(`[data-k="${k}"]`).forEach(x=>{if(x!==el&&x.value!==el.value){x.value=el.value;if(x.tagName==="TEXTAREA")autoGrow(x)}});
     if(k==="surf")b.f.surfSet=today();
@@ -3019,7 +3057,7 @@ main.addEventListener("input",e=>{
   save();refresh();renderBeds();
 });
 /* ---------- plausibility checks: values outside these limits get a red box and a short message (they are still saved) ---------- */
-const RANGES={rf_uop:[0,20],rf_cr:[5,1500],rf_urea:[0,80],rf_na:[100,180],rf_k:[1,12],gaw:[22,44],gad:[0,6],ap1:[0,10],ap5:[0,10],ap10:[0,10],ap15:[0,10],ap20:[0,10],bw:[300,6500],cw:[300,8000],blen:[20,65],len:[20,90],bhc:[15,45],hc:[15,55],
+const RANGES={rf_girt:[0,25],rf_uop:[0,20],rf_cr:[5,1500],rf_urea:[0,80],rf_na:[100,180],rf_k:[1,12],gaw:[22,44],gad:[0,6],ap1:[0,10],ap5:[0,10],ap10:[0,10],ap15:[0,10],ap20:[0,10],bw:[300,6500],cw:[300,8000],blen:[20,65],len:[20,90],bhc:[15,45],hc:[15,55],
   m_age:[12,60],mtemp:[34,43],promh:[0,2000],admtemp:[28,42],rp_fio2:[21,100],rp_peep:[0,20],rp_pip:[0,60],rp_rate:[0,150],rp_ti:[0.1,2],rp_vt:[2,12],rp_map:[0,35],rp_amp:[0,100],rp_hz:[3,20],rp_flow:[0,15],
   rp_ps:[0,40],rp_phi:[0,20],rp_plo:[0,15],rp_thi:[0.1,3],nitricppm:[0,80],pdasz:[0,10],tot:[0,300],ivf:[0,300],dex:[0,30],amino:[0,5],aa:[0,5],lip:[0,4],glu:[0.3,40],uop:[0,20],girth:[15,70],
   tsb:[0,900],thr:[0,900],exthr:[0,900],nh3:[0,3000],lact:[0,40],ctemp:[30,40],cooltemp:[32,37],nirsv:[0,100],ce_ph:[6.4,7.8],ce_be:[-40,20],feedk:[20,150],feedc:[0,20],ff:[1,8],ropwk:[0,12],cchdpre:[50,100],gbs_abd:[0,30],rf_fio2:[21,100],rf_glu:[0.3,40],hvs_abd:[0,30],cchdpost:[50,100]};

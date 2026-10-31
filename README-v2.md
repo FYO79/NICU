@@ -668,3 +668,17 @@ After entering the discharge date and outcome, one window offers:
 
 ### Files in this version
 `index.html`, `sw.js` (nicu-duty-v95), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
+
+## Update 73 (sw v96)
+- Referring hospital course: **Investigations there** box removed. The part is now "Drugs given". Text written there before still shows, marked "earlier text".
+- Referring hospital → Fluids & feeds now calculates like Today:
+  - New **GIR** box, filled from dextrose %, and dextrose % is filled when you type GIR.
+  - Total intake = IV fluids + feeds (fill any two).
+  - A **Calculated** box shows IV rate (from birth weight), GIR from IVF, glucose from feeds, total glucose, and calories from IVF, from feeds and in total.
+- Anticonvulsants:
+  - Referring hospital: choosing a drug opens **loading dose, maintenance dose and interval**.
+  - Today and referring hospital: a **Usual doses** box shows the usual neonatal loading and maintenance doses and interval for that drug (phenobarbitone, levetiracetam, phenytoin, fosphenytoin, midazolam, lidocaine, topiramate, pyridoxine). It also shows the loading dose in mg for the baby's weight. These are reminders only – the unit protocol and pharmacist decide.
+- SBAR: "Changes – last 24 h" removed from Situation. Changes are still in each Today section and in History.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v96), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
