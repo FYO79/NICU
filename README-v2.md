@@ -547,3 +547,48 @@ Note: the book prints iCa low as "< 1.2 mmol/L" but 4 mg/dL = 1.0 mmol/L – 1.0
 
 ### Files in this version
 `index.html`, `sw.js` (nicu-duty-v82), `manifest.webmanifest`, `README-v2.md`.
+
+## Update 61 (sw v83)
+- **Patient → Current measurements:** a first row shows the measurements themselves (weight g, length cm, head circ. cm, measured-on date, Edit). The centile boxes are in the row under it.
+- **Referring hospital course** now uses the same boxes as Today:
+  - **Respiratory:** the same mode list; choosing a mode opens the same settings (PIP, PEEP, rate, Ti, Vt, MAP, flow, FiO₂ max…).
+  - **Cardiovascular:** inotropes 1–3, each with the drug list and highest dose in mcg/kg/min. Drug 2 appears once drug 1 is filled.
+  - **Fluids & feeds:** total intake, IV fluids, the same fluid-type list, dextrose %, feeds (ml/kg/d or NPO), feed type, route, every … hours.
+  - **Neuro:** anticonvulsant given (same drug list) and loading dose.
+  - Values entered in the earlier version are kept: the old support and FiO₂ move into the new boxes, and old free text shows as "(earlier text)".
+- **History:** Resp, CVS, Fluids, Infection, Lines and Neuro show the purple **Before transfer · <hospital>** line at the top, followed by the change log. Items carried to Today appear in the log at the time they were started at the other hospital.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v83), `manifest.webmanifest`, `README-v2.md`.
+
+## Update 62 (sw v84)
+- Antenatal: the **HIV, hepatitis & extra screening** part is removed. It still shows, as "earlier entries", only for babies who already have a value in it, so nothing saved is lost. The Hepatitis B vaccine / HBIG boxes in Birth now appear only for babies who already have HBsAg positive or a value in those boxes.
+- Birth → Admission: **Transport** box removed.
+- Referring hospital course → Infection: antibiotics are now rows like Today (drug with suggestions, start date & time, Day count, dose, unit, per, interval, route, dose to give). **+ Antibiotic** adds another row. Carry to Today copies each antibiotic with its dose. Antibiotics typed as text in v82–v83 are turned into rows automatically.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v84), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
+
+## Update 63 (sw v86)
+- Referring hospital course → Cardiovascular: inotropes now look like Today. Each of Drug 1–3 has started date & time, dose, then a panel with Change / DC time (dd/mm + time), New dose, **Change** and **DC**. Changes and DC are written in "Drug n – changes / DC".
+- Inotropes still running at transfer get a **Carry to Today** button. It puts the drug in the first free Today inotrope row with its current dose and the start time from the other hospital (Day count correct). The changes at the other hospital are copied into the Today changes box, and History shows the start and each dose change at their real times.
+- Doses typed as "Highest dose" in v83–v85 are kept as the dose.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v86), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
+
+## Update 64 (sw v87)
+- Referring hospital course → **Abdomen & renal**, after Cardiovascular, using the same choices as Today: abdomen, NEC (modified Bell), vomiting, gastric aspirate amount and colour, stool / meconium, urine output, creatinine, urea, Na, K, AXR, abdominal / renal US, surgery / procedure there (with time), and an **Other events** box.
+- Cardiovascular: the details box is now **Other events** (hypotension, arrhythmia, echo, arrest / CPR…).
+- New **Other events** box at the end of the card for anything else (e.g. events during transport).
+- Abdomen & renal shows as "Before transfer" in Today → Abdomen and History → Abdomen, and as its own line in the handover. Other events appear in the handover under "Other".
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v87), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
+
+## Update 65 (sw v88)
+- Referring hospital course → Cardiovascular: **Fluid bolus** box removed.
+- Abdomen & renal now has only: Abdomen · Gastric aspirate (No / Yes; Yes opens Amount and Colour) · Stool / meconium · Urine output · X-ray · Ultrasound · Other events. NEC, vomiting, creatinine, urea, Na, K and surgery boxes are removed.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v88), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
