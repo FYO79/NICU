@@ -1361,7 +1361,12 @@ const R=(...row)=>({row});
 const BG=["","A+","A−","B+","B−","AB+","AB−","O+","O−","Unknown"];
 const SER=["","Negative","Positive","Unknown / not done"];
 // HVS is done for GBS: stored values stay the same as the old "GBS status" box
-const GBSO=[["","—"],["Negative","No GBS (negative)"],["Positive","GBS positive"],["GBS bacteriuria","GBS bacteriuria"],["Previous GBS baby","Previous GBS baby"],["Other growth","Other organism grown"],["Unknown / not done","Not done / unknown"]];
+const GBSO=[["","—"],["Negative","No GBS (negative)"],["Positive","GBS positive"],["GBS bacteriuria","GBS bacteriuria"],["Previous GBS baby","Previous GBS baby"],["Unknown / not done","Not done / unknown"]];
+// HVS: GBS result (antibiotic boxes when positive or negative) and other organisms on their own row
+const gbsAbx=f=>!!f.m_gbs&&f.m_gbs!=="Unknown / not done";
+const HVSO=[["","—"],["No growth","No other organism"],["Organism grown","Organism grown"],["Not done","Not done"]];
+const hvsGrown=f=>f.m_hvso==="Organism grown";
+const abxTxt=(f,p)=>[f[p+"_abn"],num(f[p+"_abd"])!=null&&"×"+f[p+"_abd"]+" dose"+(num(f[p+"_abd"])===1?"":"s"),f[p+"_abt"]&&"from "+dtFull(f[p+"_abt"])].filter(Boolean).join(" ");
 const keepOld=(L,v)=>v&&!L.includes(v)?[...L,v]:L;
 // Rubella / hepatitis C and extra tests only when there is a reason (or values already entered)
 const MRISK=[["","—"],["No","Not needed"],["Illegal baby","Illegal baby"],["Addicted mother","Mother addicted / substance use"],["Unbooked","Unbooked / no antenatal care"],["Other","Other reason"]];
@@ -1425,16 +1430,23 @@ const SECTIONS=[
   F("an_oth","Others","area"),
   H("Maternal investigations"),
   R(F("m_bg","Maternal blood group","sel",{o:BG,g:1,mw:110}),F("m_ab","Antibody screen / anti-D","sel",{o:["","Negative","Positive – anti-D","Positive – other","Anti-D given","Not done"],g:1.3,mw:140}),
-    F("m_gbs","HVS (GBS)","sel",{o:GBSO,g:1.3,mw:140})),
-  F("hvs","HVS – organism / details","text",{show:f=>f.m_gbs==="Other growth"||!!f.hvs,span2:true}),
+    F("m_tlc","TLC","text",{u:"×10⁹/L",g:.8,mw:80}),F("m_hb","Hb","text",{u:"g/L",g:.8,mw:70}),F("m_plt","Plt","text",{u:"×10⁹/L",g:.8,mw:80})),
+  R(F("m_gbs","HVS (GBS)","sel",{o:GBSO,g:1.2,mw:150}),
+    F("gbs_abt","Antibiotic – date & time","dt",{show:gbsAbx,g:1.2,mw:200}),
+    F("gbs_abn","Antibiotic","text",{ac:"mab",show:gbsAbx,g:1.4,mw:140,ph:"type to search"}),
+    F("gbs_abd","No. of doses","num",{show:gbsAbx,g:.6,mw:80})),
+  R(F("m_hvso","HVS (other organisms)","sel",{o:HVSO,g:1.2,mw:150}),
+    F("hvs","Organism","dl",{dl:"orgs",show:f=>hvsGrown(f)||!!f.hvs,g:1.4,mw:140,ph:"choose or type"}),
+    F("hvs_abt","Antibiotic – date & time","dt",{show:hvsGrown,g:1.2,mw:200}),
+    F("hvs_abn","Antibiotic","text",{ac:"mab",show:hvsGrown,g:1.4,mw:140,ph:"type to search"}),
+    F("hvs_abd","No. of doses","num",{show:hvsGrown,g:.6,mw:80})),
+  R(F("m_crp","CRP","text",{u:"mg/L",g:.7,mw:70}),F("m_pct","PCT","text",{u:"ng/mL",g:.7,mw:70}),
+    F("ua","Urine analysis","text",{g:1.3,mw:120}),F("ctgd","CTG","text",{g:1.6,mw:140})),
+  F("mxl","Extra investigations","list",{L:{key:"mx",kind:"mx",btn:"+ Add investigation"}}),
+  H("HIV, hepatitis &amp; extra screening"),
   R(F("m_hiv","HIV","sel",{o:SER,g:1,mw:100}),F("m_hbs","HBsAg","sel",{o:SER,g:1,mw:100}),F("m_syph","Syphilis","sel",{o:SER,g:1,mw:100})),
   R(F("m_risk","Extra screening","sel",{o:MRISK,g:1.6,mw:200}),
-    F("m_rub","Rubella","sel",{o:["","Immune","Non-immune","Unknown"],show:mxOn,g:1,mw:100}),F("m_hcv","Hepatitis C","sel",{o:SER,show:mxOn,g:1,mw:100})),
-  F("mxl","Extra maternal investigations","list",{L:{key:"mx",kind:"mx",btn:"+ Extra investigation"}}),
-  R(F("m_tlc","TLC","text",{u:"×10⁹/L",mw:80}),F("m_hb","Hb","text",{u:"g/L",mw:70}),F("m_plt","Plt","text",{u:"×10⁹/L",mw:80}),F("m_crp","CRP","text",{u:"mg/L",mw:70})),
-  F("ua","Urine analysis","text"),
-  F("ctgd","CTG","text",{span2:true,}),
-  F("mother","Other investigations","area",{})]},
+    F("m_rub","Rubella","sel",{o:["","Immune","Non-immune","Unknown"],show:mxOn,g:1,mw:100}),F("m_hcv","Hepatitis C","sel",{o:SER,show:mxOn,g:1,mw:100}))]},
  {t:"Birth",tab:"background",f:[
   R(F("mod","Mode of delivery","sel",{o:["","SVD","Assisted (vacuum / forceps)","Vaginal breech","Elective CS","Emergency CS"],g:1.1,mw:150}),
     F("modi","Indication / details","text",{g:2.9,mw:220})),
@@ -1687,7 +1699,7 @@ function blank(){const b={id:uid(),bedv:2,f:{floor:$("#floorFilter")?.value||""}
 function fix(b){
   if(b.f&&b.f.ftype==="Numeta G13%E (preterm)")b.f.ftype="Numeta G13%E";
   b.rlast=b.rlast||snapR(b.f);b.ilast=b.ilast||snapI(b.f);b.invx=b.invx||blankX();if(b.caffLast==null)b.caffLast=b.f.caff||"";
-  LISTS.forEach(k=>b[k]=b[k]||[]);["rlog","ilog","flog","abxlog","linelog","roplog"].forEach(k=>{if(b[k].some(e=>!e.m&&String(e.x||"").includes("; ")))b[k]=b[k].flatMap(e=>!e.m&&String(e.x||"").includes("; ")?e.x.split("; ").map(x=>Object.assign({},e,{x})):[e])});if(b.f.abc&&b.f.abc!=="None"&&!b.abcl.length)b.abcl.push({a:b.f.abc,e:b.f.abcd||""});delete b.f.abc;delete b.f.abcd;if(b.f.acon&&!b.f.ac1)b.f.ac1=b.f.acon;
+  LISTS.forEach(k=>b[k]=b[k]||[]);if(b.f.m_gbs==="Other growth"){if(!b.f.m_hvso)b.f.m_hvso="Organism grown";b.f.m_gbs=""}if(String(b.f.mother||"").trim())b.mx.push({n:"Other investigations (earlier notes)",r:String(b.f.mother).trim()});delete b.f.mother;["rlog","ilog","flog","abxlog","linelog","roplog"].forEach(k=>{if(b[k].some(e=>!e.m&&String(e.x||"").includes("; ")))b[k]=b[k].flatMap(e=>!e.m&&String(e.x||"").includes("; ")?e.x.split("; ").map(x=>Object.assign({},e,{x})):[e])});if(b.f.abc&&b.f.abc!=="None"&&!b.abcl.length)b.abcl.push({a:b.f.abc,e:b.f.abcd||""});delete b.f.abc;delete b.f.abcd;if(b.f.acon&&!b.f.ac1)b.f.ac1=b.f.acon;
   b.gases.forEach(g=>{if(!g.tm&&g.t){const m=String(g.t).match(/^(\d{2})\/(\d{2})\s+(\d{2}):(\d{2})/);if(m){g.d=g.d||`${todayISO().slice(0,4)}-${m[2]}-${m[1]}`;g.tm=`${m[3]}:${m[4]}`}}});
   if(!b.flast){b.flast={};Object.keys(FLOG).forEach(q=>b.flast[q]=b.f[q]??"")}
   {const dtz=v=>v&&/^\d{4}-\d{2}-\d{2}$/.test(v)?v+"T00:00":v;b.lines.forEach(x=>{x.d=dtz(x.d);x.e=dtz(x.e)});b.abx.forEach(x=>{x.d=dtz(x.d);if(x.lg==null)x.lg=x.a||""})}
@@ -2464,7 +2476,8 @@ const lastGasOne=b=>{const g=b.gases.filter(x=>["ph","pco2","po2","hco3","be","l
 const noStr=f=>noOn(f)?`iNO${f.nitricppm?" "+f.nitricppm+" ppm":""}${f.nitric==="Weaning"?" (weaning)":""}${f.nitricst?" from "+fmtDT(f.nitricst):""}`:f.nitric==="Stopped"?"iNO stopped":"";
 const multStr=f=>f.mult&&f.mult!=="Singleton"?[f.mult.replace(/s$/,"").replace("Higher order","Multiple"),f.multo&&f.multo+" born",f.chor].filter(Boolean).join(" "):"";
 const serPos=f=>[["m_hiv","HIV"],["m_hbs","HBsAg"],["m_syph","syphilis"],["m_hcv","HCV"]].filter(([k])=>f[k]==="Positive").map(([,l])=>"maternal "+l+" positive");
-const gbsStr=f=>!f.m_gbs?"":f.m_gbs==="Other growth"?"HVS: "+(f.hvs||"other organism"):f.m_gbs==="Positive"?"HVS GBS positive":f.m_gbs==="Negative"?"HVS GBS negative":f.m_gbs==="Unknown / not done"?"GBS unknown":"GBS "+f.m_gbs.toLowerCase().replace(/^gbs /,"");
+const gbsStr=f=>{const g=!f.m_gbs?"":f.m_gbs==="Positive"?"HVS GBS positive":f.m_gbs==="Negative"?"HVS GBS negative":f.m_gbs==="Unknown / not done"?"GBS unknown":"GBS "+f.m_gbs.toLowerCase().replace(/^gbs /,""),a=gbsAbx(f)?abxTxt(f,"gbs"):"";
+  const o=hvsGrown(f)?"HVS: "+(f.hvs||"other organism")+(abxTxt(f,"hvs")?" ("+abxTxt(f,"hvs")+")":""):"";return[g&&g+(a?" ("+a+")":""),o].filter(Boolean).join(", ")};
 const necStr=f=>f.nec&&f.nec!=="No NEC"?"NEC "+f.nec:"";
 const lineTxt=x=>`${x.a}${x.sz?" ("+x.sz+")":""}`;
 const prophPend=f=>f.m_hbs!=="Positive"?[]:[(!f.hepb||f.hepb==="Not given yet")&&"Hepatitis B vaccine (mother HBsAg +)",(!f.hbig||f.hbig==="Not given yet")&&"HBIG (mother HBsAg +)"].filter(Boolean);
@@ -2512,7 +2525,7 @@ function wpRows(b){
     ropStr(f),...chg(recentLog(b,"nlog",1))]);
   // infection: sepsis status, antibiotics with day, cultures, last change
   const pos=cultsPos(b);
-  add("Infection",[f.sep&&`Sepsis: ${f.sep}`,/Positive|bacteriuria|Previous/.test(f.m_gbs||"")&&gbsStr(f),...serPos(f),...b.abx.filter(x=>x.a).map(x=>medLabel(x)+(x.d?` D${dayN(x.d)}`:"")),
+  add("Infection",[f.sep&&`Sepsis: ${f.sep}`,(/Positive|bacteriuria|Previous/.test(f.m_gbs||"")||hvsGrown(f))&&gbsStr(f),...serPos(f),...b.abx.filter(x=>x.a).map(x=>medLabel(x)+(x.d?` D${dayN(x.d)}`:"")),
     ...b.cults.filter(x=>x.s||x.o||x.st).slice(-4).map(cultLine),f.cult&&!NORMAL.test(f.cult)&&f.cult,...chg(lastLog(b,"abxlog"))],
     /Proven|NEC/.test(f.sep||"")||pos.length||serPos(f).length?"flag":"");
   const jOn=(f.photo&&!/^(None|Stopped)$/.test(f.photo))||nearEx(f)||!!bindTxt(f)||(num(f.tsb)!=null&&photoLv(f)!=null&&num(f.tsb)>=photoLv(f)*0.85);
@@ -2829,7 +2842,7 @@ main.addEventListener("input",e=>{
 const RANGES={gaw:[22,44],gad:[0,6],ap1:[0,10],ap5:[0,10],ap10:[0,10],ap15:[0,10],ap20:[0,10],bw:[300,6500],cw:[300,8000],blen:[20,65],len:[20,90],bhc:[15,45],hc:[15,55],
   m_age:[12,60],mtemp:[34,43],promh:[0,2000],admtemp:[28,42],rp_fio2:[21,100],rp_peep:[0,20],rp_pip:[0,60],rp_rate:[0,150],rp_ti:[0.1,2],rp_vt:[2,12],rp_map:[0,35],rp_amp:[0,100],rp_hz:[3,20],rp_flow:[0,15],
   rp_ps:[0,40],rp_phi:[0,20],rp_plo:[0,15],rp_thi:[0.1,3],nitricppm:[0,80],pdasz:[0,10],tot:[0,300],ivf:[0,300],dex:[0,30],amino:[0,5],aa:[0,5],lip:[0,4],glu:[0.3,40],uop:[0,20],girth:[15,70],
-  tsb:[0,900],thr:[0,900],exthr:[0,900],nh3:[0,3000],lact:[0,40],ctemp:[30,40],cooltemp:[32,37],nirsv:[0,100],ce_ph:[6.4,7.8],ce_be:[-40,20],feedk:[20,150],feedc:[0,20],ff:[1,8],ropwk:[0,12],cchdpre:[50,100],cchdpost:[50,100]};
+  tsb:[0,900],thr:[0,900],exthr:[0,900],nh3:[0,3000],lact:[0,40],ctemp:[30,40],cooltemp:[32,37],nirsv:[0,100],ce_ph:[6.4,7.8],ce_be:[-40,20],feedk:[20,150],feedc:[0,20],ff:[1,8],ropwk:[0,12],cchdpre:[50,100],gbs_abd:[0,30],hvs_abd:[0,30],cchdpost:[50,100]};
 const GRANGE=()=>({na:[100,180],k:[1,12],cl:[70,140],ph:[6.5,7.8],pco2:gasU()==="kPa"?[1.3,20]:[10,150],po2:gasU()==="kPa"?[0.7,90]:[5,700],hco3:[2,60],be:[-35,25],lac:[0,30],fio2:[21,100],mapaw:[0,35],spo2:[0,100]});
 function rangeOf(el){const d=el.dataset;if(d.k)return RANGES[d.k]||(/^bg_.+_ph$/.test(d.k)?[6.5,7.8]:null);if(d.s==="gases")return GRANGE()[d.r];
   if(d.l==="bps"&&/^(s|di|m)$/.test(d.p))return[10,150];if(d.l==="ctemps"&&d.p==="t")return[32,37.5];return null}

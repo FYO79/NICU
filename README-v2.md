@@ -523,3 +523,16 @@ Note: the book prints iCa low as "< 1.2 mmol/L" but 4 mg/dL = 1.0 mmol/L – 1.0
 
 ### Files in this version
 `index.html`, `sw.js` (nicu-duty-v80), `manifest.webmanifest`, `README-v2.md`.
+
+## Update 59 (sw v81) – maternal investigations rearranged
+1. Maternal blood group · antibody screen / anti-D · TLC · Hb · Plt (CBC).
+2. **HVS (GBS)** – when a positive or negative result is chosen: antibiotic date & time, antibiotic (suggestions as you type), number of doses.
+3. **HVS (other organisms)** – choose "Organism grown" to open the organism box (suggestions) and the same antibiotic boxes.
+4. CRP · **PCT** (new) · urine analysis · CTG.
+5. **Extra investigations** list with **+ Add investigation** (name + result, as many as needed).
+- The separate "Other investigations" box is removed. Anything already written there is moved into the Extra investigations list ("Other investigations (earlier notes)"), and an old HVS "Other organism grown" result moves to the new other-organisms row – nothing is lost.
+- HIV, HBsAg, syphilis and Extra screening (rubella / hepatitis C) stay, below these rows.
+- GBS and other-organism antibiotics appear in the handover and work plan.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v81), `manifest.webmanifest`, `README-v2.md`.
