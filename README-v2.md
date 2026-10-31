@@ -592,3 +592,24 @@ Note: the book prints iCa low as "< 1.2 mmol/L" but 4 mg/dL = 1.0 mmol/L – 1.0
 
 ### Files in this version
 `index.html`, `sw.js` (nicu-duty-v88), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
+
+## Update 66 (sw v89)
+- Referring hospital → Respiratory: label is now **Respiratory support on admission**.
+- Labs: CBC and coagulation results are **no longer coloured red** (other tests unchanged). New **Hct (%)** row under Hb.
+- Fluids: **Dextrose % and GIR fill each other automatically**. Type dextrose % and the GIR is worked out; type GIR and the dextrose % is worked out. If IV fluids or lipid change, the one typed last is kept and the other is recalculated.
+- Today → Abdomen & renal: Abdomen, girth · **Gastric aspirate (No / Yes)**, where Yes opens amount and colour · vomiting, stool · urine output and fluid balance. **+ Losses**, **+ NEC staging** and **+ X-ray** buttons open those boxes only when needed. Losses opens both rows with their amounts.
+- Inotropes (Today and referring hospital) and anticonvulsants: only Drug 1 shows. **+ Drug 2** appears once Drug 1 is filled, then **+ Drug 3**.
+- Sarnat / Thompson tables: choices centred and bold.
+- Drug list: **Melatonin** (HIE adjuvant) and **Aminophylline** added.
+- **Changes · 24 h** boxes are closed until you tap them, show the count, and say "new – tap to check the time" after a change. Newest change is at the top.
+- Neuro: **Reason cooling stopped early** box (with suggestions) appears when cooling is "Stopped early" or lasted under 72 h. It is shown in the handover and work plan.
+- Antibiotics and other medications: **Change dose** button opens date & time + new dose. The change is written under the drug. Antibiotic changes go to History → Infection; other medicines go to a new **History → Medications** log, which also records stops, and to Today → Meds Changes · 24 h.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v89), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
+
+## Update 67 (sw v90)
+- Neuro: anticonvulsants are hidden until you press **+ Anticonvulsants**, the same as + Inotropes. Babies who already have an anticonvulsant entered still see it. Then **+ Drug 2** and **+ Drug 3** add more rows.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v90), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
