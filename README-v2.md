@@ -613,3 +613,38 @@ Note: the book prints iCa low as "< 1.2 mmol/L" but 4 mg/dL = 1.0 mmol/L – 1.0
 
 ### Files in this version
 `index.html`, `sw.js` (nicu-duty-v90), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
+
+## Update 68 (sw v91) – one sheet per day
+- Each date now keeps its own sheet. Choosing a past date in the top bar (e.g. 28/10) shows the **Today** tab exactly as it was on that date. This covers Diagnosis & problems, weight, respiratory, CVS, fluids, abdomen, neuro, infection, jaundice, ROP and the shift plan, plus severity, if / then, parents and handover notes. The work plan and handover for that date are built from that sheet.
+- You can change the sheet while viewing a past date. Changes are saved **to that date only**: later days are not changed. Logs record them with that date.
+- If nothing was entered on a date, the sheet from the last earlier date is shown, and the banner says so.
+- At midnight, or when the app is opened on a new day, the new day starts as a copy of the last sheet, the same as copying the paper sheet forward.
+- Shared by all dates (not per day): Background (patient, antenatal, birth, referral), and items that carry their own date – blood gases, labs, BP readings, antibiotics and medicines, lines, cultures, imaging, transfusions, echo, scores – and the History logs.
+- Sheets are kept for the last **30 days** per baby. Daily sheets start from this update, so days before it have no saved sheet.
+- Future dates cannot be opened.
+- Changes on different dates are never joined into one log line.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v91), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
+
+## Update 69 (sw v92) – Discharge & save file
+- Handover → **Discharge & save file** asks for the discharge date and outcome (Home, Transferred, Paediatric ward, Died, Other).
+- It then saves the baby's **complete file** as one locked file (sync password): every daily sheet, all logs, results and background. You choose where it goes (Files / iCloud / AirDrop / email to yourself). The file is named e.g. `NICU-discharged-Baby-of-Mona-Ali-2026-10-31-locked.json`.
+- After saving, the app asks before removing the baby from the device to free space. The removal also reaches your other device at the next sync.
+- To see the baby again, tap **⇩ Receive** and pick the file (same sync password). The baby comes back with all daily sheets and can be discharged again.
+- The handover shows "Discharged: date – outcome".
+- Keep the files somewhere safe and follow your hospital's rules for storing patient data.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v92), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
+
+## Update 70 (sw v93) – choose where to save
+- Discharge & save file now lets you choose the place:
+  - **Computer (Chrome / Edge):** a Save window opens. Pick the folder and file name.
+  - **iPhone / iPad / Android:** the share sheet opens. Choose **Save to Files** and pick the folder (iCloud Drive, On My iPhone, a USB drive…), or AirDrop / email it to yourself.
+  - If the phone blocks the share sheet after locking, a **Choose where to save** button appears to tap.
+  - Mac Safari has no Save window, so the file goes to Downloads. Safari → Settings → General → "File download location: Ask for each download" makes it ask.
+- Nothing is removed from the app unless the file was saved.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v93), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.

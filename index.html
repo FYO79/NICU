@@ -1817,6 +1817,30 @@ const secKey=s=>s.key||s.t.split(" ")[0].toLowerCase();
 const TABS=[["background","Background"],["history","History"],["results","Diagnostics"],["today","Today"],["handover","Handover"]];
 const FOLDKEYS=[...SECTIONS.map(secKey),"handover","backup"];
 const FLAT=SECTIONS.flatMap(s=>s.f.flatMap(d=>d.row||[d]));
+/* ---------- one sheet per day ----------
+   Everything in the Today tab (plus severity, if / then, parents, handover notes and the shift plan) is kept per date in b.days[date].
+   Background, dated lists (gases, labs, BP, medicines, lines, cultures…) and the History logs are shared by all dates.
+   b.dayCur = the date whose sheet is loaded in b.f now. Editing a past date changes only that date's sheet. */
+let _DK=null;
+const DAYK=()=>_DK||(_DK=[...new Set([...SECTIONS.filter(s=>s.tab==="today").flatMap(s=>s.f.flatMap(d=>d.row||[d])).filter(d=>d.k&&d.t&&!/^(list|reveal|calc|link|log|chgat|inoch|dc)$/.test(d.t)&&!/^(CALC_|REV_|AUTO_)/.test(d.k)).map(d=>d.k),
+  "status","watch","family","hnote","cwp","cwpd","surfSet","girt","dex","aspy"])]);
+const LASTS=["rlast","ilast","flast","wlast","glast","caffLast"];
+const DAYS_KEEP=30;
+const jc=o=>o==null?o:JSON.parse(JSON.stringify(o));
+function dayPack(b){const o={f:{},l:{},todos:jc(b.todos||[])};DAYK().forEach(k=>{const v=b.f[k];if(v!=null&&v!=="")o.f[k]=v});LASTS.forEach(k=>{if(b[k]!==undefined)o.l[k]=jc(b[k])});return o}
+function resetLasts(b){const f=b.f;b.rlast=snapR(f);b.ilast=snapI(f);b.flast={};Object.keys(FLOG).forEach(q=>b.flast[q]=f[q]??"");b.wlast={};Object.values(WATCH).forEach(m=>Object.keys(m).forEach(q=>b.wlast[q]=f[q]??""));b.glast={};b.caffLast=f.caff||""}
+function dayUnpack(b,o){DAYK().forEach(k=>{if(o.f[k]!=null)b.f[k]=o.f[k];else delete b.f[k]});b.todos=jc(o.todos||[]);
+  if(o.l&&Object.keys(o.l).length)LASTS.forEach(k=>{if(o.l[k]!==undefined)b[k]=jc(o.l[k])});else resetLasts(b)}
+function dayPrune(b){const k=Object.keys(b.days||{}).sort();while(k.length>DAYS_KEEP)delete b.days[k.shift()]}
+// show every baby's sheet for date D (the latest earlier sheet is carried forward when D has none yet)
+function loadDay(D){S.babies.forEach(b=>{b.days=b.days||{};const cur=b.dayCur||todayISO();
+  if(cur===D&&b.dayCur){b.dayFrom=null;return}
+  b.days[cur]=dayPack(b);
+  let o=b.days[D],from=null;
+  if(!o){const prev=Object.keys(b.days).filter(k=>k<D).sort().pop();if(prev){o=b.days[prev];from=prev}else from="none"}
+  if(o)dayUnpack(b,o);else if(D<cur){dayUnpack(b,{f:{},todos:[]})}
+  b.dayCur=D;b.dayFrom=D===todayISO()?null:from;b.dayFromSig=JSON.stringify(dayPack(b).f);dayPrune(b);DIRTY.add(b.id)});
+  clearTimeout(saveT);saveT=setTimeout(flush,350)}
 // v78 – any box in a Today section is recorded in that section's log (shown in Today "Changes · 24 h" and in History)
 let _GK=null;const GENKo=()=>_GK||(_GK=(()=>{const o={};SECTIONS.filter(s=>s.tab==="today"&&s.lc).forEach(s=>s.f.flatMap(d=>d.row||[d]).forEach(d=>{const k=d.k;if(!k||!d.t||/^(calc|list|reveal|link|log|chgat|inoch|dc)$/.test(d.t)||/^(CALC_|REV_|AUTO_)/.test(k))return;
   if(WATCHK[k]||FLOG[k]||ROPLOG[k]||k==="resp"||k.startsWith("rp_")||k==="nitric"||k==="nitricppm"||/^ino\d/.test(k))return;
@@ -1830,7 +1854,7 @@ const LISTS=["medlog","rfabx","lus","bps","abx","meds","prev","lines","todos","g
 function snapR(f){const o={};["resp",...Object.keys(RP).map(k=>"rp_"+k)].forEach(k=>o[k]=f[k]??"");return o}
 function snapI(f,s){const o={};range(3).forEach(i=>o[i]={d:f["ino"+i]??"",x:f["ino"+i+"d"]??"",s:s||""});return o}
 const blankX=()=>range(3).map(()=>({id:uid(),name:""}));
-function blank(){const b={id:uid(),bedv:2,f:{floor:$("#floorFilter")?.value||""},rlast:{},ilast:snapI({}),invx:blankX(),caffLast:""};LISTS.forEach(k=>b[k]=[]);return b}
+function blank(){const b={id:uid(),bedv:2,dayCur:today(),days:{},f:{floor:$("#floorFilter")?.value||""},rlast:{},ilast:snapI({}),invx:blankX(),caffLast:""};LISTS.forEach(k=>b[k]=[]);return b}
 function fix(b){
   if(b.f&&b.f.ftype==="Numeta G13%E (preterm)")b.f.ftype="Numeta G13%E";
   b.rlast=b.rlast||snapR(b.f);b.ilast=b.ilast||snapI(b.f);b.invx=b.invx||blankX();if(b.caffLast==null)b.caffLast=b.f.caff||"";
@@ -1882,6 +1906,7 @@ S.babies.forEach(b=>{if(!b.u)b.u=1;SNAP[b.id]=bj(b)});
 // when the app is hidden or closed. A failed write shows a red banner instead of failing silently.
 const DIRTY=new Set();let dirtyAll=false,saveT=null,saveErr="";
 function stampChanges(){const now=Date.now();const L=dirtyAll?S.babies:S.babies.filter(b=>DIRTY.has(b.id));
+  L.forEach(b=>{b.days=b.days||{};b.dayCur=b.dayCur||todayISO();b.days[b.dayCur]=dayPack(b);dayPrune(b)});
   L.forEach(b=>{const j=bj(b);if(SNAP[b.id]!==j){b.u=now;SNAP[b.id]=j}});DIRTY.clear();dirtyAll=false}
 function flush(){if(!saveT&&!saveErr)return; // nothing waiting to be written
   clearTimeout(saveT);saveT=null;stampChanges();const was=saveErr;
@@ -2142,7 +2167,8 @@ function enhance(root){growify(root);spellify(root);
 /* ---------- banners under the top bar: back-dated entries, save failure, backup reminder ---------- */
 function banners(){const el=$("#banners");if(!el)return;const out=[];
   if(saveErr)out.push(`<div class="banner crit" role="alert"><span><b>Not saved on this device</b> – ${esc(saveErr)}. Send a backup now so nothing is lost.</span><button class="btn sm" data-act="backup">⇪ Send</button></div>`);
-  if(backDate())out.push(`<div class="banner warn"><span><b>Back-dated:</b> new entries and day counts use ${esc(dmy(S.date))}.</span><button class="btn ghost sm" data-act="today">Back to today</button></div>`);
+  if(backDate()){const c=!S.view&&typeof cur==="function"?cur():null,fr=c&&c.dayFrom&&JSON.stringify(dayPack(c).f)===c.dayFromSig?c.dayFrom:null;
+    out.push(`<div class="banner warn"><span><b>Viewing ${esc(dmy(S.date))}:</b> the sheet as it was that day${fr==="none"?" – nothing was saved for this baby before this date":fr?` – nothing changed that day, so it shows the sheet from ${esc(dmy(fr))}`:""}. Changes you make now are saved to ${esc(dmy(S.date))} only (later days are not changed); logs and day counts use this date.</span><button class="btn ghost sm" data-act="today">Back to today</button></div>`)}
   const n=S.babies.length,d=S.lastBackup?Math.floor((Date.now()-S.lastBackup)/864e5):null;
   if(n&&(d==null||d>=3))out.push(`<div class="banner info"><span>${d==null?"No backup yet":"Last backup "+d+" days ago"} – data lives only on this device.</span><button class="btn ghost sm" data-act="backup">⇪ Send now</button></div>`);
   el.innerHTML=out.join("")}
@@ -2330,7 +2356,7 @@ function logAdd(b,key,x,when,pre){const L=b[key],sw=when?null:secWhen(b,key),K=w
   if(!when&&last&&last.c&&now-last.c<180000&&last.x===x)return;
   if(!when&&pre){const e=logRecent(b,key,pre);if(e){e.x=x;e.k=K;e.t=T;e.c=now;return e}}
   const e={t:T,x,k:K,p:pre||undefined,c:now};if(when)e.w=1;L.push(e);return e}
-const logRecent=(b,key,pre)=>{const L=b[key];for(let i=L.length-1;i>=0;i--){const e=L[i];if(e.p===pre)return e.c&&Date.now()-e.c<180000?e:null}return null};
+const logRecent=(b,key,pre)=>{const L=b[key];for(let i=L.length-1;i>=0;i--){const e=L[i];if(e.p===pre)return e.c&&Date.now()-e.c<180000&&String(e.k||"").slice(0,10)===today()?e:null}return null};
 // a setting changed again within 3 min: keep one line "old → newest"; changed back = line removed
 function logSet(b,key,pre,o,n,fmt){const e=logRecent(b,key,pre),oo=e?e.o:o;
   if(e&&String(oo)===String(n)){b[key].splice(b[key].indexOf(e),1);return}
@@ -2441,7 +2467,7 @@ function renderBaby(){
     <div class="sbar" id="hoSecs"></div>
     <details class="calcref" style="margin:0"><summary>Full text to copy</summary><textarea class="inp" id="hoText" readonly aria-label="SBAR handover"></textarea></details>
     <div class="btns"><button class="btn" data-act="copy1">Copy this baby</button><button class="btn ghost" data-act="copyall">Copy all shown</button>
-    <button class="btn danger" data-act="delbaby">Delete this baby</button></div></div></section>
+    <button class="btn ghost" data-act="discharge">Discharge &amp; save file</button><button class="btn danger" data-act="delbaby">Delete this baby</button></div></div></section>
   <section class="card sec-backup${fd("backup")}${off("handover")}" id="sec-backup">${fb("backup","Sync & settings")}<div class="ho">
     <div class="grid" style="padding:0"><div class="fld"><label for="gasUnit">Blood gas pCO₂ / pO₂ unit</label><select class="inp" id="gasUnit"><option${gasU()==="mmHg"?" selected":""}>mmHg</option><option${gasU()==="kPa"?" selected":""}>kPa</option></select></div>
     <div class="fld"><span class="lbl">Last backup / send</span><div class="calc${lb==null||lb>=3?" warnc":""}">${lb==null?"Never":lb===0?"Today":lb+" day"+(lb>1?"s":"")+" ago"}</div></div>
@@ -2816,6 +2842,7 @@ function handover(b){
     ...(b.metinv||[]).filter(x=>(x.n||"").trim()&&!(x.r||"").trim()).map(x=>`${x.n} result`),...(b.mx||[]).filter(x=>(x.n||"").trim()&&(!(x.r||"").trim()||/^pending$/i.test(x.r.trim()))).map(x=>`Maternal ${x.n} result`),/Not done|Repeat booked/.test(f.hear||"")&&"Hearing screen",/Awaiting/.test(f.metcrit||"")&&"Hypoglycaemia critical sample results",...prophPend(f)]);
   pt("If / then","",items(f.watch));
   pt("Parents",nl(f.family)||"not updated yet");
+  if(f.dcdate)pt("Discharged",`${dmy(f.dcdate)}${f.dcout?" – "+f.dcout:""}`);
   pt("Notes",nl(f.hnote));
   return L.join("\n");
 }
@@ -3118,6 +3145,37 @@ function shareStep(file,blob,name){
 // a send / backup was completed: remember when, and the version of each baby (used to spot sync conflicts)
 function sent(){S.lastBackup=Date.now();S.babies.forEach(b=>S.base[b.id]=b.u||1);save();flush();banners()}
 function download(blob,name){const u=URL.createObjectURL(blob),l=document.createElement("a");l.href=u;l.download=name;document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}
+// ---- discharge: save one baby's complete file (all daily sheets, logs, results) to the user's own storage, then free the space ----
+function askDischarge(b){return new Promise(res=>{const ov=document.createElement("div");ov.className="pwdlg";
+  const O=["Home","Transferred to another hospital","Paediatric ward","Died","Other"];
+  ov.innerHTML=`<form role="dialog" aria-modal="true" aria-label="Discharge"><b>Discharge ${esc(b.f.name||"this baby")}</b><p>The whole file (every daily sheet, logs and results) is saved as one locked file. Next you choose where: on a computer a Save window opens; on iPhone / iPad choose <b>Save to Files</b> and pick the folder. Open it again later with ⇩ Receive.</p>
+    <label class="mini">Discharge date<input class="inp" type="date" id="dcd" value="${esc(b.f.dcdate||todayISO())}"></label>
+    <label class="mini">Outcome<select class="inp" id="dco">${O.map(o=>`<option${b.f.dcout===o?" selected":""}>${o}</option>`).join("")}</select></label>
+    <div class="btns"><button type="button" class="btn ghost" data-x>Cancel</button><button class="btn" type="submit">Save file</button></div></form>`;
+  document.body.appendChild(ov);const f=ov.querySelector("form");ov.querySelector("[data-x]").onclick=()=>{ov.remove();res(null)};
+  f.onsubmit=e=>{e.preventDefault();const r={d:f.querySelector("#dcd").value||todayISO(),o:f.querySelector("#dco").value};ov.remove();res(r)}})}
+// save a locked file where the user chooses: "Save as" window on computers (Chrome / Edge), share sheet → "Save to Files" on iPhone / iPad
+async function saveLocked(obj,name,title){if(!window.crypto||!crypto.subtle){toast("Locking needs the app opened from its https link");return false}
+  let pw=getPw();if(!pw){const r=await askPw({title:"Set a sync password",text:"The file is locked with this password. You need the same password to open it again.",confirm:true,okLabel:"Lock & save"});if(!r)return false;pw=r.pw;if(r.remember)setPw(pw)}
+  let handle=null;
+  if(typeof window.showSaveFilePicker==="function"){try{handle=await window.showSaveFilePicker({suggestedName:name,types:[{description:"NICU locked file",accept:{"application/json":[".json"]}}]})}catch(e){if(e&&e.name==="AbortError")return false;handle=null}}
+  toast("Locking…");const blob=new Blob([await lock(JSON.stringify(obj),pw)],{type:"application/json"}),file=new File([blob],name,{type:"application/json"});
+  if(handle){try{const w=await handle.createWritable();await w.write(blob);await w.close();toast("Saved to the folder you chose");return true}catch(e){toast("Could not write there – choose another place")}}
+  if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title});return true}catch(e){if(e&&e.name==="AbortError")return false;return await tapToSave(file,blob,name,title)}}
+  download(blob,name);toast("Saved to Downloads");return true}
+// the share sheet needs a fresh tap after locking on some iPhones / iPads
+function tapToSave(file,blob,name,title){return new Promise(res=>{const ov=document.createElement("div");ov.className="pwdlg";
+  ov.innerHTML=`<form><b>File locked and ready</b><p>Tap below, then choose <b>Save to Files</b> and pick the folder (iCloud Drive, On My iPhone…).</p><div class="btns"><button type="button" class="btn ghost" data-x>Cancel</button><button type="button" class="btn" data-s>Choose where to save</button></div></form>`;
+  document.body.appendChild(ov);ov.querySelector("[data-x]").onclick=()=>{ov.remove();res(false)};
+  ov.querySelector("[data-s]").onclick=async()=>{ov.remove();try{await navigator.share({files:[file],title});res(true)}catch(e){if(e&&e.name==="AbortError")res(false);else{download(blob,name);res(true)}}}})}
+async function discharge(b){flush();const r=await askDischarge(b);if(!r)return;
+  b.f.dcdate=r.d;b.f.dcout=r.o;b.days=b.days||{};b.days[b.dayCur||todayISO()]=dayPack(b);save(b);flush();
+  const nm=String(b.f.name||"baby").replace(/[^\w\u0600-\u06FF-]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40)||"baby";
+  const ok=await saveLocked({nicuArchive:1,archive:1,saved:Date.now(),babies:[jc(b)],gone:{}},`NICU-discharged-${nm}-${r.d}-locked.json`,"NICU discharged baby");
+  if(!ok)return toast("Not saved – the baby stays in the app");
+  if(confirm(`File saved.\n\nRemove ${b.f.name||"this baby"} from this device now to free space?\n(Open the file with ⇩ Receive to see it again.)`)){
+    S.gone[b.id]=Date.now();S.babies=S.babies.filter(x=>x.id!==b.id);S.cur=visible()[0]?.id;save();flush();render();toast("Discharged and saved")}
+  else{render();toast("File saved – baby kept in the app")}}
 async function backup(){
   if(!window.crypto||!crypto.subtle)return toast("Locking needs the app opened from its https link");
   let pw=getPw();
@@ -3146,7 +3204,8 @@ async function receive(file){
     d=out;
   }else if(d&&Array.isArray(d.babies)&&!confirm("This file is not password-locked, so it was not made by ⇪ Send on your own device. Open it only if you trust where it came from.\n\nOpen it?"))return;
   if(!d||!Array.isArray(d.babies))return toast("That file is not a NICU duty file");
-  const r=mergeIn(d);if(!S.babies.some(b=>b.id===S.cur))S.cur=visible()[0]?.id;
+  if(d.archive){d.babies.forEach(x=>{if(x&&x.id){delete S.gone[x.id];x.u=Date.now()}});d.gone={};toast("Discharged baby opened")}
+  const r=mergeIn(d);loadDay(today());if(!S.babies.some(b=>b.id===S.cur))S.cur=visible()[0]?.id;
   save();render();
   const parts=[r.added&&r.added+" new",r.changed&&r.changed+" updated",r.removed&&r.removed+" removed",r.conflicts&&r.conflicts+" conflict cop"+(r.conflicts>1?"ies":"y")+" made – check and delete"].filter(Boolean);
   toast(parts.length?"Synced: "+parts.join(", "):"Already up to date",r.conflicts?6000:0);
@@ -3161,7 +3220,7 @@ let armTimer;
 function arm(el,msg){if(el.classList.contains("arm"))return true;el.classList.add("arm");clearTimeout(armTimer);armTimer=setTimeout(()=>el.classList.remove("arm"),3000);toast(msg);return false}
 document.addEventListener("click",e=>{
   const el=e.target.closest("button");if(!el)return;
-  if(el.dataset.pick){S.view=null;S.cur=el.dataset.pick;save();render();window.scrollTo(0,0);return}
+  if(el.dataset.pick){S.view=null;S.cur=el.dataset.pick;save();banners();render();window.scrollTo(0,0);return}
   if(el.dataset.wp){S.view=el.dataset.wp;save();render();window.scrollTo(0,0);return}
   if(el.dataset.waddb)return addWP(el.dataset.waddb);
   if(el.dataset.tab){S.tab=el.dataset.tab;save();renderBaby();const sb=$(".sumbar"),hd=$("header.top");if(sb){const hh=getComputedStyle(hd).position==="sticky"?hd.offsetHeight:0,y=sb.offsetTop+sb.offsetHeight-hh;if(window.scrollY>y)window.scrollTo(0,y)}
@@ -3172,7 +3231,7 @@ document.addEventListener("click",e=>{
   if(el.dataset.fold){const k=el.dataset.fold;S.fold[k]=!S.fold[k];save();el.setAttribute("aria-expanded",!S.fold[k]);el.closest("section").classList.toggle("folded",!!S.fold[k]);return}
   const a=el.dataset.act;
   if(a==="backup")return backup();
-  if(a==="today"){S.date=todayISO();S.dateFixed=false;$("#shiftDate").value=S.date;save();markDate();render();toast("Back to today");return}
+  if(a==="today"){S.date=todayISO();S.dateFixed=false;$("#shiftDate").value=S.date;loadDay(S.date);save();markDate();render();toast("Back to today");return}
   if(a==="pwchange"){askPw({title:"New sync password",text:"Use the same password on your other device.",confirm:true,okLabel:"Save"}).then(r=>{if(r){setPw(r.remember?r.pw:"");toast(r.remember?"Sync password saved":"Password not saved – you will be asked each time")}});return}
   if(a==="pwforget"){setPw("");toast("Password forgotten – you will be asked next time");return}
   if(a==="foldall"||a==="openall"){FOLDKEYS.forEach(k=>S.fold[k]=a==="foldall");save();render();return}
@@ -3221,6 +3280,7 @@ document.addEventListener("click",e=>{
   if(a==="copysec"){const k=el.dataset.sec,o=sbarParse(handover(b));return copy(o.head+"\n"+SBARHEAD[k]+"\n"+o[k].join("\n"))}
   if(a==="copy1")return copy(handover(b));
   if(a==="copyall")return copy(`NICU SBAR handover – ${S.floor||"all floors"} – ${dmy(today())}\n\n`+visible().map(handover).join("\n\n————————\n\n"));
+  if(a==="discharge")return discharge(b);
   if(a==="delbaby"){
     if(!el.classList.contains("arm")){el.classList.add("arm");el.textContent="Tap again to delete";clearTimeout(armTimer);
       armTimer=setTimeout(()=>{el.classList.remove("arm");el.textContent="Delete this baby"},3500);return}
@@ -3229,12 +3289,13 @@ document.addEventListener("click",e=>{
 });
 // every launch starts on today's date; back-dating is a deliberate choice that shows a banner
 S.date=todayISO();S.dateFixed=false;
+loadDay(todayISO());
 $("#shiftDate").value=today();$("#floorFilter").value=S.floor||"";
 const markDate=()=>{const el=$("#shiftDate"),p=!!backDate();el.classList.toggle("past",p);el.title=p?"Back-dated: new entries will be dated "+dmy(S.date):"Today";banners()};
-$("#shiftDate").addEventListener("input",e=>{const v=e.target.value||todayISO();S.date=v;S.dateFixed=v!==todayISO();if(!e.target.value)e.target.value=v;save();markDate();render()});
+$("#shiftDate").addEventListener("input",e=>{const v=e.target.value||todayISO();if(v>todayISO()){e.target.value=S.date;return toast("A future date cannot be opened")}S.date=v;S.dateFixed=v!==todayISO();if(!e.target.value)e.target.value=v;flush();loadDay(v);save();markDate();render()});
 // midnight roll-over (night shift) and coming back to the app on a later day
 let lastDay=todayISO();
-const dayTick=()=>{const t=todayISO();if(t!==lastDay){lastDay=t;if(!S.dateFixed){S.date=t;$("#shiftDate").value=t}markDate();render()}};
+const dayTick=()=>{const t=todayISO();if(t!==lastDay){lastDay=t;if(!S.dateFixed){flush();S.date=t;$("#shiftDate").value=t;loadDay(t)}markDate();render()}};
 setInterval(dayTick,30000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)dayTick()});
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist().then(ok=>{S.persist=!!ok})}catch(e){}
 markDate();
