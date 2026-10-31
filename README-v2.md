@@ -536,3 +536,14 @@ Note: the book prints iCa low as "< 1.2 mmol/L" but 4 mg/dL = 1.0 mmol/L – 1.0
 
 ### Files in this version
 `index.html`, `sw.js` (nicu-duty-v81), `manifest.webmanifest`, `README-v2.md`.
+
+## Update 60 (sw v82) – babies admitted from another hospital
+- **Admitted from** has a new choice, **Other MOH hospital** (as well as Private hospital and Other hospital). For any of these, the Admission part of Birth shows: hospital name, **age at transfer** (automatic, from birth and admission time), **transport** and **reason for transfer**.
+- New Background card **Referring hospital course**, shown only for these babies. It has one part per system: Respiratory (highest support, FiO₂ max, surfactant and time), Cardiovascular (inotropes, bolus), Fluids & feeds (IVF, feeds, lowest glucose), Infection (antibiotics and start time, culture site and time), Lines & tubes (up to 2 with insertion time), Neuro (seizures, cooling and start time), Investigations and other drugs given. Each part has a Details box.
+- **Carry to Today** buttons add surfactant, antibiotics, the culture and lines into the normal lists with the time they were started at the other hospital. Day counts, logs and Changes · 24 h use that real time, and antibiotics show "Started at <hospital>".
+- **Today tab:** Respiratory, CVS, Fluids, Infection, Lines and Neuro each show a purple **Before transfer · <hospital>** line with what was done there.
+- **Handover:** B – Background has one "At <hospital> · <system>" line per filled system. The work plan has a **Before transfer** row.
+- The old free-text box is now "Referring hospital – other details", for anything else.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v82), `manifest.webmanifest`, `README-v2.md`.

@@ -1,5 +1,5 @@
 // NICU Duty Sheet – offline support. Bump VERSION whenever you upload new app files.
-const VERSION = "nicu-duty-v81";
+const VERSION = "nicu-duty-v82";
 const APP_FILES = ["./", "./index.html", "./manifest.webmanifest"];
 const NET_WAIT = 3000; // slow hospital Wi-Fi: after 3 s use the saved copy, update in the background
 
