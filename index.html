@@ -1837,8 +1837,8 @@ function loadDay(D){S.babies.forEach(b=>{b.days=b.days||{};const cur=b.dayCur||t
   if(cur===D&&b.dayCur){b.dayFrom=null;return}
   b.days[cur]=dayPack(b);
   let o=b.days[D],from=null;
-  if(!o){const prev=Object.keys(b.days).filter(k=>k<D).sort().pop();if(prev){o=b.days[prev];from=prev}else from="none"}
-  if(o)dayUnpack(b,o);else if(D<cur){dayUnpack(b,{f:{},todos:[]})}
+  if(!o){const ks=Object.keys(b.days).sort(),prev=ks.filter(k=>k<D).pop(),next=ks.find(k=>k>D);if(prev){o=b.days[prev];from=prev}else if(next){o=b.days[next];from="later:"+next}else from="none"}
+  if(o)dayUnpack(b,o);
   b.dayCur=D;b.dayFrom=D===todayISO()?null:from;b.dayFromSig=JSON.stringify(dayPack(b).f);dayPrune(b);DIRTY.add(b.id)});
   clearTimeout(saveT);saveT=setTimeout(flush,350)}
 // v78 – any box in a Today section is recorded in that section's log (shown in Today "Changes · 24 h" and in History)
@@ -2168,7 +2168,7 @@ function enhance(root){growify(root);spellify(root);
 function banners(){const el=$("#banners");if(!el)return;const out=[];
   if(saveErr)out.push(`<div class="banner crit" role="alert"><span><b>Not saved on this device</b> – ${esc(saveErr)}. Send a backup now so nothing is lost.</span><button class="btn sm" data-act="backup">⇪ Send</button></div>`);
   if(backDate()){const c=!S.view&&typeof cur==="function"?cur():null,fr=c&&c.dayFrom&&JSON.stringify(dayPack(c).f)===c.dayFromSig?c.dayFrom:null;
-    out.push(`<div class="banner warn"><span><b>Viewing ${esc(dmy(S.date))}:</b> the sheet as it was that day${fr==="none"?" – nothing was saved for this baby before this date":fr?` – nothing changed that day, so it shows the sheet from ${esc(dmy(fr))}`:""}. Changes you make now are saved to ${esc(dmy(S.date))} only (later days are not changed); logs and day counts use this date.</span><button class="btn ghost sm" data-act="today">Back to today</button></div>`)}
+    out.push(`<div class="banner warn"><span><b>Viewing ${esc(dmy(S.date))}:</b> the sheet as it was that day${fr==="none"?" – nothing was saved for this baby before this date":fr&&fr.startsWith("later:")?` – <b>no sheet was saved for this date</b> (daily sheets started later), so it shows the sheet of ${esc(dmy(fr.slice(6)))} as a starting point; check and correct it`:fr?` – nothing changed that day, so it shows the sheet from ${esc(dmy(fr))}`:""}. Changes you make now are saved to ${esc(dmy(S.date))} only (later days are not changed); logs and day counts use this date.</span><button class="btn ghost sm" data-act="today">Back to today</button></div>`)}
   const n=S.babies.length,d=S.lastBackup?Math.floor((Date.now()-S.lastBackup)/864e5):null;
   if(n&&(d==null||d>=3))out.push(`<div class="banner info"><span>${d==null?"No backup yet":"Last backup "+d+" days ago"} – data lives only on this device.</span><button class="btn ghost sm" data-act="backup">⇪ Send now</button></div>`);
   el.innerHTML=out.join("")}

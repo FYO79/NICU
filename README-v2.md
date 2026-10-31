@@ -648,3 +648,10 @@ Note: the book prints iCa low as "< 1.2 mmol/L" but 4 mg/dL = 1.0 mmol/L – 1.0
 
 ### Files in this version
 `index.html`, `sw.js` (nicu-duty-v93), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
+
+## Update 71 (sw v94)
+- Opening a date that has **no saved sheet** (e.g. a day before you started using daily sheets) no longer shows an empty page. It opens with the sheet of the nearest later date as a starting point (diagnosis, weight, support…). The banner says "no sheet was saved for this date … check and correct it".
+- Anything you correct is saved to that date only. Later dates are not changed.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v94), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
