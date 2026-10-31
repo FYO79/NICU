@@ -456,6 +456,7 @@ details.coolchk .calc.ce{display:block;line-height:1.6}
 .pwdlg form,#prfb .prbox{background:var(--panel);color:var(--ink);border-radius:16px;padding:18px;max-width:440px;width:100%;display:flex;flex-direction:column;gap:10px;box-shadow:0 10px 40px rgba(0,0,0,.3);max-height:90vh;overflow:auto}
 .pwdlg b{font-size:var(--fs-l)}.pwdlg p{margin:0;font-size:var(--fs-s);color:var(--muted)}
 .pwdlg .rem{display:flex;gap:8px;align-items:center;font-size:var(--fs-s)}.pwdlg .rem input{width:20px;height:20px;accent-color:var(--accent)}
+.dcact{display:flex;flex-wrap:wrap;gap:8px}.dcact .btn{flex:1 1 160px}.dchint{font-size:var(--fs-xs)!important}.dcok{color:var(--ok)!important;font-weight:800}
 .pwdlg .err{color:var(--crit);font-size:var(--fs-s);min-height:1em}.pwdlg .btns{justify-content:flex-end}
 #prfb h3{margin:0;font-size:var(--fs-l)}#prfb ul{padding-left:18px;margin:4px 0}#prfb li{margin:4px 0;font-size:15px}
 #prfb .prbtns{display:flex;flex-wrap:wrap;gap:8px}
@@ -3148,34 +3149,45 @@ function download(blob,name){const u=URL.createObjectURL(blob),l=document.create
 // ---- discharge: save one baby's complete file (all daily sheets, logs, results) to the user's own storage, then free the space ----
 function askDischarge(b){return new Promise(res=>{const ov=document.createElement("div");ov.className="pwdlg";
   const O=["Home","Transferred to another hospital","Paediatric ward","Died","Other"];
-  ov.innerHTML=`<form role="dialog" aria-modal="true" aria-label="Discharge"><b>Discharge ${esc(b.f.name||"this baby")}</b><p>The whole file (every daily sheet, logs and results) is saved as one locked file. Next you choose where: on a computer a Save window opens; on iPhone / iPad choose <b>Save to Files</b> and pick the folder. Open it again later with ⇩ Receive.</p>
+  ov.innerHTML=`<form role="dialog" aria-modal="true" aria-label="Discharge"><b>Discharge ${esc(b.f.name||"this baby")}</b><p>The whole file (every daily sheet, logs and results) is made into one locked file. Next you can save it to a folder, share it, or print the sheet. Open it again later with ⇩ Receive.</p>
     <label class="mini">Discharge date<input class="inp" type="date" id="dcd" value="${esc(b.f.dcdate||todayISO())}"></label>
     <label class="mini">Outcome<select class="inp" id="dco">${O.map(o=>`<option${b.f.dcout===o?" selected":""}>${o}</option>`).join("")}</select></label>
     <div class="btns"><button type="button" class="btn ghost" data-x>Cancel</button><button class="btn" type="submit">Save file</button></div></form>`;
   document.body.appendChild(ov);const f=ov.querySelector("form");ov.querySelector("[data-x]").onclick=()=>{ov.remove();res(null)};
   f.onsubmit=e=>{e.preventDefault();const r={d:f.querySelector("#dcd").value||todayISO(),o:f.querySelector("#dco").value};ov.remove();res(r)}})}
-// save a locked file where the user chooses: "Save as" window on computers (Chrome / Edge), share sheet → "Save to Files" on iPhone / iPad
-async function saveLocked(obj,name,title){if(!window.crypto||!crypto.subtle){toast("Locking needs the app opened from its https link");return false}
-  let pw=getPw();if(!pw){const r=await askPw({title:"Set a sync password",text:"The file is locked with this password. You need the same password to open it again.",confirm:true,okLabel:"Lock & save"});if(!r)return false;pw=r.pw;if(r.remember)setPw(pw)}
-  let handle=null;
-  if(typeof window.showSaveFilePicker==="function"){try{handle=await window.showSaveFilePicker({suggestedName:name,types:[{description:"NICU locked file",accept:{"application/json":[".json"]}}]})}catch(e){if(e&&e.name==="AbortError")return false;handle=null}}
-  toast("Locking…");const blob=new Blob([await lock(JSON.stringify(obj),pw)],{type:"application/json"}),file=new File([blob],name,{type:"application/json"});
-  if(handle){try{const w=await handle.createWritable();await w.write(blob);await w.close();toast("Saved to the folder you chose");return true}catch(e){toast("Could not write there – choose another place")}}
-  if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title});return true}catch(e){if(e&&e.name==="AbortError")return false;return await tapToSave(file,blob,name,title)}}
-  download(blob,name);toast("Saved to Downloads");return true}
-// the share sheet needs a fresh tap after locking on some iPhones / iPads
-function tapToSave(file,blob,name,title){return new Promise(res=>{const ov=document.createElement("div");ov.className="pwdlg";
-  ov.innerHTML=`<form><b>File locked and ready</b><p>Tap below, then choose <b>Save to Files</b> and pick the folder (iCloud Drive, On My iPhone…).</p><div class="btns"><button type="button" class="btn ghost" data-x>Cancel</button><button type="button" class="btn" data-s>Choose where to save</button></div></form>`;
-  document.body.appendChild(ov);ov.querySelector("[data-x]").onclick=()=>{ov.remove();res(false)};
-  ov.querySelector("[data-s]").onclick=async()=>{ov.remove();try{await navigator.share({files:[file],title});res(true)}catch(e){if(e&&e.name==="AbortError")res(false);else{download(blob,name);res(true)}}}})}
+// ---- discharge: one window with Save to a folder / Share / Print, then remove (only after a save or share) ----
+async function lockedBlob(obj){if(!window.crypto||!crypto.subtle){toast("Locking needs the app opened from its https link");return null}
+  let pw=getPw();if(!pw){const r=await askPw({title:"Set a sync password",text:"The file is locked with this password. You need the same password to open it again.",confirm:true,okLabel:"Lock"});if(!r)return null;pw=r.pw;if(r.remember)setPw(pw)}
+  toast("Locking…");return new Blob([await lock(JSON.stringify(obj),pw)],{type:"application/json"})}
+async function saveToFolder(blob,name){
+  if(typeof window.showSaveFilePicker==="function"){try{const h=await window.showSaveFilePicker({suggestedName:name,types:[{description:"NICU locked file",accept:{"application/json":[".json"]}}]});
+    const w=await h.createWritable();await w.write(blob);await w.close();toast("Saved to the folder you chose");return true}catch(e){if(e&&e.name==="AbortError")return false}}
+  download(blob,name);toast("Saved to Downloads",3000);return true}
 async function discharge(b){flush();const r=await askDischarge(b);if(!r)return;
-  b.f.dcdate=r.d;b.f.dcout=r.o;b.days=b.days||{};b.days[b.dayCur||todayISO()]=dayPack(b);save(b);flush();
-  const nm=String(b.f.name||"baby").replace(/[^\w\u0600-\u06FF-]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40)||"baby";
-  const ok=await saveLocked({nicuArchive:1,archive:1,saved:Date.now(),babies:[jc(b)],gone:{}},`NICU-discharged-${nm}-${r.d}-locked.json`,"NICU discharged baby");
-  if(!ok)return toast("Not saved – the baby stays in the app");
-  if(confirm(`File saved.\n\nRemove ${b.f.name||"this baby"} from this device now to free space?\n(Open the file with ⇩ Receive to see it again.)`)){
-    S.gone[b.id]=Date.now();S.babies=S.babies.filter(x=>x.id!==b.id);S.cur=visible()[0]?.id;save();flush();render();toast("Discharged and saved")}
-  else{render();toast("File saved – baby kept in the app")}}
+  b.f.dcdate=r.d;b.f.dcout=r.o;b.days=b.days||{};b.days[b.dayCur||todayISO()]=dayPack(b);save(b);flush();render();
+  const nm=String(b.f.name||"baby").replace(/[^\w؀-ۿ-]+/g,"-").replace(/^-+|-+$/g,"").slice(0,40)||"baby",name=`NICU-discharged-${nm}-${r.d}-locked.json`;
+  const blob=await lockedBlob({nicuArchive:1,archive:1,saved:Date.now(),babies:[jc(b)],gone:{}});if(!blob)return toast("Not saved – the baby stays in the app");
+  const ios=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  const file=new File([blob],name,{type:"application/json"}),canShare=!!(navigator.canShare&&navigator.canShare({files:[file]})),safari=/^((?!chrome|android|crios|fxios|edg).)*safari/i.test(navigator.userAgent);
+  let saved=false;const ov=document.createElement("div");ov.className="pwdlg";
+  ov.innerHTML=`<form role="dialog" aria-modal="true" aria-label="Save discharged baby"><b>${esc(b.f.name||"Baby")} – file ready</b>
+    <p>Locked file: <b>${esc(name)}</b></p>
+    <div class="dcact">
+     <button type="button" class="btn" data-dcx="folder">Save to a folder</button>
+     ${canShare?`<button type="button" class="btn ghost" data-dcx="share">${ios?"Share / Save to Files / AirDrop":"Share / AirDrop / Mail"}</button>`:""}
+     <button type="button" class="btn ghost" data-dcx="print">Print / PDF</button></div>
+    <p class="dchint">${typeof window.showSaveFilePicker==="function"?"Save to a folder opens a window where you pick the folder.":ios?"To pick the folder on iPhone / iPad use <b>Share → Save to Files</b>.":safari?"Safari saves into <b>Downloads</b>. To pick the folder every time: Safari → Settings → General → File download location → <b>Ask for each download</b>.":"The file goes to your Downloads folder."}</p>
+    <p class="dcok" hidden>✓ Saved</p>
+    <div class="btns"><button type="button" class="btn ghost" data-dcx="close">Keep baby in the app</button><button type="button" class="btn danger" data-dcx="remove" disabled>Remove from this device</button></div></form>`;
+  document.body.appendChild(ov);
+  const ok=()=>{saved=true;ov.querySelector(".dcok").hidden=false;ov.querySelector("[data-dcx=remove]").disabled=false};
+  ov.addEventListener("click",async e=>{const t=e.target.closest("[data-dcx]");if(!t)return;const k=t.dataset.dcx;
+    if(k==="folder"){if(await saveToFolder(blob,name))ok()}
+    else if(k==="share"){try{await navigator.share({files:[file],title:"NICU discharged baby"});ok()}catch(err){if(!(err&&err.name==="AbortError"))toast("Sharing failed – use Save to a folder")}}
+    else if(k==="print"){ov.hidden=true;let shown=false;const back=()=>{if(!shown){shown=true;ov.hidden=false}};window.addEventListener("afterprint",back,{once:true});setTimeout(back,2500);S.cur=b.id;S.view=null;render();doPrint(false)}
+    else if(k==="close"){ov.remove();toast(saved?"File saved – baby kept in the app":"Baby kept in the app")}
+    else if(k==="remove"&&saved){if(!confirm(`Remove ${b.f.name||"this baby"} from this device?\n(Open the saved file with ⇩ Receive to see it again.)`))return;
+      ov.remove();S.gone[b.id]=Date.now();S.babies=S.babies.filter(x=>x.id!==b.id);S.cur=visible()[0]?.id;save();flush();render();toast("Discharged and removed")}})}
 async function backup(){
   if(!window.crypto||!crypto.subtle)return toast("Locking needs the app opened from its https link");
   let pw=getPw();

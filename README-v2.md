@@ -655,3 +655,16 @@ Note: the book prints iCa low as "< 1.2 mmol/L" but 4 mg/dL = 1.0 mmol/L – 1.0
 
 ### Files in this version
 `index.html`, `sw.js` (nicu-duty-v94), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
+
+## Update 72 (sw v95) – discharge window: save, share or print
+After entering the discharge date and outcome, one window offers:
+- **Save to a folder**
+  - Chrome / Edge: a Save window opens to pick the folder.
+  - Safari: the file goes to Downloads. To pick the folder every time: Safari → Settings → General → File download location → **Ask for each download**.
+  - iPhone / iPad: use Share → **Save to Files** to pick the folder.
+- **Share / AirDrop** (Mail, Messages; on iPhone / iPad also Save to Files).
+- **Print / PDF** prints the baby's sheet. The window comes back afterwards.
+- **Remove from this device** is only enabled after the file was saved or shared. **Keep baby in the app** closes the window without removing.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v95), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
