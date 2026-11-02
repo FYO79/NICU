@@ -879,3 +879,19 @@ Background → **Newborn examination** (replaces "Examination & anomalies"; data
 
 ### Files in this version
 `index.html`, `sw.js` (nicu-duty-v114), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`.
+
+## Update 91 (sw v115) – compact top area
+- **One row:** WCH NICU · baby cards · floor, date, Send, Receive. The top bar went from about 205 px to about 80 px on a computer.
+- **Slimmer baby cards:** location and bed on one line, name under it. The ⚠ anomaly mark no longer covers the bed number. Cards scroll sideways when there are many babies.
+- **Phone:** Send / Receive show as icons (⇪ ⇩), the WCH NICU label is hidden to save space, and the baby cards are on the second row. The top bar is about 120 px instead of about 170 px.
+- **The top bar tucks away while you scroll down** and comes back as soon as you scroll up a little. The tabs and system buttons stay pinned at the top.
+- **System buttons** (Dx, Weight, Resp…) are on one line without numbers and scroll sideways on a phone. The tabs are slightly shorter.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v115), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`.
+
+## Update 92 (sw v116)
+- System buttons (Dx, Weight, Resp, CVS…) are in colour again while staying small: each has its system's colour as a dot, coloured text, a light tint and a coloured border. This matches the colour of the section it opens, in light and dark mode. A section with changes today has a stronger coloured border.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v116), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`.
