@@ -895,3 +895,22 @@ Background → **Newborn examination** (replaces "Examination & anomalies"; data
 
 ### Files in this version
 `index.html`, `sw.js` (nicu-duty-v116), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`.
+
+## Update 93 (sw v117)
+- The automatic classification line is now **the first bullet inside the Diagnosis box**, not a separate box above it, e.g. "VERY PRETERM INFANT, GA 30+3 WEEKS". Birth weight is no longer written in it; "– MICROPREEMIE" is still added when GA < 26+0 or BW < 800 g.
+- The line updates itself when GA or birth weight changes. If it is deleted, it comes back. It appears once in the handover and work plan (as part of the diagnosis).
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v117), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`.
+
+## Update 94 (sw v118)
+- Classification line shortened to e.g. **"VERY PRETERM GA 30+3 WEEKS"** (no "INFANT", no comma; "– MICROPREEMIE" when it applies). Lines in the old format are replaced automatically.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v118), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`.
+
+## Update 95 (sw v119)
+- Classification line format: **"EXTREMELY PRETERM (GA 25+4 WEEKS) – MICROPREEMIE"** – GA in brackets. Older formats are replaced automatically.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v119), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`.

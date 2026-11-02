@@ -1706,7 +1706,6 @@ const SECTIONS=[
   F("CALC_bcen","Birth centiles (automatic)","calc",{empty:"enter sex, GA, date of birth and a birth measurement",wide:true}),
   F("CALC_curm","Current measurements","calc",{empty:"none yet – enter them in Today → Weight & growth",wide:true}),
   H("Problems <small>(same boxes as Today → Diagnosis &amp; problems)</small>"),
-  F("CALC_gal","","calc",{empty:"",wide:true,show:f=>!!gaLine(f)}),
   F("dx","Diagnosis","area",{bul:1}),F("cprob","Current problems","area",{bul:1})]},
  {t:"Antenatal history",tab:"background",f:[
   H("Mother"),
@@ -1856,7 +1855,6 @@ const SECTIONS=[
   H("Other events"),
   F("rf_othev","Other events at the referring hospital","area",{wide:true,ph:"anything else that happened there – one per line"})]},
  {t:"Diagnosis & problems",tab:"today",f:[
-  F("CALC_galt","","calc",{empty:"",wide:true,show:f=>!!gaLine(f)}),
   F("dx","Diagnosis","area",{bul:1,idx:"t",ph:"updates the Patient section, work plan and handover"}),F("cprob","Current problems","area",{bul:1,idx:"t",ph:"one problem per line"})]},
  {t:"Weight & growth",tab:"today",f:[
   H("Measurements"),
@@ -2359,7 +2357,12 @@ const GAwk=f=>{const w=num(f.gaw);return w==null?null:w+(num(f.gad)||0)/7};
 // first diagnosis line, by gestational age at birth (WHO preterm groups, ACOG/SMFM term groups); micropreemie = informal (GA < 26+0 or BW < 800 g)
 function gaLine(f){const w=num(f.gaw);if(w==null)return"";const d=num(f.gad)||0,t=w*7+d,bw=num(f.bw);
   const cat=t<196?"EXTREMELY PRETERM":t<224?"VERY PRETERM":t<238?"MODERATE PRETERM":t<259?"LATE PRETERM":t<273?"EARLY TERM":t<287?"FULL TERM":t<294?"LATE TERM":"POST-TERM";
-  return `${cat} INFANT, GA ${w}+${d} WEEKS${bw!=null?`, BIRTH WEIGHT ${bw} g`:""}${t<182||(bw!=null&&bw<800)?" – MICROPREEMIE":""}`}
+  return `${cat} (GA ${w}+${d} WEEKS)${t<182||(bw!=null&&bw<800)?" – MICROPREEMIE":""}`}
+const GALINE_RE=/^(EXTREMELY PRETERM|VERY PRETERM|MODERATE PRETERM|LATE PRETERM|EARLY TERM|FULL TERM|LATE TERM|POST-TERM)( INFANT,)? \(?GA \d+\+\d WEEKS/;
+// keep the automatic line as the first line of the Diagnosis box (updated when GA / BW change)
+function syncGaLine(b){const f=b.f,L=gaLine(f),ls=String(f.dx||"").split("\n"),has=GALINE_RE.test((ls[0]||"").trim());
+  let out=has?(L?[L,...ls.slice(1)]:ls.slice(1)):(L?[L,...(String(f.dx||"").trim()?ls:[])]:ls);const nv=out.join("\n");
+  if(nv===(f.dx||""))return false;f.dx=nv;document.querySelectorAll('[data-k="dx"]').forEach(el=>{if(document.activeElement!==el){el.value=nv;if(typeof autoGrow==="function")autoGrow(el)}});return true}
 function birthDate(f){if(!f.dob)return null;let h=0,m=0;const tm=/^(\d{2}):(\d{2})$/.exec(f.tobt||"");if(tm){h=+tm[1];m=+tm[2]}const d=new Date(f.dob+"T"+pad(h)+":"+pad(m)+":00");return isNaN(d)?null:d}
 const dmy=iso=>iso?String(iso).split("T")[0].split("-").reverse().join("/"):"";
 const ordj=a=>a.filter(Boolean).join(", ");
@@ -2849,7 +2852,7 @@ function refresh(){
   const b=cur();if(!b)return;
   const c=calc(b), f=b.f;
   // summary strip
-  bulAll();$("#hLoc").textContent=f.floor||f.station||f.bedno?locFull(b):"Location not set";$("#hLoc").className="sumloc";$("#hId").className="idpill"+(f.station?" st-"+f.station:"");
+  if(syncGaLine(b))save(b);bulAll();$("#hLoc").textContent=f.floor||f.station||f.bedno?locFull(b):"Location not set";$("#hLoc").className="sumloc";$("#hId").className="idpill"+(f.station?" st-"+f.station:"");
   $("#hName").textContent=f.name||"New baby";
   $("#hMeta").textContent=[f.mrn&&"ID "+f.mrn,{M:"Male",F:"Female",DSD:"DSD"}[f.sex],f.bw&&"BW "+f.bw+" g"].filter(Boolean).join(" · ");
   {const sv=$("#hSev");sv.className="pill"+(f.status?" sev-"+f.status:"");sv.textContent=f.status||"No severity"}
@@ -2857,7 +2860,6 @@ function refresh(){
   {const m=missingReq(f),el=$("#hReq");el.innerHTML=m.length?`<button type="button" class="reqchip" data-gotab="background" data-jump="patient">${m.length} required box${m.length>1?"es":""} empty: ${esc(m.join(", "))}</button>`:""}
   {const on=privAdm(f),sc=document.getElementById("sec-referral"),jb=document.querySelector('.jump [data-jump="referral"]');if(sc)sc.hidden=!on;if(jb)jb.hidden=!on;
    const ah=admAgeH(f);setCalc("CALC_admage",ah!=null?(ah<72?Math.floor(ah)+" h of life":"day "+(Math.floor(ah/24)+1)+" ("+Math.floor(ah)+" h)"):null);
-   {const gl=gaLine(f);["CALC_gal","CALC_galt"].forEach(k=>setCalc(k,gl?`<b class="galine">${esc(gl)}</b>`:null))}
 {const h=$("#hAnom");if(h)h.hidden=!anyAnom(f)}
    setCalc("CALC_sc1",sterCalc(f,1));setCalc("CALC_sc2",sterCalc(f,2));
    setCalc("CALC_pdadrug",pdaMed(f)?pdaDrug(f):null);setCalc("CALC_rf_fl",rfFlHTML(b));{const wt=calc(b).wt;[1,2,3].forEach(i=>setCalc("CALC_ach"+i,acHint(f,"ac"+i,"ac"+i+"l","ac"+i+"m",wt)));setCalc("CALC_rfach",acHint(f,"rf_ac","rf_acl","rf_acm",(num(f.bw)||0)/1000))}setCalc("CALC_rfc_resp",rfCarryHTML(b,["surf"]));setCalc("CALC_rfc_cvs",rfCarryHTML(b,["ino1","ino2","ino3"]));setCalc("CALC_rfc_inf",rfCarryHTML(b,["abx","cult"]));setCalc("CALC_rfc_lines",rfCarryHTML(b,["line1","line2"]));
@@ -3007,7 +3009,7 @@ function wpRows(b){
   if(privAdm(f))add("Before transfer",RFSYS.map(([k,l])=>{const c=rfChips(b,k);return c.length?`${l}: ${c.join(", ")}`:""}).filter(Boolean));
   add("Age",j([c.ga&&`GA ${c.ga}`,c.cga&&`CGA ${c.cga}`]));
   add("Weight",j([f.cw&&`CW ${f.cw} g${f.cwd&&f.cwd<today()?" ("+dmy(f.cwd).slice(0,5)+")":""}${gcShort(f,"w",f.cw,f.cwd)?" ("+gcShort(f,"w",f.cw,f.cwd).replace(/ centile,.*$/," centile")+")":""}`,f.bw&&`BW ${f.bw} g${birthCen(f,"w")?" ("+birthCen(f,"w").replace(/ centile,.*$/," centile")+(sizeCat(gcOne(f,"w",f.bw,f.dob))?", "+sizeCat(gcOne(f,"w",f.bw,f.dob)).split(" ")[0]:"")+")":""}`,c.wch!=null&&(c.wch<0?`↓${r1(-c.wch)}% from BW`:c.wch>0?`↑${r1(c.wch)}% from BW`:"at BW")]));
-  add("Dx",[gaLine(f),...items(f.dx)].filter(Boolean),"key");
+  add("Dx",items(f.dx),"key");
   add("Exam / anomalies",anomList(f));
   add("Work-up",exPend(f));
   add("Problems",items(f.cprob),"key");
@@ -3129,7 +3131,7 @@ function handover(b){
   if(anomList(f).length)pt("Examination","",anomList(f));
   pt("Birth",j([f.dob&&`${dmy(f.dob)}${tobStr(f)?" "+tobStr(f):""}`,meas("BW",f.bw,"g"),(()=>{const z=sizeCat(gcOne(f,"w",f.bw,f.dob));return z&&/SGA|LGA/.test(z)?z.split(" ")[0]:""})(),f.mod&&f.mod+(f.modi?` (${f.modi})`:""),
     ap.length&&`Apgar ${ap.map(m=>f["ap"+m]).join("/")}`,f.resus&&`resus: ${f.resus}`]));
-  {const cp=new Set(items(f.cprob).map(x=>x.toLowerCase()));pt("Diagnosis","",[gaLine(f),...items(f.dx).filter(x=>!cp.has(x.toLowerCase()))].filter(Boolean))}
+  {const cp=new Set(items(f.cprob).map(x=>x.toLowerCase()));pt("Diagnosis","",items(f.dx).filter(x=>!cp.has(x.toLowerCase())))}
   pt("Antenatal",j([multStr(f),f.consang&&/Yes/.test(f.consang)&&"consanguineous ("+f.consang.replace(/^Yes – /,"")+")",gbsStr(f),...serPos(f),f.m_rub==="Non-immune"&&"mother rubella non-immune",mxWhy(f)&&mxWhy(f)!=="Other"&&"extra screening: "+(MRISK.find(x=>x[0]===f.m_risk)||[0,f.m_risk])[1].toLowerCase(),...mxLines(b),sterStr(f),mgStr(f),f.prom==="Yes"&&`PROM${f.promh?" "+f.promh+" h":""}`,
     num(f.mtemp)>=38&&`maternal temp ${f.mtemp}°C`,val(f.m_dm)&&f.m_dm,val(f.m_htn)&&f.m_htn,val(f.m_pre)&&f.m_pre,f.m_ill_o,val(f.iab)&&`IAP ${f.iab}`]));
   pt("Admitted",j([admStr(f),num(f.admtemp)!=null&&`admission temp ${f.admtemp} °C`,privAdm(f)&&nl(f.admnote)]));
