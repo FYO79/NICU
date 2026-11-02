@@ -826,3 +826,56 @@ After entering the discharge date and outcome, one window offers:
 
 ### Files in this version
 `index.html`, `sw.js` (nicu-duty-v111), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`.
+
+## Update 88 (sw v112)
+- **Diagnosis first line (automatic)**, in capitals, by gestational age at birth (WHO preterm groups, ACOG/SMFM term groups): EXTREMELY / VERY / MODERATE / LATE PRETERM, EARLY / FULL / LATE TERM or POST-TERM INFANT, then GA and birth weight. "– MICROPREEMIE" is added when GA < 26+0 or BW < 800 g. It shows above Diagnosis (Patient and Today) and is the first Dx line in the handover and work plan.
+- **Diagnosis & current problems carry forward:** a later date with no entry shows the last earlier diagnosis / problems. If you change them on a past date, later dates that still had the old text (or nothing) are updated; dates you changed separately keep their own text.
+- **Antenatal steroids:** Given / None / Unknown. Each course has **first-dose date**, **regimen** (Dexamethasone 6 mg IM q12h × 4 · Dexamethasone 12 mg IM q24h × 2 · Betamethasone 12 mg IM q24h × 2 · Other), **doses received** and **last dose**. The status is worked out: **complete** or **incomplete (n of N doses)**, plus the time from last dose to birth (< 24 h, > 7 days). **+ Repeat course** adds a second (rescue) course. Old answers are converted.
+- **MgSO₄:** No · Loading dose only · Loading + maintenance (complete) · Started – still running at birth · Unknown, with start time.
+- **Antenatal US** shows as bullet points.
+- The footer line about calculations is removed.
+- **Surfactant dose times** now have a calendar.
+- **Feed frequency:** every 1 / 2 / 3 / 4 h or **Continuous (milk drip)** (Today and referring hospital).
+- **Neuro exam:** **Reflexes** (appropriate for GA / diminished / absent / exaggerated / asymmetrical) + comment, and **Clonus** (no sustained clonus / unsustained / sustained / asymmetrical) + number of beats + comment, each on its own line.
+- **TOP transfusion box:** Hb can be entered in g/dL (e.g. 10.7) or g/L (107); it is compared correctly. Three boxes: threshold (g/L and g/dL), latest Hb, and **PRBC transfusion: Indicated – 15 ml/kg / Not indicated**. Only the week of life / support line remains under them. The box is hidden for term babies.
+- **Work plan weight:** centile only (e.g. "32nd centile"), without the chart name.
+- **Drug suggestions:** Benzylpenicillin (Penicillin G), Procaine penicillin, Benzathine penicillin.
+- **New Background section – Examination & anomalies:** dysmorphic features (none / minor / suspected / known syndrome + description), cleft lip / palate (type + details), other congenital anomalies (bullets), genetics / plan, notes. It shows as "Anomalies" in the handover and work plan.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v112), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`.
+
+## Update 89 (sw v113) – Newborn examination
+Background → **Newborn examination** (replaces "Examination & anomalies"; data already entered is kept):
+- **Examination:** examined at / by, then one line per area – skin, head, eyes (+ red reflex), ears, mouth & palate (+ cleft type), neck & clavicles, chest, heart & pulses, abdomen (+ cord vessels), genitalia (+ testes for boys), anus, spine (+ sacral dimple), limbs & digits, hips (+ hip risk factor), tone & reflexes, dysmorphic features. Each is Normal / Abnormal / Not examined; Abnormal opens a findings box.
+- **✓ All normal** fills every area not yet answered with Normal (red reflex present, 3 cord vessels, testes descended, no dimple, no dysmorphism). Then change only the abnormal ones.
+- **Follow-up from the examination** – tasks appear automatically, each with To do / Booked / Done / Not needed:
+  - cleft → feeding plan, plastic / ENT, hearing
+  - abnormal red reflex → urgent ophthalmology
+  - heart / pulses → echo, cardiology
+  - single umbilical artery → renal US
+  - undescended testis → re-examine, surgical referral if persistent
+  - genital finding → senior review / urology
+  - anal anomaly → surgical review
+  - high-risk dimple or spine finding → spinal US
+  - abnormal hips → hip US + orthopaedics
+  - hip risk factor → hip US at about 6 weeks
+  - suspected / known syndrome → genetics
+- **Syndrome work-up** (when a syndrome is suspected or known): karyotype / microarray, echo, renal US, cranial US, eye exam, hearing, genetics review – Planned / Sent / Done – normal / Done – abnormal (+ result) / Not needed; genetics notes.
+- **Discharge examination:** examined at / by, red reflex, hips, heart & femoral pulses, testes, plus a summary of hearing, CCHD and newborn screening.
+- Handover: abnormal findings under **Examination**. Open follow-up tasks and work-up items appear under **Pending**. The work plan shows "Exam / anomalies" and "Follow-up".
+- **⚠ Anomaly** flag in the baby header and on the bed card for congenital anomalies only (dysmorphism, cleft, abnormal eyes / ears / mouth / neck / genitalia / anus / spine / limbs / hips, abnormal red reflex, single umbilical artery, undescended testis, high-risk dimple, other anomalies). Findings like caput or low tone are not flagged.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v113), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`.
+
+## Update 90 (sw v114) – simpler newborn examination
+- Each part is Normal / Abnormal / Not examined only. **Abnormal opens a Findings box written as bullet points** (one finding per line). The examples are shown inside the box.
+- **Umbilical cord** is its own part, separate from Abdomen.
+- Removed the extra boxes: red reflex, testes, cord vessels, sacral dimple and hip risk factor (write these in the findings of eyes, genitalia, cord, spine or hips).
+- Removed the **Follow-up from the examination** and **Discharge examination** parts.
+- Kept: All normal, dysmorphic features (findings as bullets), other anomalies, syndrome work-up, notes, and the ⚠ Anomaly flag.
+- Answers in the removed boxes are moved into the matching findings (e.g. "single umbilical artery" → Umbilical cord, "undescended testis" → Genitalia).
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v114), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`.
