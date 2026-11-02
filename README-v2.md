@@ -682,3 +682,147 @@ After entering the discharge date and outcome, one window offers:
 
 ### Files in this version
 `index.html`, `sw.js` (nicu-duty-v96), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
+
+## Update 74 (sw v97) – HIE: unit protocol and modified Sarnat form
+- **Modified Sarnat – hourly exam** replaces the old Sarnat staging table. It matches the unit / Queensland form:
+  - 8 rows (consciousness, spontaneous activity, posture, tone, suck, Moro, autonomic, seizures), each N / Mild / Mod / S / N/A with the form's wording.
+  - Each column is one exam, with its actual date & time and the hour of life worked out from birth time.
+  - Under each exam: **moderate / severe domains (of 6)** – suck and Moro count as one domain, primitive reflexes, scored by the worse of the two – and the **severity** (normal / mild / moderate / severe, + seizures).
+  - Old Sarnat entries are converted automatically.
+- **Cooling eligibility check – unit protocol:**
+  - Eligibility: GA ≥ 36 wk; 35 wk → discuss with consultant; < 35 not eligible. BW < 1800 g → exclusion. BW below the 3rd centile → discuss with consultant. Age 6–24 h → discuss with consultant; > 24 h not eligible. Shows when the 6 h window ends.
+  - Criteria A: pH ≤ 7.0 or base deficit ≥ 16. Or pH 7.01–7.15 / base deficit 10–15.9 on cord gas or a gas within 1 h, **plus any one** of: sentinel event, Apgar ≤ 5 at 10 min, ongoing resuscitation at 10 min. No gas → "gas needed".
+  - Criteria B: taken from the **worst modified Sarnat exam in the first 6 h** (≥ 3 of 6 domains moderate / severe), or seizures (clinical, Neuro "confirmed", on the Sarnat exam, or on aEEG / EEG). A milder exam before 6 h shows "repeat hourly – exam can evolve". Mild only → "consult a neonatologist".
+  - Absolute exclusions: severe anomaly / genetic syndrome / known metabolic disorder, severe uncontrolled bleeding (DIC).
+  - aEEG / CFM (supportive, AAP 2026): upper and lower margin (µV) and continuous seizures → normal / moderately abnormal / suppressed / seizures. Not required to decide on cooling and must not delay it. An abnormal aEEG without criteria B → "repeat the Sarnat exam now".
+  - **High-risk reminder** (unit 5.1.5) when the cord / first pH is < 7.1 and the baby does not meet criteria B: hourly Sarnat until 6 h (next due time), aEEG ≥ 6 h, start cooling at once if it worsens before the 6 h time. It also shows in the handover.
+- The separate 6 neuro dropdowns in the check are no longer used; they show only for babies who already have them filled.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v97), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-referral-demo.html`.
+
+## Update 75 (sw v98) – two cooling checks, Thompson revised, clearer design
+- **Cooling eligibility – unit protocol & AAP 2026**: you enter the information once, in 5 numbered groups (time, perinatal asphyxia, encephalopathy, exclusions, aEEG). Two result cards side by side follow:
+  - **Unit protocol** – as in Update 74. Criteria A needs any one of sentinel event / Apgar ≤ 5 / resuscitation at 10 min. 35 wk, weight < 3rd centile and 6–24 h → discuss with consultant. Includes the high-risk pH < 7.1 reminder.
+  - **AAP 2026** – NICHD criteria. For pH 7.01–7.15 or no gas: an acute perinatal event **and** (Apgar ≤ 5 at 10 min or ventilation ≥ 10 min). 35 wk: select cases with the family. 6–24 h: small benefit. BW < 1800 g: outside trial criteria, discuss. Mild HIE: not recommended.
+  - Each card has a large coloured result (✓ Eligible / Discuss with consultant / ✗ Not eligible / Incomplete – still needed) and a ✓ / ✗ / ? row for each criterion with the reasons.
+  - The handover and work plan show both results.
+- **Thompson score – serial exam** (as in the Thompson score document):
+  - Wording: tone, consciousness, seizures, posture, Moro, grasp, suck, respiration, fontanelle.
+  - Each exam has its date & time and hour of life.
+  - Under each exam: **total / 22** and **severity band** (0 no abnormality · 1–10 mild · 11–14 moderate · 15–22 severe). Moderate and severe show in red.
+  - New "Thompson score – criteria & bands" reference. It reminds you the score alone does not decide cooling.
+  - Old Thompson entries keep their points.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v98), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-HIE-demo.html`.
+
+## Update 76 (sw v99)
+- Modified Sarnat table: the rows now show the **6 domains** used for "≥ 3 of 6": 1 consciousness · 2 spontaneous activity · 3 posture · 4 tone · 5 primitive reflexes (suck and Moro, counted once using the worse) · 6 autonomic. **Seizures** are labelled "not one of the 6 (alone = criterion B)". The count row explains the rule.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v99), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-HIE-demo.html`.
+
+## Update 77 (sw v100)
+- Modified Sarnat **overall stage** now follows the references: the level that most of the 6 domains fall in. A tie is decided by level of consciousness; if consciousness is not one of the tied levels, the more severe level is used.
+- The cooling criterion is unchanged: ≥ 3 of 6 domains moderate / severe, or seizures. Within a domain the more severe sign is used (suck vs Moro).
+- Sources (also shown in the app's Sarnat reference): NICHD NRN neurological exam (Shankaran, NEJM 2005); COMET Expanded Modified Sarnat SOP v3.3 (Imperial College, 2026); UC Davis HIE guideline (2026).
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v100), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-HIE-demo.html`.
+
+## Update 78 (sw v101)
+- **Seizures removed from the modified Sarnat table.** They are not part of the Sarnat exam. Record them in the eligibility check (clinical seizures, or on aEEG); seizures alone meet criterion B. Seizures already entered in old Sarnat exams are moved to "Clinical seizures".
+- Under each Sarnat exam:
+  - **Domains at each level** (N · Mild · Mod · S, of 6)
+  - **Moderate + severe domains – cooling count** ("– meets" when ≥ 3)
+  - **Stage of encephalopathy** (the level most domains fall in; a tie shows "tie → consciousness")
+- New **How to read the exam** box under the table explains grading, stage and the cooling count.
+- Cooling eligibility header: capital letters, white on a teal bar. Group and card titles are also in capitals.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v101), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-HIE-demo.html`.
+
+## Update 79 (sw v102)
+- Cooling check: the aEEG title keeps the lowercase "a" (**aEEG / CFM**) while the other titles stay in capitals.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v102), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-HIE-demo.html`.
+
+## Update 80 (sw v103)
+- Cooling check: the "discuss" lines are now short – e.g. "GA 35+2 wk – discuss with consultant", "BW below the 3rd centile – discuss with consultant", "6–24 h of age – discuss with consultant". The result box says "Discuss with consultant – Meets A + B". The background details stay only in the reference note at the bottom.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v103), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-HIE-demo.html`.
+
+## Update 81 (sw v105)
+- HIE explanations now open only when you tap them, laid out as short headed lists:
+  - **Criteria summary – unit protocol & AAP 2026** (bottom of the cooling check): two side-by-side cards with eligibility, criteria A, criteria B, exclusions and notes.
+  - **How to read the Sarnat exam – stage & cooling count** (under the Sarnat table).
+  - **Modified Sarnat – criteria** and **Thompson score – criteria & bands**: the notes are now bullet points with the sources underneath.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v105), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-HIE-demo.html`.
+
+## Update 82 (sw v106)
+- Cooling check → Perinatal asphyxia: the "gases & Apgar come from…" note is removed. A box now shows the values taken **automatically**: worst pH and BE within 1 h (with their source, e.g. cord 1) and Apgar 10 min from Birth. The manual pH / BE boxes appear only when no gas is found, or if they were already filled.
+- Sarnat and Thompson exam columns: the × sits in the top corner and the date, time and AM/PM fit inside the column on computer, iPad and phone – no overlap. (Also fixed a broken style rule that made these columns too narrow.)
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v106), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-HIE-demo.html`.
+
+## Update 83 (sw v107) – smaller top part
+- The "NICU Duty Sheet / PER-BABY FOLLOW-UP" title is removed. The top bar holds only floor, date, Send and Receive. The browser tab and home-screen name are still "NICU Duty Sheet".
+- The "No backup yet / Last backup … days ago" bar is gone. When a backup is due, an **amber dot** shows on **⇪ Send**; holding the pointer on it (computer) shows how long ago the last backup was. Saving-error alerts still show as a bar.
+- Baby file header: **location and name in one two-part label** – location in the station colour on the left, name on the right – on the same line as the severity.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v107), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-HIE-demo.html`.
+
+## Update 84 (sw v108)
+- Top bar: **WCH | NICU** label in the top-left space.
+- Footer: the "Saved on this device only… unit's policy…" sentences are removed. One short line remains: calculations are aids, double-check before acting.
+- **Today → Cardiovascular redesigned** in four numbered parts:
+  1. **Blood pressure** – BP readings with normal ranges and the BP reference tables.
+  2. **PDA** – "+ PDA" opens status, size and course (conservative / medical / surgical, intervention date & details).
+  3. **Medications** – inotropes ("+ Inotropes", then "+ Inotrope 2 / 3"); **PDA treatment** (drug, dose, interval, start date, course day); and a new list, **Other cardiovascular medications** (e.g. hydrocortisone, PGE1, sildenafil, antihypertensives), with dose, unit, interval, route, Day count, **Change dose** and **Stop**.
+  4. **Echo** – "+ Echo" for a short summary; the latest TnECHO from the Diagnostics tab shows underneath.
+  - Then CVS notes and Changes · 24 h.
+  - Other cardiovascular medications also show in Meds (from other sections), the handover and the work plan. Stops and dose changes go to History → Medications.
+  - Text written in the old "Other drugs" box still shows, marked "earlier text".
+- **Referring hospital → Cardiovascular**: new boxes for **Blood pressure**, **PDA**, **Echo** and **Other cardiovascular medications** (with suggestions), plus the inotropes and other events. They show in "Before transfer" (Today, History) and the handover.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v108), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-HIE-demo.html`.
+
+## Update 85 (sw v109) – every system in clear parts
+- Part titles are bigger (16 px), bold and in each system's colour, with a thicker bar. Box labels are bigger and bold. This applies everywhere in the app.
+- Cardiovascular: the numbers are removed – Blood pressure · PDA · Medications · Echo.
+- Today, every system is split into named parts:
+  - **Weight & growth:** Measurements · Growth
+  - **Respiratory:** Respiratory support (mode, settings, FiO₂, changes) · iNO (when used) · Chest X-ray · Surfactant · Caffeine · Blood gases · Lung ultrasound · notes
+  - **Fluids & nutrition:** Intake · Feeds · Totals · Blood glucose & plan
+  - **Abdomen & renal:** Examination · Urine output & fluid balance (+ Losses) · NEC & X-ray (+ NEC staging, + X-ray) · notes
+  - **Neuro:** Cranial ultrasound · Anticonvulsants (+ Anticonvulsants) · Seizures & neurological examination · HIE & cooling · Neuromonitoring & MRI · notes, then the cooling check, Sarnat and Thompson
+  - **Infection:** Sepsis · Antibiotics (now above the cultures) · Cultures & swabs · Notes
+  - **Jaundice:** Bilirubin · Phototherapy & thresholds · BIND-M (when used)
+  - **ROP:** Screening · Result & follow-up
+- Lines & tubes, Medications and Plan are single lists and stay as they are.
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v109), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-HIE-demo.html`.
+
+## Update 86 (sw v110)
+- Cooling check: once cooling has started, the result reads "MET criteria – cooling started <date / time>" instead of "start cooling before…" (cards, handover and work plan).
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v110), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`, `NICU-HIE-demo.html`.
+
+## Update 87 (sw v111)
+- Removed the explanation sentences under Blood pressure readings and under the medicine lists (antibiotics, other medications, cardiovascular medications).
+- **Blood glucose** (Fluids → Blood glucose & plan) is now a list of readings. **+ Blood glucose** adds a row with date & time, value (mmol/L) and action taken. Each reading is marked **Low (< 2.6)**, **High (> 10)** or **In range**. The latest reading, with its time and action, goes to the handover and work plan. A value in the old single box still shows, marked "earlier entry".
+- Abdomen: **abdomen, girth, vomiting and stool** on the first line; gastric aspirate (amount, colour) on the second.
+- Anticonvulsants: the "usual doses" boxes are removed (Today and referring hospital).
+
+### Files in this version
+`index.html`, `sw.js` (nicu-duty-v111), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`.
