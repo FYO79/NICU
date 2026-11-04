@@ -999,3 +999,63 @@ index.html · sw.js (nicu-duty-v127) · manifest.webmanifest · README-v2.md
 
 ### Files in this version
 index.html · sw.js (nicu-duty-v128) · manifest.webmanifest · README-v2.md
+
+## Update 105 (sw v129)
+- Inotropes: one line per drug – Inotrope · Started · Dose | Change time · New dose · Change · DC. The "Inotrope … – changes / DC" text box is removed.
+- Today sections (Respiratory, CVS, Fluids, Abdomen, Neuro, Infection, Lines, Meds, Jaundice, ROP): the "Changes · 24 h" boxes are removed – every change is recorded in the History tab only.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v129) · manifest.webmanifest · README-v2.md
+
+## Update 106 (sw v130)
+- Respiratory support, IV fluids and Feeds: each on one framed line with a **Change time** box at the end (blank = now). Type the new values in the same boxes; the changes go to History at that time.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v130) · manifest.webmanifest · README-v2.md
+
+## Update 107 (sw v131)
+- Respiratory support, IV fluids and Feeds: the current values stay on top; under them a **Change** box – Time (now, can be changed) · New mode / new values (grey = current value) · **Change** button. Feeds has an **NPO** button. Changes are saved and recorded in History at the chosen time.
+- The "Change time" box from v130 is replaced by this Change box.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v131) · manifest.webmanifest · README-v2.md
+
+## Update 108 (sw v132)
+- Medications (Other cardiovascular medications, Current medications, Antibiotics): each drug has its current details on top and a **Change / DC** box under them – Time · Dose · Interval · Route · **Change** · **DC** (press DC twice). Changes and stops go to History at the chosen time; DC moves the drug to Previous medications. The old "Change dose" and "Stop" buttons are replaced.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v132) · manifest.webmanifest · README-v2.md
+
+## Update 109 (sw v133) – professional EMR design
+Visual layer only (`<style id="ds2">`, screen only). No field, label, section, calculation, storage, export, print or saving logic changed; all ids kept.
+- Calm clinical palette: white panels on a light grey-blue background, one teal accent; section colours kept only as a thin marker and the section number.
+- Section headers: white, clear title, number badge, left accent; part headings with a small marker.
+- Patient summary: neutral tiles (label + large value), selected tab filled in teal, neutral section shortcut chips with coloured dot.
+- Fields: consistent height and radius, clear hover and focus ring, invalid fields outlined red, text left-aligned like an EMR (date/time and table cells unchanged), larger readable labels.
+- Buttons, add buttons, tables, change boxes, SBAR and work plan cards: same radius, border and soft shadow.
+- Respects "reduce motion"; dark mode kept.
+- Print: unchanged A4 layout; the new Change boxes are not printed.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v133) · manifest.webmanifest · README-v2.md
+
+## Update 110 (sw v134)
+- Values in boxes are centred again (as before the redesign).
+- Larger text across the form: values 18 px, labels 16 px, part headings 15.5 px, section titles 20 px, summary values 22 px, box height 48 px. The top bar keeps its compact size.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v134) · manifest.webmanifest · README-v2.md
+
+## Update 111 (sw v135)
+- Caffeine removed from Respiratory. It is now a medication (Today → Medications → + Other medication → "Caffeine citrate").
+- Caffeine already entered in Respiratory moves automatically to Medications (dose, unit, interval, route, start date kept) and the old boxes are cleared.
+- Medications with a loading dose (caffeine, phenobarbital, aminophylline / theophylline, levetiracetam, phenytoin, fluconazole, digoxin) show two lines: **Loading** – loading dose (mg/kg), given date & time, loading to give (mg at current weight) – and **Maintenance** – dose, unit, per, interval, route, dose to give. Handover / print: "loading 20 mg/kg, maintenance 5 mg/kg/day q24h".
+
+### Files in this version
+index.html · sw.js (nicu-duty-v135) · manifest.webmanifest · README-v2.md
+
+## Update 112 (sw v136)
+- Colour pattern back, softly: each section has its colour on a thin top line, a light tint in the header, the title and a filled number badge; section shortcut buttons are lightly tinted in their colour; summary tiles have their colour on top with a light tint (values centred). Everything else from v133–v135 kept (calm background, centred larger text, Change boxes).
+
+### Files in this version
+index.html · sw.js (nicu-duty-v136) · manifest.webmanifest · README-v2.md
