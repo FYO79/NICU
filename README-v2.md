@@ -914,3 +914,71 @@ Background → **Newborn examination** (replaces "Examination & anomalies"; data
 
 ### Files in this version
 `index.html`, `sw.js` (nicu-duty-v119), `manifest.webmanifest`, `README-v2.md`. Test only: `NICU-3-cases-demo.html`.
+
+## Update 96 (sw v120)
+- Blood glucose: the date & time box opens the calendar.
+- Weight change: previous weight is taken from the earlier daily sheets (e.g. 02/11 → 03/11), with g/day and % from birth weight.
+- Chest X-ray box: bullet points.
+- "Plan for this shift" renamed **Plan**; the time box for tasks is removed (Today, work plan, handover).
+- SBAR view: every item is a bullet point; items with several parts are listed as sub-bullets.
+- Bed buttons: the small ⚠ anomaly mark is removed (it looked like a question mark); the ANOMALY label in the baby header stays.
+- Print / PDF: new **Patient data** box at the top (baby details, measurements at birth and now with centile beside each, weight change, diagnosis). No growth-chart names anywhere. Each entry prints as its own bullet line under clear section headings; repeated patient boxes and empty boxes are not printed.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v120) · manifest.webmanifest · README-v2.md
+
+## Update 97 (sw v121)
+- Helper sentences removed from the screens (e.g. "same boxes as Today → …", "sets every part not yet filled to Normal …", "same list as …", gas and BP explanations).
+- Weight change: every weight is kept with its date, so the box shows **↑/↓ grams from the previous weight** (date), g/day, and % from birth weight.
+- All date & time boxes (blood pressure, blood glucose, change times and others) open the calendar. Safari was closing the calendar in boxes inside a label; fixed.
+- Plan: the task box spans the whole line.
+- Status: If / then, Parents updated and Other handover notes show as bullet points.
+- New **PDF** button (next to Print): makes a real PDF file of the baby's sheet (Patient data first, bullet lines by section), then Share / Save. Works in the installed iPhone app, where Print does not open. The "Print did not open" window also offers **Save PDF**.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v121) · manifest.webmanifest · README-v2.md
+
+## Update 98 (sw v122)
+- Weight change: only "Decreased / Increased … g from previous weight"; the box spans the whole line.
+- Blood glucose: the Low / High / In range label sits level with the glucose value.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v122) · manifest.webmanifest · README-v2.md
+
+## Update 99 (sw v123)
+- "Bed" renamed **Room** (top buttons, header, Room box, print).
+- Date boxes show **dd/mm** (no year) and open the calendar when tapped – blood gas columns, BP, blood glucose and all date & time boxes.
+- Labs: red highlighting removed (no unit-approved neonatal reference ranges). Bilirubin keeps its jaundice-chart flag; the TOP transfusion thresholds stay.
+- Weight change: compares with the weight entered on an earlier day ("Decreased / Increased … g from previous weight"); shows "No previous weight" when there is none.
+- Layout: boxes stretch to fill each line (no empty space at the right edge); blood gas / lab tables use the full width.
+- Blood glucose: Action / comment in its own framed box under each reading.
+- PDF: on a computer (Chrome / Edge) a "Save as" window opens to choose the folder; on iPhone / iPad the share sheet opens (Save to Files → choose folder); Safari on Mac saves to Downloads.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v123) · manifest.webmanifest · README-v2.md
+
+## Update 100 (sw v124)
+- Lab / gas tables: the test-name column is only as wide as its text; the value columns share the rest of the line.
+- Blood glucose: Low / High / In range now shows inside the glucose box.
+- Lines & tubes: new type **Peripheral arterial line (PAL)**.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v124) · manifest.webmanifest · README-v2.md
+
+## Update 101 (sw v125)
+- "Print did not open" window shortened for iPad and computer: Save PDF → choose the folder.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v125) · manifest.webmanifest · README-v2.md
+
+## Update 102 (sw v126)
+- Handover: for babies well above birth weight (chronic cases) the weight line shows the birth weight instead of a large "% above BW".
+
+### Files in this version
+index.html · sw.js (nicu-duty-v126) · manifest.webmanifest · README-v2.md
+
+## Update 103 (sw v127)
+- Print / PDF inside a preview window (a file opened inside another app, where printing and saving are blocked): a window now shows the print layout with **Download PDF** and **Open in new tab**, plus a note to open the file in Safari / Chrome.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v127) · manifest.webmanifest · README-v2.md

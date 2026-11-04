@@ -180,7 +180,11 @@ section.card.folded>:not(h2){display:none!important}
 .lastchg .linkish{margin-left:8px;font-size:var(--fs-xs)}
 
 /* field grid */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px 16px;padding:16px var(--gut) 18px;align-items:end}
+.grid{display:flex;flex-wrap:wrap;gap:14px 16px;padding:16px var(--gut) 18px;align-items:flex-end}
+/* boxes stretch to fill each line – no empty space at the line end */
+.grid>*{flex:1 1 100%;min-width:0}
+.grid>.fld:not(.wide){flex:1 1 200px}
+.grid>.fld.span2{flex:2 1 416px}
 .sub{grid-column:1/-1;display:flex;align-items:center;gap:10px;font-size:var(--fs-m);font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--sc0,var(--accent-ink));border-top:1px solid var(--line);padding-top:18px;margin-top:6px}
 .sub small{text-transform:none;letter-spacing:0;font-weight:600;color:var(--muted);font-size:var(--fs-xs)}
 .sub::before{content:"";flex:none;width:5px;height:20px;border-radius:3px;background:var(--sc0,var(--accent))}
@@ -200,8 +204,8 @@ section.card.folded>:not(h2){display:none!important}
 .frow{grid-column:1/-1;display:flex;gap:14px;align-items:flex-end;flex-wrap:wrap}
 .frow>.fld{flex:var(--g,1) 1 0;min-width:var(--mw,76px)}
 .frow>.fld:has(.t24w){flex:0 0 auto;min-width:max-content}
-.frow>.fld:not(:has(.para)):not(:has(textarea)):not(:has(.nu)){max-width:460px}
-.grid>.fld:has(>.t24w>.dm),.grid>.fld:has(>.t24w>input[type=date]){grid-column:span 2;min-width:max-content}
+
+.grid>.fld:has(>.t24w>.dm),.grid>.fld:has(>.t24w>.dpk){flex:2 1 320px;min-width:max-content}
 .mini{display:flex;flex-direction:column;gap:5px;font-size:var(--fs-s);font-weight:600;color:var(--muted);min-width:0}
 .hint{font-size:var(--fs-s);line-height:1.45;color:var(--muted);padding:0 var(--gut);margin:0 0 8px}
 .fld .hint,.fld .list,.fld .tblbar,.fld .log{padding-left:0;padding-right:0}
@@ -257,6 +261,11 @@ textarea.inp{height:auto;min-height:var(--h);padding:11px 12px;line-height:1.4;r
 .t24w{display:flex;gap:6px;flex-wrap:nowrap;width:100%;min-width:0}
 .t24w>.inp{flex-shrink:0}
 .t24w input[type=date]{flex:0 0 172px;width:172px}
+.dpk{position:relative;display:inline-flex;flex:0 0 104px;width:104px}
+.dpk .dpt{width:100%;display:flex!important;align-items:center;justify-content:center;font-weight:700;font-size:19px;pointer-events:none;padding:0 4px}
+.dpk .dpt.ph{color:var(--muted);font-weight:500}
+.t24w .dpk input.dpi{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;flex:none;margin:0}
+.colt .dpk{width:100%;flex:1 1 auto}
 .t24w .dm{flex:0 0 80px;width:80px;padding:0 4px;text-align:center;font-weight:700;font-size:19px}
 .t24w .t24{flex:0 0 88px;width:88px;padding:0 4px;text-align:center;font-weight:700;font-size:19px}
 .t24w .ap{flex:0 0 78px;width:78px;padding:0 22px 0 10px;font-weight:600;background-position:calc(100% - 14px) 52%,calc(100% - 8px) 52%}
@@ -286,7 +295,7 @@ textarea.inp{height:auto;min-height:var(--h);padding:11px 12px;line-height:1.4;r
 .row.dated{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 72px 76px 40px;align-items:center}
 .row.prev{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr) 40px}
 .row.img{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr) 40px}
-.row.todo{grid-template-columns:30px 120px minmax(0,1fr) 40px;align-items:center;padding:8px 10px}
+.row.todo{grid-template-columns:30px minmax(0,1fr) 40px;align-items:center;padding:8px 10px}
 .row.todo.done .inp{text-decoration:line-through;color:var(--muted)}
 .row.todo textarea.inp{text-align:left}
 .row.abc{grid-template-columns:minmax(0,1fr) minmax(0,1.8fr) 40px}
@@ -312,11 +321,11 @@ textarea.inp{height:auto;min-height:var(--h);padding:11px 12px;line-height:1.4;r
 .row.med .mhint{font-size:var(--fs-xs);color:var(--muted);width:100%}
 /* blood pressure: date line, readings, normal-range boxes under them */
 .row.bpr{grid-template-columns:minmax(190px,1.15fr) repeat(3,minmax(88px,1fr)) 40px;row-gap:10px}
-.row.glr{display:grid;grid-template-columns:minmax(190px,1.2fr) minmax(110px,.8fr) minmax(110px,.8fr) 40px;gap:10px;align-items:end}.row.glr .res{grid-column:1/-1}
-.gflag{align-self:center;justify-self:start;font-weight:800;font-size:var(--fs-s);padding:4px 10px;border-radius:99px}.gflag:empty{display:none}
+.row.glr{display:grid;grid-template-columns:auto minmax(260px,380px) 1fr 40px;gap:10px;align-items:end}.row.glr>.x{grid-column:4;grid-row:1}.gbox{position:relative;display:block}.gbox .inp.gv{width:100%;padding-right:128px}.gbox .gflag{position:absolute;right:8px;top:50%;transform:translateY(-50%);margin:0;pointer-events:none}.row.glr .gact{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:12px;background:var(--sunk);border:1px solid var(--line);border-left:4px solid var(--sc0,var(--accent));border-radius:10px;padding:6px 10px}.row.glr .gact .inp{text-align:left;background:var(--panel)}
+.gflag{align-self:end;margin-bottom:9px;justify-self:start;font-weight:800;font-size:var(--fs-s);padding:4px 10px;border-radius:99px}.gflag:empty{display:none}
 .gflag.lo,.gflag.hi{background:var(--crit-soft);color:var(--crit)}.gflag.ok{background:var(--ok-soft);color:var(--ok)}
 .inp.gv.lo,.inp.gv.hi{border-color:var(--crit);color:var(--crit)}
-@media (max-width:620px){.row.glr{grid-template-columns:1fr 1fr 36px}.row.glr .nm{grid-column:1/-1}}
+@media (max-width:620px){.row.glr{grid-template-columns:1fr 36px}.row.glr>.x{grid-column:2;grid-row:2}.row.glr .gact{grid-template-columns:1fr}.row.glr .nm{grid-column:1/-1}}
 .row.bpr>label.nm{grid-column:1/-1;grid-row:1;justify-self:start}
 .row.bpr>label:nth-of-type(2){grid-column:2;grid-row:2}.row.bpr>label:nth-of-type(3){grid-column:3;grid-row:2}.row.bpr>label:nth-of-type(4){grid-column:4;grid-row:2}
 .row.bpr>.x{grid-column:5;grid-row:2}
@@ -357,7 +366,8 @@ details.bpold{border:1px dashed var(--box);border-radius:12px;padding:8px 10px;m
 .tblbar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:14px var(--gut) 8px}
 .tblbar .sub{border:0;padding:0;margin:0}
 .tblwrap{overflow-x:auto;margin:0 var(--gut) 16px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
-table.sheet{border-collapse:separate;border-spacing:0;font-size:var(--fs-s)}
+table.sheet{border-collapse:separate;border-spacing:0;font-size:var(--fs-s);min-width:100%}
+table.sheet:not(.echo) tr>:first-child{width:1%;white-space:nowrap}
 table.sheet th,table.sheet td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:middle}
 table.sheet th+th,table.sheet td+td{border-left:1px solid var(--line)}
 table.sheet.gas th+th,table.sheet.gas td+td{border-left:2px solid var(--line)}
@@ -492,13 +502,13 @@ details.calcref .reful{margin:10px 16px 6px;padding-left:22px;font-size:var(--fs
 .sbl{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--panel);font-weight:800}
 .sb .hl{position:relative;padding:4px 0 4px 16px;font-size:19px;line-height:1.5;overflow-wrap:anywhere}
 .sb .hl::before{content:"•";position:absolute;left:2px;color:var(--accent);font-weight:800}
-.sb .hl.ind{padding-left:34px;font-size:18px}.sb .hl.ind::before{content:"–";left:18px;font-weight:400}
+.sb .hl.ind{padding-left:34px;font-size:18px}.sb .hl.ind::before{content:"◦";left:18px;font-weight:800}
 .sb .hl.ind.box::before,.sb .hl.empty::before{content:""}
 .sb .hl.empty{color:var(--muted)}
 .sb .hl.chg{color:var(--muted);font-size:17px}
 .sb .hl.hk2{display:grid;grid-template-columns:minmax(100px,160px) 1fr;gap:2px 10px;align-items:start;padding:5px 0 5px 14px;border-bottom:1px dashed var(--line)}
 .sb .hl.hk2:last-child{border-bottom:0}
-.sb .hk{font-weight:800;color:var(--accent-ink);font-size:17px;padding-top:2px}
+.sb .hk{font-weight:800;color:var(--accent-ink)}
 .sb .hv{display:flex;flex-wrap:wrap;gap:4px 5px;min-width:0}
 .sb .hchip{display:inline-block;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:1px 8px;font-size:18px;line-height:1.5}
 .sb b.n{font-weight:800;margin:0}
@@ -654,11 +664,13 @@ section.card .lastchg span{color:var(--sc)}
   .sumbar .tools .btn{flex:1 1 auto}
   body{font-size:var(--fs-m)}
   .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px;padding:12px var(--gut) 14px}
-  .grid>.fld:has(>.t24w>.dm),.grid>.fld:has(>.t24w>input[type=date]){grid-column:1/-1;min-width:0}
+  .grid>.fld:not(.wide){flex:1 1 calc(50% - 10px)}.grid>.fld.span2{flex-basis:100%}
+  .grid>.fld:has(>.t24w>.dm),.grid>.fld:has(>.t24w>.dpk){flex-basis:100%;min-width:0}
   .frow>.fld{flex:1 1 140px;min-width:140px}
   .frow>.fld.span2,.frow>.fld:has(.para){flex-basis:100%}
   .frow:has(>.inoch)>.fld,.frow:has(>.inoch)>.fld:has(.nu),.inoch{flex:1 1 100%;min-width:0}
   .t24w input[type=date]{flex:1 1 120px;width:120px;min-width:0}
+  .dpk{flex:0 0 92px;width:92px}
   .t24w .t24{flex-basis:72px;width:72px}.t24w .ap{flex-basis:72px;width:72px}.t24w .dm{flex-basis:78px;width:78px}
   .sumbar h1{font-size:22px}
   section.card>h2{font-size:var(--fs-l)}
@@ -676,7 +688,7 @@ section.card .lastchg span{color:var(--sc)}
   .row.bpr>.res{grid-row:5}
   .bplim .lo,.bplim .hi{font-size:var(--fs-m)}
   .bpnow{grid-template-columns:repeat(3,minmax(0,1fr))}.bpnow .bplab{grid-column:1/-1}
-  .row.todo{grid-template-columns:28px 96px minmax(0,1fr) 36px}
+  .row.todo{grid-template-columns:28px minmax(0,1fr) 36px}
   .log li{grid-template-columns:44px 150px minmax(0,1fr) 32px}
   table.sheet.wsel thead th:first-child,table.sheet.wsel tbody th{width:30%;min-width:0;max-width:120px;white-space:normal;font-size:var(--fs-xs);padding:4px 6px}
   table.sheet.wsel td{min-width:0;width:70%}table.sheet.wsel td select.inp{min-width:0;font-size:13px;padding:0 4px}
@@ -702,8 +714,17 @@ section.card .lastchg span{color:var(--sc)}
   #printout section.card{display:block;break-inside:avoid;page-break-inside:avoid;border:0;border-top:.75px solid #888;border-radius:0;margin:0 0 3px;padding:1px 0 0;background:none;width:auto}
   #printout section.card>h2{font:700 8px var(--f-body);letter-spacing:.06em;text-transform:uppercase;color:var(--sc0,var(--accent));margin:0 0 1px}
   #printout .grid,#printout .frow,#printout .list,#printout .ho{display:block;padding:0;margin:0;gap:0;overflow:visible}
-  #printout .sub{display:block;border:0;padding:0;margin:1px 0 0;font:700 7px var(--f-body);letter-spacing:.05em;color:#666;text-transform:uppercase}
-  #printout .fld{display:inline;margin:0 7px 0 0}
+  #printout .sub{display:block;border:0;padding:0;margin:2px 0 0;font:700 7.5px var(--f-body);letter-spacing:.05em;color:#333;text-transform:uppercase;text-decoration:underline}#printout .sub::before{display:none}
+  #printout .fld{display:block;margin:0;padding-left:8px;position:relative}
+  #printout .fld::before{content:"•";position:absolute;left:1px;color:var(--sc0,var(--accent))}
+  #printout .pdata{border:1px solid #888;border-radius:4px;padding:2px 6px 3px;margin:0 0 4px;break-inside:avoid}
+  #printout .pdata h2,#printout section.card>h2{font:800 9px var(--f-body)!important;letter-spacing:.06em;text-transform:uppercase;color:var(--sc0,var(--accent));margin:0 0 1px;padding:1px 0;border-bottom:.5px solid #ccc}
+  #printout .pdcols{display:grid;grid-template-columns:1fr 1.3fr 1.5fr;gap:6px}
+  #printout .pdata ul{list-style:none;margin:0;padding:0}#printout .pdata li{padding-left:8px;position:relative;font-size:8.5px}
+  #printout .pdata li::before{content:"•";position:absolute;left:1px;color:var(--accent)}
+  #printout .pdata li.h{padding:0;font:700 7.5px var(--f-body);text-transform:uppercase;letter-spacing:.05em;color:#555}#printout .pdata li.h::before{content:""}
+  #printout .pdata .k{color:#555}#printout .pdx{margin-top:2px!important;border-top:.5px solid #ddd}
+  #printout .frow .fld,#printout .grid .fld{width:auto}
   #printout .fld label,#printout .fld .lbl{display:inline;font-size:8px;color:#555}
   #printout .fld label::after,#printout .fld>.lbl::after{content:": "}
   #printout .req,#printout .fmsg{display:none}
@@ -803,6 +824,13 @@ section.card .lastchg span{color:var(--sc)}
 .chgbox .cwhen{flex:0 0 auto;flex-wrap:nowrap}.chgbox .cwhen .t24w{flex:0 0 auto}.chgbox .cwhen .t24w select{flex:0 0 auto;width:66px!important}.chgbox .cwhen .t24w{width:auto;display:inline-flex;flex-wrap:nowrap}
 .chgbox .cwhen .inp{min-height:38px;height:38px;font-size:var(--fs-s);padding:4px 8px;flex:0 0 auto}.chgbox .cwhen>select.inp{width:146px;padding-right:26px;padding-left:6px}.chgbox .cwhen .t24w select{padding-right:22px;padding-left:4px;min-width:0!important}.chgbox .cwhen .t24w input{width:60px!important;padding:4px 2px}@media (max-width:420px){.chgbox .cwhen{gap:4px}.chgbox .cwhen>select.inp{width:136px}.chgbox .cwhen .t24w{gap:4px}}.chgbox .cwhen .t24w input{width:66px}
 .chgbox .nowtag{display:block;font-size:var(--fs-xs);color:var(--accent-ink);font-weight:600}
+#main .hint{display:none}#main details[open] .hint{display:block}
+#pdfv{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+#pdfv .pvbox{background:var(--panel);border-radius:14px;width:min(1000px,100%);height:min(92vh,100%);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.3)}
+#pdfv .pvbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line)}
+#pdfv .pvbtns{display:flex;gap:8px;flex-wrap:wrap}#pdfv .pvnote{margin:0;padding:8px 14px;background:var(--warn-soft,#fff4e0);font-size:var(--fs-s)}
+#pdfv iframe{flex:1;border:0;width:100%;background:#fff}
+@media print{#pdfv{display:none!important}}
 </style>
 </head>
 <body>
@@ -876,8 +904,8 @@ const FLOORS={C3:["S1","S2"],C4:["S1","S2"],C6:["S1","S2","S3"],C7:["S1","S2","S
 function bedOpts(fl,st){
   if(!fl||!st)return[];
   if(fl==="C3"||fl==="C4"){
-    if(st==="S1")return[...range(4).map(i=>["ISO"+i,"ISO "+i]),...range(9).map(i=>[""+i,"Bed "+i])];
-    return range(15).map(i=>[""+(i+9),"Bed "+(i+9)]); // S2 continues the numbering: beds 10–24
+    if(st==="S1")return[...range(4).map(i=>["ISO"+i,"ISO "+i]),...range(9).map(i=>[""+i,"Room "+i])];
+    return range(15).map(i=>[""+(i+9),"Room "+(i+9)]); // S2 continues the numbering: beds 10–24
   }
   // C6 / C7: rooms numbered across the floor – S1 rooms 1–3, S2 rooms 4–6, S3 rooms 7–9 (4 beds each) + isolation rooms
   const r0=ROOM0[st]||0,o=[];for(const r of range(3))for(const b of range(4))o.push([`R${r+r0}-${b}`,`Room ${r+r0} · Bed ${b}`]);
@@ -889,12 +917,12 @@ function bedMigrate(b){const f=b.f;if(b.bedv>=2)return;b.bedv=2;if(!f.bedno)retu
   if((f.floor==="C3"||f.floor==="C4")&&f.station==="S2"&&/^\d+$/.test(f.bedno)&&+f.bedno<=15)f.bedno=String(+f.bedno+9);
   else if((f.floor==="C6"||f.floor==="C7")&&ROOM0[f.station]){const m=/^R([1-3])-(\d)$/.exec(f.bedno);if(m)f.bedno=`R${+m[1]+ROOM0[f.station]}-${m[2]}`}}
 function bedShort(v){if(!v)return"";if(/^ISO\d$/.test(v))return"ISO "+v.slice(3);if(/^ISO-R/.test(v))return"Iso R"+v.slice(5);
-  const m=v.match(/^R(\d)-(\d)$/);if(m)return`R${m[1]} · B${m[2]}`;return"Bed "+v}
+  const m=v.match(/^R(\d)-(\d)$/);if(m)return`R${m[1]} · B${m[2]}`;return"Room "+v}
 function locSort(b){const f=b.f,fl=Object.keys(FLOORS).indexOf(f.floor),st=(FLOORS[f.floor]||[]).indexOf(f.station),
   bi=bedOpts(f.floor,f.station).findIndex(o=>o[0]===f.bedno);return[fl<0?99:fl,st<0?99:st,bi<0?99:bi]}
 const byLoc=(a,b)=>{const x=locSort(a),y=locSort(b);return x[0]-y[0]||x[1]-y[1]||x[2]-y[2]};
 function locLine(b){const f=b.f;return[f.floor,f.station].filter(Boolean).join(" · ")}
-function locFull(b){const f=b.f;return[f.floor,f.station,bedShort(f.bedno)].filter(Boolean).join(" ")||"No bed set"}
+function locFull(b){const f=b.f;return[f.floor,f.station,bedShort(f.bedno)].filter(Boolean).join(" ")||"No room set"}
 
 /* ---------- clinical helpers ---------- */
 const RP={pip:["PIP","cmH₂O"],peep:["PEEP","cmH₂O"],rate:["Rate","/min"],ti:["Ti","s"],vt:["Vt","ml/kg"],map:["MAP","cmH₂O"],amp:["Amplitude","cmH₂O"],hz:["Frequency","Hz"],ie:["I:E",""],flow:["Flow","L/min"],fio2:["FiO₂","%"],ps:["PS","cmH₂O"],phi:["P high","cmH₂O"],plo:["P low","cmH₂O"],thi:["T high","s"]};
@@ -1527,7 +1555,7 @@ function tsbLevel(b,c){const f=b.f,iso=dm2iso(String(c.t||"").slice(0,5)),bd=bir
 // v75: abnormal results red again (Gomella 8e); DSB: cholestasis > 17.1 µmol/L if TSB ≤ 85.5, or > 20 % of TSB if TSB > 85.5 (Ch 98 p 891)
 const LAB_FLAGS=true;
 const NOFLAG=new Set(["tlc","hb","hct","plt","nrbc","retic","crp","pct","pt","aptt","inr","ddim","fib"]);
-function labFlag(b,r,c,v){if(!LAB_FLAGS||(r&&NOFLAG.has(r.k)))return 0;const x=num(v);if(r&&r.dsb&&x!=null){const t=num(c.tsb);return(t!=null&&t>85.5)?(x>0.2*t?1:0):(x>17.1?1:0)}if(r&&r.tsb&&x!=null){const L=tsbLevel(b,c);return L&&x>=L.ph?1:0}if(r&&r.cr&&x!=null)return crFlag(b,c,x);if(!r||!r.r||x==null)return 0;const lim=typeof r.r==="function"?r.r(b,colDol(b,c)):r.r;if(!lim)return 0;return(lim[0]!=null&&x<lim[0])?-1:(lim[1]!=null&&x>lim[1])?1:0}
+function labFlag(b,r,c,v){if(!LAB_FLAGS||(r&&NOFLAG.has(r.k)))return 0;if(!(r&&r.tsb))return 0;const x=num(v);if(r&&r.dsb&&x!=null){const t=num(c.tsb);return(t!=null&&t>85.5)?(x>0.2*t?1:0):(x>17.1?1:0)}if(r&&r.tsb&&x!=null){const L=tsbLevel(b,c);return L&&x>=L.ph?1:0}if(r&&r.cr&&x!=null)return crFlag(b,c,x);if(!r||!r.r||x==null)return 0;const lim=typeof r.r==="function"?r.r(b,colDol(b,c)):r.r;if(!lim)return 0;return(lim[0]!=null&&x<lim[0])?-1:(lim[1]!=null&&x>lim[1])?1:0}
 const SG=(n,m,mo,sv)=>["","N – "+n,"Mild – "+m,"Mod – "+mo,"S – "+sv,"N/A"];
 const SARN_ROWS=[
  {k:"loc",l:"1 · Level of consciousness",o:SG("Alert / arouses appropriately","Hyperalert","Lethargic","Stupor or coma")},
@@ -1612,7 +1640,7 @@ function echoRef(){return `<details class="calcref"><summary>Echo forms – how 
 const SHEETS={echoh:{btn:"+ New exam",empty:"",newT:ddmm},echop:{btn:"+ New exam",empty:"",newT:ddmm},echoph:{btn:"+ New exam",empty:"",newT:ddmm},lus:{btn:"+ New score",empty:"No lung ultrasound scores yet. Tap + New score.",newT:ddmm},sarn:{btn:"+ New hourly exam",empty:"No Sarnat staging yet. Tap + New stage.",newT:ddmm},thomp:{btn:"+ New exam",empty:"No Thompson scores yet. Tap + New score.",newT:ddmm},gases:{btn:"+ New gas",empty:"No gases yet. Tap + New gas.",newT:stamp},inv:{btn:"+ New date",empty:"No results yet. Tap + New date.",newT:ddmm}};
 const sheetRows=(key,b)=>isEchoS(key)?ECHO_SHEETS[key][1]:key==="gases"?GAS_ROWS:key==="lus"?LUS_ROWS:key==="thomp"?THOMP_ROWS:key==="sarn"?SARN_ROWS:[...INV_ROWS,{g:"Special investigations"},{k:"tg",l:"TG",u:"mmol/L",r:[null,2.26],n:"< 2.26"},...b.invx.map(x=>({k:"x_"+x.id,l:x.name,x:x.id}))];
 const INVROW=(b,k)=>sheetRows("inv",b).find(r=>r.k===k);
-const LINE_TYPES=["","UVC","UAC","PICC","Peripheral IV (PIV)","Central line (other)","ETT (oral)","ETT (nasal)","NIV prongs / mask","NG tube","OG tube","Chest drain","Urinary catheter","Surgical drain","Stoma","Other"];
+const LINE_TYPES=["","UVC","UAC","PICC","Peripheral IV (PIV)","Peripheral arterial line (PAL)","Central line (other)","ETT (oral)","ETT (nasal)","NIV prongs / mask","NG tube","OG tube","Chest drain","Urinary catheter","Surgical drain","Stoma","Other"];
 const CONS_TYPES=["","Paediatric surgery","Neurology","Neurosurgery","Haematology","Cardiology","Nephrology","Ophthalmology (ROP)","ENT","Genetics","Metabolic","Endocrine","GI / hepatology","Orthopaedics","Plastic surgery","Urology","Dermatology","Physiotherapy","Nutrition / dietitian","Social work","Palliative care","Other"];
 const IMG_TYPES=["","Cranial US","Abdominal US","Renal US","Hip US","X-ray","CT","MRI","Echo","Other"];
 /* ---------- medicines: units, bases, intervals, suggestions ---------- */
@@ -1696,7 +1724,7 @@ const SECTIONS=[
   H("Location & birth"),
   R(F("floor","Floor","sel",{o:["",...Object.keys(FLOORS)],g:.7,mw:64}),
     F("station","Station","sel",{o:b=>["",...(FLOORS[b.f.floor]||[])],g:.7,mw:64}),
-    F("bedno","Bed","sel",{o:b=>[["","—"],...bedOpts(b.f.floor,b.f.station)],mw:84}),
+    F("bedno","Room","sel",{o:b=>[["","—"],...bedOpts(b.f.floor,b.f.station)],mw:84}),
     F("dob","Date of birth","date",{g:1.4,mw:130}),F("tobt","Time of birth","time",{g:1,mw:110})),
   H("Age"),
   R(F("ga","GA at birth","ga",{g:1.3,mw:150}),
@@ -1705,7 +1733,7 @@ const SECTIONS=[
   R(F("bw","Birth weight","num",{u:"g",mw:76}),F("blen","Birth length","num",{u:"cm",mw:70}),F("bhc","Birth head circ.","num",{u:"cm",mw:70})),
   F("CALC_bcen","Birth centiles (automatic)","calc",{empty:"enter sex, GA, date of birth and a birth measurement",wide:true}),
   F("CALC_curm","Current measurements","calc",{empty:"none yet – enter them in Today → Weight & growth",wide:true}),
-  H("Problems <small>(same boxes as Today → Diagnosis &amp; problems)</small>"),
+  H("Problems"),
   F("dx","Diagnosis","area",{bul:1}),F("cprob","Current problems","area",{bul:1})]},
  {t:"Antenatal history",tab:"background",f:[
   H("Mother"),
@@ -1861,7 +1889,7 @@ const SECTIONS=[
   R(F("cw","Current weight","num",{u:"g",g:1,mw:90}),F("len","Length","num",{u:"cm",g:1,mw:80}),F("hc","Head circ.","num",{u:"cm",g:1,mw:80}),
     F("cwd","Measured on","date",{g:1.1,mw:130})),
   H("Growth"),
-  F("CALC_wage","Weight change","calc",{empty:"previous weight appears here from the next day",span2:true}),
+  F("CALC_wage","Weight change","calc",{empty:"No previous weight",wide:true}),
   F("CALC_ccen","Centiles (automatic)","calc",{empty:"enter weight / length / head circ. (needs sex, GA and date of birth)",wide:true}),
   F("wnote","Growth notes","text",{wide:true,ph:"e.g. weight trend, feeds plan for growth, centile change"})]},
  {t:"Respiratory",tab:"today",lc:"rlog",f:[
@@ -1873,7 +1901,7 @@ const SECTIONS=[
   F("nitric","iNO","sel",{o:["","Not on","On","Weaning","Stopped"],show:noShow}),
   F("nitricppm","iNO dose","num",{u:"ppm",show:noOn}),F("nitricst","iNO started","dtdm",{show:noOn}),
   H("Chest X-ray"),
-  F("cxr","CXR","area",{big:true,ph:"date, findings (e.g. RDS grade, ETT / UVC tip position)"}),
+  F("cxr","CXR","area",{big:true,bul:1,ph:"date, findings (e.g. RDS grade, ETT / UVC tip position)"}),
   F("CALC_xr","Latest X-ray in Imaging list","calc",{empty:"",show:(f,b)=>!!lastXr(b),span2:true}),
   H("Surfactant"),
   F("CALC_surf","Surfactant (earlier day)","calc",{empty:"",show:(f,b)=>surfPast(f,b),span2:true}),
@@ -2012,7 +2040,7 @@ const SECTIONS=[
   F("sep","Sepsis status","sel",{o:["","No concern","EOS risk","Rule-out","Suspected LOS","Proven sepsis","NEC"]}),
   H("Antibiotics"),
   F("abxl","","list",{L:{key:"abx",kind:"dated",stop:true,dose:true,dt:true,ph:["Antibiotic","start"],btn:"+ Antibiotic"}}),
-  H("Cultures &amp; swabs <small>same list as Diagnostics → Labs</small>"),
+  H("Cultures &amp; swabs "),
   F("cults","","list",{L:{key:"cults",kind:"cult",btn:"+ Culture / swab"}}),
   F("cult","Culture notes (sensitivity, repeat cultures)","text",{span2:true}),
   H("Notes"),F("inote","Infection notes","area")]},
@@ -2047,12 +2075,12 @@ const SECTIONS=[
   F("ropactd","Action date","date",{show:ropActed}),
   F("ropwk","Follow-up after","num",{u:"weeks"}),F("CALC_rop","Next exam","calc",{empty:"needs last exam + weeks"}),
   F("rop","ROP notes","text",{span2:true})]},
- {t:"Plan for this shift",tab:"today",f:[],list:{key:"todos",kind:"todo",btn:"+ Task"}},
+ {t:"Plan",tab:"today",f:[],list:{key:"todos",kind:"todo",btn:"+ Task"}},
  {t:"Blood gases",tab:"results",custom:"gases",f:[]},
  {t:"Labs",key:"investigations",tab:"results",f:[
   F("bgp","Blood group","sel",{o:BG}),F("dct","DCT","sel",{o:["","Negative","Positive","Pending"]}),
   F("g6pd","G6PD","sel",{o:["","Normal","Deficient","Pending"]}),
-  H("Cultures &amp; swabs <small>(same list as Today → Infection)</small>"),
+  H("Cultures &amp; swabs "),
   F("cultsR","","list",{L:{key:"cults",kind:"cult",btn:"+ Culture / swab"}})],
   custom:"inv"},
  {t:"Imaging",tab:"results",f:[],list:{key:"img",kind:"img",btn:"+ Imaging"}},
@@ -2096,8 +2124,8 @@ const SECTIONS=[
  {t:"ROP",key:"hrop",tab:"history",custom:"log",log:"roplog",f:[]},
  {t:"Consultations",tab:"history",f:[],list:{key:"cons",kind:"cons",btn:"+ Consultation"}},
  {t:"Status & handover",tab:"handover",status:true,f:[
-  F("watch","If / then (situation awareness)","area",{}),
-  F("family","Parents updated","area"),F("hnote","Other handover notes","area")]}
+  F("watch","If / then (situation awareness)","area",{bul:1}),
+  F("family","Parents updated","area",{bul:1}),F("hnote","Other handover notes","area",{bul:1})]}
 ];
 const secKey=s=>s.key||s.t.split(" ")[0].toLowerCase();
 const TABS=[["background","Background"],["history","History"],["results","Diagnostics"],["today","Today"],["handover","Handover"]];
@@ -2353,6 +2381,12 @@ const allMeds=b=>[...autoMeds(b),...b.meds.filter(x=>x.a).map(x=>({a:medLabel(x)
 const medStr=m=>m.a+(m.day?` (D${m.day})`:"");
 
 /* ---------- small helpers ---------- */
+// previous weight = the last weight on an earlier daily sheet with an earlier "measured on" date
+// every weight is kept by its date (b.wts), so changing the date and typing a new weight keeps the earlier one
+function noteWt(b){const f=b.f,w=num(f.cw);if(w==null||w<200)return;const d=f.cwd||b.dayCur||today();b.wts=b.wts||{};b.wts[d]=String(f.cw)}
+function prevWt(b){const f=b.f,cur=f.cwd||b.dayCur||today(),D=b.days||{};
+  {const W=b.wts||{},k=Object.keys(W).filter(d=>d<cur).sort().pop();if(k)return{w:num(W[k]),d:k}}
+  for(const d of Object.keys(D).filter(d=>d<=(b.dayCur||today())).sort().reverse()){const g=D[d].f||{},w=num(g.cw),dd=g.cwd||d;if(w!=null&&dd<cur)return{w,d:dd}}return null}
 const GAwk=f=>{const w=num(f.gaw);return w==null?null:w+(num(f.gad)||0)/7};
 // first diagnosis line, by gestational age at birth (WHO preterm groups, ACOG/SMFM term groups); micropreemie = informal (GA < 26+0 or BW < 800 g)
 function gaLine(f){const w=num(f.gaw);if(w==null)return"";const d=num(f.gad)||0,t=w*7+d,bw=num(f.bw);
@@ -2466,22 +2500,23 @@ function enhance(root){growify(root);spellify(root);
   (root||document).querySelectorAll('input[type=time]:not([data-enh]),input[type=datetime-local]:not([data-enh]),input[type=date][data-dm]:not([data-enh])').forEach(o=>{
     o.dataset.enh="1";const t=o.type,v=o.value||"",w=document.createElement("span");w.className="t24w";
     if(t==="time")w.innerHTML=tPart(v);
-    else if(t==="date")w.innerHTML=`<input class="inp dm" type="text" inputmode="numeric" maxlength="5" placeholder="dd/mm" autocomplete="off" value="${v?v.slice(8,10)+"/"+v.slice(5,7):""}" aria-label="Date, day/month">`;
-    else if(o.dataset.dm)w.innerHTML=`<input class="inp dm" type="text" inputmode="numeric" maxlength="5" placeholder="dd/mm" autocomplete="off" value="${v?v.slice(8,10)+"/"+v.slice(5,7):""}" aria-label="Date, day/month">`+tPart(v.slice(11,16));
-    else w.innerHTML=`<input class="inp" type="date" value="${esc(v.slice(0,10))}" aria-label="Date">`+tPart(v.slice(11,16));
-    o.style.display="none";o.after(w);o._lc=o.value;
+    else if(t==="date")w.innerHTML=`<span class="dpk"><span class="inp dpt">${v?v.slice(8,10)+"/"+v.slice(5,7):"dd/mm"}</span><input class="inp dpi" type="date" value="${esc(v.slice(0,10))}" aria-label="Date"></span>`;
+    else w.innerHTML=`<span class="dpk"><span class="inp dpt">${v?v.slice(8,10)+"/"+v.slice(5,7):"dd/mm"}</span><input class="inp dpi" type="date" value="${esc(v.slice(0,10))}" aria-label="Date"></span>`+tPart(v.slice(11,16));
+    o.style.display="none";o.before(w);o._w=w;o._lc=o.value;
     // accessibility: the visible boxes get the field's own label (the original input is hidden)
     {const lab=(o.id&&document.querySelector(`label[for="${o.id}"]`))||o.closest("label")||o.closest("th,td")?.querySelector("[aria-label]");
      const name=(o.getAttribute("aria-label")||(lab&&lab.textContent)||"").replace(/\s+/g," ").trim();
      if(name){w.querySelectorAll("input,select").forEach(x=>x.setAttribute("aria-label",name+" – "+(x.classList.contains("t24")?"time":x.classList.contains("ap")?"AM or PM":"date")));
        if(o.id&&lab&&lab.htmlFor===o.id){const v=w.querySelector("input,select");v.id=o.id+"_v";lab.htmlFor=v.id}}}
+    {const di=w.querySelector(".dpi"),dt=w.querySelector(".dpt");if(di){const sync=()=>{dt.textContent=di.value?di.value.slice(8,10)+"/"+di.value.slice(5,7):"dd/mm";dt.classList.toggle("ph",!di.value)};di._sync=sync;sync();
+      di.addEventListener("input",sync);di.addEventListener("change",sync);di.addEventListener("click",()=>{try{di.showPicker&&di.showPicker()}catch(e){}})}}
     const P=[...w.querySelectorAll("input,select")],D=w.querySelector("input[type=date]"),DM=t!=="date"?w.querySelector(".dm"):null,T=w.querySelector(".t24"),A=w.querySelector(".ap");
     const compose=()=>{
-      if(t==="date")return dm2iso(P[0].value);
+      if(t==="date")return D.value;
       const tm=hm12(T.value,A);if(tm===null)return null;
       if(t==="time")return tm;
       if(DM){let d=dm2iso(DM.value);if(d===null)return null;if(!d&&!tm)return"";if(!d){d=today();DM.value=d.slice(8,10)+"/"+d.slice(5,7)}return d+"T"+(tm||"00:00")}
-      let d=D.value;if(!d&&!tm)return"";if(!d){d=today();D.value=d}return d+"T"+(tm||"00:00")};
+      let d=D.value;if(!d&&!tm)return"";if(!d){d=today();D.value=d;D._sync&&D._sync()}return d+"T"+(tm||"00:00")};
     const push=ev=>{const nv=compose();if(ev==="change"&&T&&nv){const tm=t==="time"?nv:nv.slice(11,16);if(tm&&T.value){const h=+tm.slice(0,2);T.value=(h%12||12)+":"+tm.slice(3,5)}}P.forEach(x=>x.classList.toggle("bad",nv===null&&ev==="change"&&!!x.value&&x.type==="text"));if(nv==null)return;
       if(o.value!==nv){o.value=nv;o.dispatchEvent(new Event("input",{bubbles:true}))}
       if(ev==="change"&&o.value!==o._lc){o._lc=o.value;o.dispatchEvent(new Event("change",{bubbles:true}))}};
@@ -2511,7 +2546,7 @@ function renderBeds(){
   $("#beds").innerHTML=v.map(b=>{
     const open=b.todos.filter(t=>!t.x&&t.b).length;
     return `<button class="bed sev-${esc(b.f.status||"")}${b.f.station?" st-"+esc(b.f.station):""}" role="tab" aria-current="${!!(c&&b.id===c.id)}" data-pick="${b.id}">
-      <i class="loc">${esc(locLine(b)||"—")}</i><b${b.f.bedno?' class="loc"':""}>${esc(bedShort(b.f.bedno)||"New baby")}</b>${anyAnom(b.f)?'<span class="anomtag" title="Anomaly on examination">⚠</span>':""}<span class="bnm" title="${esc(b.f.name||"")}">${esc(boName(b.f.name)||"no name")}</span></button>`}).join("")
+      <i class="loc">${esc(locLine(b)||"—")}</i><b${b.f.bedno?' class="loc"':""}>${esc(bedShort(b.f.bedno)||"New baby")}</b><span class="bnm" title="${esc(b.f.name||"")}">${esc(boName(b.f.name)||"no name")}</span></button>`}).join("")
     +`<button class="bed add" data-act="addbaby">+ Baby</button>`
     +(stations().length?`<div class="sep"></div>`:"")
     +stations().map(([k,n])=>`<button class="bed wp" role="tab" data-wp="${k}" aria-current="${S.view===k}"><i>Work plan</i><b>${k.replace("|"," ")}</b><span>${n} ${n>1?"babies":"baby"}</span></button>`).join("");
@@ -2589,10 +2624,9 @@ function listHTML(L,b){
       <input class="inp" type="date" ${a} data-p="d" value="${esc(it.d)}" aria-label="${L.ph[1]} date">
       <div class="day" data-day="${L.key}-${i}">${it.d?"Day "+dayN(it.d):"—"}</div>
       ${L.stop?`<button class="btn ghost sm" data-stop="${L.key}" data-i="${i}">Stop</button>`:"<span></span>"}${del}</div>`;
-    if(L.kind==="glu"){const v=num(it.v),fl=v==null?"":v<2.6?"lo":v>10?"hi":"ok";return `<div class="row glr"><label class="mini nm">Date &amp; time<input class="inp" type="datetime-local" data-dm="1" ${a} data-p="d" value="${esc(it.d)}"></label>
-      <label class="mini">Glucose <span class="unit">mmol/L</span><input class="inp gv ${fl}" type="number" inputmode="decimal" step="any" ${a} data-p="v" value="${esc(it.v)}"></label>
-      <span class="gflag ${fl}" data-gflag="${i}">${fl==="lo"?"Low (&lt; 2.6)":fl==="hi"?"High (&gt; 10)":fl==="ok"?"In range":""}</span>${del}
-      <input class="inp res" ${a} data-p="a" value="${esc(it.a)}" placeholder="Action (if low / high), e.g. D10% 2 ml/kg bolus, GIR ↑, recheck in 1 h" aria-label="Action taken"></div>`}
+    if(L.kind==="glu"){const v=num(it.v),fl=v==null?"":v<2.6?"lo":v>10?"hi":"ok";return `<div class="row glr"><label class="mini nm">Date &amp; time<input class="inp" type="datetime-local" ${a} data-p="d" value="${esc(it.d)}"></label>
+      <label class="mini">Glucose <span class="unit">mmol/L</span><span class="gbox"><input class="inp gv ${fl}" type="number" inputmode="decimal" step="any" ${a} data-p="v" value="${esc(it.v)}"><span class="gflag ${fl}" data-gflag="${i}">${fl==="lo"?"Low (&lt; 2.6)":fl==="hi"?"High (&gt; 10)":fl==="ok"?"In range":""}</span></span></label>${del}
+      <label class="mini gact">Action / comment<input class="inp" ${a} data-p="a" value="${esc(it.a)}" placeholder="e.g. D10% 2 ml/kg bolus, recheck 1 h" aria-label="Action taken"></label></div>`}
     if(L.kind==="bp"){const mp=bpMean(Object.assign({},it,{m:""}));const old=!!it.d&&it.d.slice(0,10)<today()&&(it.s||it.di||it.m);const o=old?oldBP:null;const r=`<div class="row bpr"><label class="mini nm">Date &amp; time<input class="inp" type="datetime-local" data-dm="1" ${a} data-p="d" value="${esc(it.d)}"></label>
       <label class="mini">SBP<input class="inp" type="number" inputmode="numeric" ${a} data-p="s" value="${esc(it.s)}"></label>
       <label class="mini">DBP<input class="inp" type="number" inputmode="numeric" ${a} data-p="di" value="${esc(it.di)}"></label>
@@ -2642,11 +2676,10 @@ function listHTML(L,b){
       <label class="mini">Reported<input class="inp" type="date" ${a} data-p="rd" value="${esc(it.rd)}"></label>${del}
       <textarea class="inp res" ${a} data-p="a" placeholder="Report / findings" aria-label="Report">${esc(it.a)}</textarea></div>`;
     return `<div class="row todo${it.x?" done":""}"><input type="checkbox" ${a} data-p="x" ${it.x?"checked":""} aria-label="Done">
-      <input class="inp" ${a} data-p="a" value="${esc(it.a)}" placeholder="time" list="tasktimes" autocomplete="off" aria-label="Time">
       <textarea class="inp grow" rows="1" ${a} data-p="b" placeholder="Task" aria-label="Task">${esc(it.b)}</textarea>${del}</div>`;
   }).join("");
   const hint="";
-  if(L.kind==="bp")return `${hint}<div class="list">${oldBP.length?`<details class="bpold"><summary>Earlier readings (${oldBP.length}) – before ${dmy(today()).slice(0,5)}, checked against the range for their own date</summary>${oldBP.join("")}</details>`:""}${rows}<button class="addrow" data-add="${L.key}">${L.btn}</button></div>${bpTablesHTML()}`;
+  if(L.kind==="bp")return `${hint}<div class="list">${oldBP.length?`<details class="bpold"><summary>Earlier readings (${oldBP.length})</summary>${oldBP.join("")}</details>`:""}${rows}<button class="addrow" data-add="${L.key}">${L.btn}</button></div>${bpTablesHTML()}`;
   return `${hint}<div class="list">${rows}<button class="addrow" data-add="${L.key}">${L.btn}</button></div>`;
 }
 function sheetHTML(key,title,b){
@@ -2736,7 +2769,7 @@ const renderLogsRaw=b=>{LOGORDER.forEach(k=>renderLog(b,k,k,"No entries yet."));
 function renderAuto(b){const el=$("#automeds");if(!el)return;const m=autoMeds(b);
   el.innerHTML=m.length?m.map(x=>`<li><b>${esc(x.a)}${x.day?`<em>Day ${x.day}</em>`:""}</b><small>${x.src}</small></li>`).join(""):`<li class="empty">Nothing from other sections yet.</li>`}
 // required boxes: shown with * and listed in the summary strip until filled
-const REQ=[["name","Name"],["mrn","ID"],["sex","Sex"],["floor","Floor"],["station","Station"],["bedno","Bed"],["dob","Date of birth"],["tobt","Time of birth"],["gaw","GA"],["bw","Birth weight"]];
+const REQ=[["name","Name"],["mrn","ID"],["sex","Sex"],["floor","Floor"],["station","Station"],["bedno","Room"],["dob","Date of birth"],["tobt","Time of birth"],["gaw","GA"],["bw","Birth weight"]];
 const REQK=new Set(REQ.map(x=>x[0]));
 const missingReq=f=>REQ.filter(([k])=>!String(f[k]??"").trim()).map(x=>x[1]);
 const tabOf=()=>TABS.some(t=>t[0]===S.tab)?S.tab:"today";
@@ -2765,7 +2798,7 @@ function renderBaby(){
   let h=`<div class="sumbar"><div class="sumtop"><div class="sumid"><div class="idpill" id="hId"><span class="sumloc" id="hLoc"></span><h1 id="hName"></h1></div><div class="summeta" id="hMeta"></div></div>
     <div class="sumright"><span class="pill warn" id="hAnom" hidden>⚠ Anomaly</span><span class="pill" id="hSev"></span>${hid?`<span class="pill warn">Empty boxes hidden today</span>`:""}</div></div>
     <div class="tiles" id="hTiles"></div><div id="hReq"></div>
-    <div class="tools"><button class="btn ghost sm" data-act="hideempty" title="Hide boxes with no data for today; they come back tomorrow or when you tap again">${hid?"Show empty boxes":"Hide empty boxes"}</button><button class="btn ghost sm" data-act="foldall">Collapse all</button><button class="btn ghost sm" data-act="openall">Expand all</button><button class="btn ghost sm" data-act="print">Print / PDF</button></div></div>
+    <div class="tools"><button class="btn ghost sm" data-act="hideempty" title="Hide boxes with no data for today; they come back tomorrow or when you tap again">${hid?"Show empty boxes":"Hide empty boxes"}</button><button class="btn ghost sm" data-act="foldall">Collapse all</button><button class="btn ghost sm" data-act="openall">Expand all</button><button class="btn ghost sm" data-act="print">Print</button><button class="btn ghost sm" data-act="pdf">PDF</button></div></div>
   <div class="stick"><nav class="tabs" role="tablist" aria-label="Parts of the baby file">${TABS.map(([k,l])=>`<button type="button" role="tab" data-tab="${k}" aria-selected="${k===tab}">${l}</button>`).join("")}</nav>
   <nav class="jump" aria-label="Go to section">${jumps.map(([k,t],i)=>`<button type="button" data-jump="${k}" title="${esc(t)}"><b>${i+1}</b>${esc(SHORT[k]||t)}</button>`).join("")}</nav></div>${tasksStrip()}<div class="cols">`;
   for(const s of SECTIONS){
@@ -2773,7 +2806,7 @@ function renderBaby(){
     if((s.tab==="today"||s.tab==="history")&&RFSEC[secKey(s)])h+=`<p class="rfline" data-rf="${RFSEC[secKey(s)]}" hidden></p>`;
     if(s.lc&&s.tab!=="today")h+=`<p class="lastchg" data-lc="${s.lc}" hidden></p>`;
     if(s.status)h+=`<div class="grid"><div class="fld wide"><span class="lbl">Illness severity</span><div class="seg">${["Stable","Watcher","Unstable"].map(v=>`<button type="button" class="s-${v}" data-sev="${v}" aria-pressed="${b.f.status===v}">${v}</button>`).join("")}</div></div></div>`;
-    if(s.f.length)h+=(s.custom==="exam"?`<div class="nxbar"><button type="button" class="btn sm" data-act="nxall">✓ All normal</button><small>sets every part not yet filled to Normal (and no dysmorphic features)</small></div>`:"")+`<div class="grid">${s.f.map(d=>fieldHTML(d,b)).join("")}</div>`;
+    if(s.f.length)h+=(s.custom==="exam"?`<div class="nxbar"><button type="button" class="btn sm" data-act="nxall">✓ All normal</button></div>`:"")+`<div class="grid">${s.f.map(d=>fieldHTML(d,b)).join("")}</div>`;
     if(s.custom==="birth")h+=birthHTML();
     if(s.custom==="jaund")h+=`<details class="calcref"><summary>Threshold sources &amp; AAP risk factors</summary>
     <p class="hint"><b>AAP 2022</b> (Kemper et al., Pediatrics 2022, Suppl. Tables 1–4): ≥ 35 wk only, read by completed hour of age at the TSB (1–336 h, plateau after). Escalation of care = exchange level − 34 µmol/L (2 mg/dL).<br>
@@ -2783,7 +2816,7 @@ function renderBaby(){
     if(s.custom==="nutref")h+=`<details class="calcref"><summary>Values used for calculations</summary><p class="hint">Typical values per 100 ml. Brands vary, so check against the products in your unit. The selected milk is highlighted.</p>
     <div class="tblwrap"><table class="sheet ref"><thead><tr><th>Milk</th><th>kcal / 100 ml</th><th>Carbs g / 100 ml</th></tr></thead><tbody>${Object.entries(MILK).map(([n,v])=>`<tr data-milk="${n}"><th scope="row">${n}</th><td>${v.k}</td><td>${v.c.toFixed(1)}</td></tr>`).join("")}</tbody></table></div>
     <p class="hint">IV: dextrose 3.4 kcal/g · amino acids 4 kcal/g · lipid 10 kcal/g.<br>GIR = dextrose % × IVF ml/kg/d ÷ 144. Glucose from feeds = carbs g/kg/d × 1000 ÷ 1440 (mg/kg/min).</p></details>`;
-    if(s.custom==="resp")h+=`<div class="sub subx">Blood gases</div>`+autoBox("AUTO_lastgas","Last 2 gases (Diagnostics tab) – ↑ ↓ = change from the gas before")+`<div class="sub subx">Lung ultrasound</div>`+lusToday(b)+`<div class="grid">${fieldHTML(F("rnote","Respiratory notes","area"))}</div>`;
+    if(s.custom==="resp")h+=`<div class="sub subx">Blood gases</div>`+autoBox("AUTO_lastgas","Last 2 gases")+`<div class="sub subx">Lung ultrasound</div>`+lusToday(b)+`<div class="grid">${fieldHTML(F("rnote","Respiratory notes","area"))}</div>`;
     if(s.custom==="gases")h+=sheetHTML("gases","One column per gas",b);
     if(s.custom==="cvs")h+=`<div data-rev="echo">${autoBox("AUTO_echo","Latest TnECHO (Diagnostics tab)")}</div>`+`<div class="grid">${fieldHTML(F("cnote","CVS notes","area"))}</div>`;
     if(s.custom==="echo")h+=Object.entries(ECHO_SHEETS).map(([k,[t]])=>(b[k].length?`<details class="echofold"${S.echoOpen&&S.echoOpen[k]?" open":""} data-echofold="${k}"><summary>${t} <span>${b[k].length} exam${b[k].length>1?"s":""}</span></summary>${sheetHTML(k,t,b)}</details>`:sheetHTML(k,t,b))+(b[k].length?autoBox("AUTO_"+k,k==="echop"?"PDA size, shunt score & treatment criteria (latest exam)":"Abnormal findings (latest exam)"):"")).join("")+echoRef();
@@ -2865,7 +2898,7 @@ function refresh(){
    setCalc("CALC_pdadrug",pdaMed(f)?pdaDrug(f):null);setCalc("CALC_rf_fl",rfFlHTML(b));{const wt=calc(b).wt;[1,2,3].forEach(i=>setCalc("CALC_ach"+i,acHint(f,"ac"+i,"ac"+i+"l","ac"+i+"m",wt)));setCalc("CALC_rfach",acHint(f,"rf_ac","rf_acl","rf_acm",(num(f.bw)||0)/1000))}setCalc("CALC_rfc_resp",rfCarryHTML(b,["surf"]));setCalc("CALC_rfc_cvs",rfCarryHTML(b,["ino1","ino2","ino3"]));setCalc("CALC_rfc_inf",rfCarryHTML(b,["abx","cult"]));setCalc("CALC_rfc_lines",rfCarryHTML(b,["line1","line2"]));
    document.querySelectorAll("[data-rf]").forEach(el=>{const c=on?rfChips(b,el.dataset.rf):[];el.hidden=!c.length;if(c.length)el.innerHTML=`<b class="t">Before transfer · ${esc(rfHosp(f))}</b>`+c.map(x=>`<span>${esc(x)}</span>`).join("")})}
   setCalc("CALC_admtemp",num(f.admtemp)!=null?(num(f.admtemp)<32?"Severe hypothermia (< 32 °C)":num(f.admtemp)<36?"Moderate hypothermia (32–35.9 °C)":num(f.admtemp)<36.5?"Mild hypothermia (36–36.4 °C)":num(f.admtemp)<=37.5?"Normal (36.5–37.5 °C)":"Hyperthermia (> 37.5 °C)")+" <small>WHO thermal categories</small>":null);
-  {const x=lastXr(b);setCalc("CALC_xr",x?`${esc(x.d?dmy(x.d)+": ":"")}${esc(x.a)} <small>from Diagnostics → Imaging</small>`:null)}
+  {const x=lastXr(b);setCalc("CALC_xr",x?`${esc(x.d?dmy(x.d)+": ":"")}${esc(x.a)}`:null)}
   {const t=labTsb(b);setCalc("CALC_labtsb",t?`${esc(t.v)} µmol/L${t.t?" <small>"+esc(t.t)+"</small>":""}${String(t.v)!==String(f.tsb||"")?` <button type="button" class="btn ghost sm" data-act="usetsb">Use this</button>`:" <small>· same as Last TSB</small>"}`:null)}
   {const r=cchdCalc(f);setCalc("CALC_cchd",r?`<span class="oxchip ${r.c}">${esc(r.t)}</span> <small>${esc(r.why)}</small>`:null)}
   {const L=lastGasN(b,3);setAuto("AUTO_lastgas",L.length?gasBoxes(L[0],L[1],"Latest")+(L[1]?gasBoxes(L[1],L[2],"Previous"):""):"","No gases yet – add them in Diagnostics → Blood gases")}
@@ -2878,9 +2911,8 @@ function refresh(){
    setCalc("CALC_bcen",ch.length?`<div class="vchips">${ch.join("")}${sc?vbox("Size at birth",sc,"",/SGA|LGA/.test(sc)?"hi":"calc"):""}</div>`+(old.length?bullets(["centiles typed before v62: "+old.join(", ")]):""):null)}
   {const t=today(),cw=num(f.cw);let w=null;
    if(cw!=null){const n=f.cwd?daysBetween(f.cwd,t):null;
-     const p=num(f.cwp);w="";
-     if(p!=null&&f.cwpd){const d=Math.round(cw-p),gd=f.cwd?daysBetween(f.cwpd,f.cwd):0;w=`Previous ${p} g on ${dmy(f.cwpd).slice(0,5)} → ${d>0?"+":""}${d} g${gd>1?` over ${gd} days (${d/gd>0?"+":""}${Math.round(d/gd)} g/day)`:""}`}
-     if(n==null)w+=(w?" · ":"")+`<span class="wold">date not set</span>`;else if(n>=2)w+=(w?" · ":"")+`<span class="wold">measured ${n} days ago</span>`;
+     noteWt(b);const pv=prevWt(b),p=pv?pv.w:num(f.cwp),pd=pv?pv.d:f.cwpd;w="";
+     if(p!=null&&pd){const d=Math.round(cw-p);w=d<0?`Decreased ${-d} g from previous weight`:d>0?`Increased ${d} g from previous weight`:"No change from previous weight"}
      if(!w)w=null}
    setCalc("CALC_wage",w);
    {const at=f.cwd||today(),bz=gcOne(f,"w",f.bw,f.dob),ch=[f.cw&&gcChip(f,"w",f.cw,at,"Weight",bz),f.len&&gcChip(f,"l",f.len,at,"Length"),f.hc&&gcChip(f,"h",f.hc,at,"Head circ.")].filter(Boolean);
@@ -3075,9 +3107,9 @@ function renderWP(){
     ${(()=>{const c=calc(b),f=b.f,w=f.cw||f.bw,T=[["GA",c.ga],["PND",c.age!=null?String(c.age):""],["CGA",c.cga],["Weight",w?w+" g":""]].filter(x=>x[1]);return T.length?`<div class="wptiles">${T.map(([k,v])=>`<div><span>${k}</span><b>${esc(String(v).replace(/ wks?$/,""))}</b></div>`).join("")}</div>`:""})()}
     <dl>${wpRows(b).map(([k,v,cl])=>`<dt data-c="${esc(k.split(/[ /]/)[0].toLowerCase())}">${k}</dt><dd class="${cl}">${v.length>1?`<ul class="wpb">${v.map(x=>`<li>${x}</li>`).join("")}</ul>`:v[0]}</dd>`).join("")}</dl>
     <div class="wpfam"><button class="btn ghost sm" data-fam="${b.id}">✓ Parents updated now</button></div>
-    <div class="wptodo"><span class="ttl">Plan for this shift</span>
-    ${b.todos.map((t,i)=>t.b?`<label class="${t.x?"done":""}"><input type="checkbox" data-wl="${b.id}" data-i="${i}" ${t.x?"checked":""}><span class="tm">${esc(t.a||"")}</span><span>${esc(t.b)}</span></label>`:"").join("")}
-    <div class="wpadd"><input class="inp" id="wpt_${b.id}" placeholder="time" list="tasktimes" autocomplete="off" aria-label="Time"><input class="inp" id="wpb_${b.id}" data-wadd="${b.id}" placeholder="Add task" aria-label="New task"><button class="btn ghost sm" data-waddb="${b.id}">Add</button></div></div>
+    <div class="wptodo"><span class="ttl">Plan</span>
+    ${b.todos.map((t,i)=>t.b?`<label class="${t.x?"done":""}"><input type="checkbox" data-wl="${b.id}" data-i="${i}" ${t.x?"checked":""}><span>${esc(t.b)}</span></label>`:"").join("")}
+    <div class="wpadd"><input class="inp" id="wpb_${b.id}" data-wadd="${b.id}" placeholder="Add task" aria-label="New task"><button class="btn ghost sm" data-waddb="${b.id}">Add</button></div></div>
   </article>`).join("")}</div>
   <div class="btns" style="margin-top:14px"><button class="btn" data-act="copywp">Copy work plan</button></div>
   <p class="foot">Built live from each baby's file. Tap a name to open the file; ticking or adding a task here updates the file too.</p>`;
@@ -3086,7 +3118,7 @@ function wpText(b){
   const L=[`${locFull(b)} – ${b.f.name||"NAME MISSING"}${b.f.mrn?" ("+b.f.mrn+")":""} – ${b.f.status||"severity not set"}`];
   const tx=h=>h.replace(/<[^>]+>/g,"").replace(/&amp;/g,"&").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"');
   wpRows(b).forEach(([k,v])=>{if(v.length===1)L.push(`• ${k}: ${tx(v[0])}`);else{L.push(`• ${k}:`);v.forEach(x=>L.push(`   – ${tx(x)}`))}});
-  const open=b.todos.filter(t=>t.b&&!t.x);L.push(`• Plan:${open.length?"":" none open"}`);open.forEach(t=>L.push(`   ☐ ${t.a?t.a+" ":""}${t.b}`));
+  const open=b.todos.filter(t=>t.b&&!t.x);L.push(`• Plan:${open.length?"":" none open"}`);open.forEach(t=>L.push(`   ☐ ${t.b}`));
   return L.join("\n");
 }
 
@@ -3103,7 +3135,7 @@ function sbarLine(l){const sub=/^ {2,}/.test(l),t0=l.trim().replace(/^[•–]\s
   if(sub){const ch=/^Change:/.test(t),tx=t.replace(/^Change:\s*/,"");return `<div class="hl ind${/^☐/.test(t)?" box":""}${ch?" chg":""}">${ch?"↻ ":""}${nb(esc(tx))}</div>`}
   const m=t.match(/^([^:]{1,40}):\s*(.*)$/);if(!m)return `<div class="hl">${nb(esc(t.replace(/\u2063/g,"")))}</div>`;
   const parts=m[2]?splitTop(m[2]):[];
-  return `<div class="hl hk2"><span class="hk">${esc(m[1])}</span>${parts.length>1?`<span class="hv">${parts.map(x=>`<span class="hchip">${nb(esc(x))}</span>`).join("")}</span>`:`<span class="hv">${nb(esc(m[2].replace(/\u2063/g,"")))}</span>`}</div>`}
+  return parts.length>1?`<div class="hl"><span class="hk">${esc(m[1])}:</span></div>${parts.map(x=>`<div class="hl ind">${nb(esc(x))}</div>`).join("")}`:`<div class="hl"><span class="hk">${esc(m[1])}:</span> ${nb(esc(m[2].replace(/\u2063/g,"")))}</div>`}
 function renderSBAR(t){const el=document.getElementById("hoSecs");if(!el)return;const o=sbarParse(t);
   el.innerHTML=`<div class="sbhead">${(()=>{const h=o.head,i=h.indexOf(" – ");return i>0?`<span class="loc">${esc(h.slice(0,i))}</span> – ${esc(h.slice(i+3))}`:esc(h)})()}</div>`+SBAR.map(([k,n])=>`<section class="sb sb-${k}"><header><span class="sbl">${k}</span><b>${n}</b><button type="button" class="btn ghost sm" data-act="copysec" data-sec="${k}">Copy</button></header>${o[k].length?o[k].map(sbarLine).join(""):`<div class="hl empty">Nothing entered.</div>`}</section>`).join("")}
 
@@ -3121,7 +3153,7 @@ function handover(b){
   // S – who, how sick, what is going on now
   L.push("S – SITUATION");
   pt("Baby",j([{M:"male",F:"female",DSD:"DSD"}[f.sex],c.ga&&`GA ${c.ga} wk`,c.cga&&`now CGA ${c.cga} wk`,c.age!=null&&`PND ${c.age}`,
-    f.cw&&`CW ${f.cw} g${f.cwd&&f.cwd<today()?" on "+dmy(f.cwd).slice(0,5):""}${c.wch!=null?` (${c.wch<0?r1(-c.wch)+"% below":c.wch>0?r1(c.wch)+"% above":"at"} BW)`:""}`]));
+    f.cw&&`CW ${f.cw} g${f.cwd&&f.cwd<today()?" on "+dmy(f.cwd).slice(0,5):""}${c.wch!=null?(c.wch>15?` (BW ${f.bw} g)`:` (${c.wch<0?r1(-c.wch)+"% below":c.wch>0?r1(c.wch)+"% above":"at"} BW)`):""}`]));
   pt("Severity",f.status||"not set");
   pt("Current problems","",items(f.cprob));
 
@@ -3172,7 +3204,7 @@ function handover(b){
   // R – what the next team must do / watch
   L.push("R – RECOMMENDATION");
   const open=b.todos.filter(t=>t.b&&!t.x);
-  L.push(`• To do:${open.length?"":" none open"}`);open.forEach(t=>L.push(`   ☐ ${t.a?t.a+" ":""}${t.b}`));
+  L.push(`• To do:${open.length?"":" none open"}`);open.forEach(t=>L.push(`   ☐ ${t.b}`));
   pt("Pending","",[...exPend(f),...cultsWait(b).map(x=>`${cultSite(x)||"Culture"}${isSwab(x)?"":" culture"}${x.d?" (sent "+fmtDT(x.d)+")":""}`),
     ...b.cons.filter(x=>x.t&&!x.rd).map(x=>`${x.t} review`),...b.img.filter(x=>x.t&&!x.a).map(x=>`${x.t} report`),
     f.roplast&&num(f.ropwk)!=null&&`ROP exam ${dmy(addDays(f.roplast,Math.round(num(f.ropwk)*7)))}`,
@@ -3228,8 +3260,30 @@ function printPrep(){
   out.querySelectorAll(".sub").forEach(h=>{let n=h.nextElementSibling,any=false;while(n&&!n.classList.contains("sub")){any=true;n=n.nextElementSibling}if(!any)h.remove()});
   out.querySelectorAll(".grid,.list").forEach(g=>{if(!g.children.length)g.remove()});
   out.querySelectorAll("section.card").forEach(sc=>{sc.classList.remove("folded");if(!sc.querySelector(".fld,.row,li,table"))sc.remove()});
-  const b=cur(),wrap=document.createElement("div");wrap.id="printout";
-  wrap.innerHTML=`<div class="ph"><b>${esc(b.f.name||"New baby")}${b.f.mrn?" · "+esc(b.f.mrn):""}</b><span>${esc(locFull(b))} · ${esc(dmy(today()))} · printed ${esc(fmtD(new Date()))}</span></div>`;
+  // growth boxes are printed once, in Patient data at the top (measurement + centile, no chart name)
+  ["CALC_bcen","CALC_ccen","CALC_curm","CALC_age","CALC_cga","CALC_wage"].forEach(id=>out.querySelector("#"+id)?.closest(".fld")?.remove());
+  out.querySelector(".para.gab")?.closest(".fld")?.remove();
+  ["name","mrn","sex","dob","ga","gad","bw","blen","bhc","dx","cw","len","hc","cwd","floor","station","bedno"].forEach(k=>out.querySelectorAll(`[for="f_${k}"],#f_${k}`).forEach(x=>x.closest(".fld")?.remove()));
+  out.querySelectorAll(".chgbox").forEach(x=>{if(!x.textContent.trim())x.remove()});
+  out.querySelectorAll(".sub small").forEach(x=>x.remove());out.querySelectorAll(".sub").forEach(h=>{h.textContent=h.textContent.replace(/\s*\(.*\)\s*$/,"")});
+  out.querySelectorAll(".frow").forEach(r=>{if(!r.querySelector(".fld"))r.remove()});
+  out.querySelectorAll(".sub").forEach(h=>{let n=h.nextElementSibling,any=false;while(n&&!n.classList.contains("sub")){any=true;n=n.nextElementSibling}if(!any)h.remove()});
+  out.querySelectorAll("section.card").forEach(sc=>{if(!sc.querySelector(".fld,.row,li,table"))sc.remove()});
+  // no growth-chart names anywhere in the print
+  {const w=document.createTreeWalker(out,NodeFilter.SHOW_TEXT);let n;const RX=/\s*(?:[,·(–-]\s*)?(?:WHO(?: 2006)?|Fenton(?: 2013)?|INTERGROWTH[- ]?21(?:st)?)\)?/g;while(n=w.nextNode())if(RX.test(n.nodeValue)){RX.lastIndex=0;n.nodeValue=n.nodeValue.replace(RX,"")}}
+  const b=cur(),f=b.f,cc=calc(b),wrap=document.createElement("div");wrap.id="printout";
+  const cen=(m,v,at)=>{const r=gcOne(f,m,v,at);return r&&!r.err?`${r.txt} centile`:""};
+  const ms=(lab,v,u,m,at,extra)=>v?`<li><span class="k">${lab}:</span> <b>${esc(v)} ${u}</b>${cen(m,v,at)?` – ${esc(cen(m,v,at))}`:""}${extra?" "+esc(extra):""}</li>`:"";
+  const sz=sizeCat(gcOne(f,"w",f.bw,f.dob));
+  const pv=prevWt(b),wch=(()=>{const cw=num(f.cw);if(cw==null||!pv)return"";const d=Math.round(cw-pv.w);return d<0?`(decreased ${-d} g from previous weight)`:d>0?`(increased ${d} g from previous weight)`:"(no change from previous weight)"})();
+  const line=(k,v)=>v?`<li><span class="k">${k}:</span> <b>${esc(v)}</b></li>`:"";
+  const dxL=String(f.dx||"").split("\n").map(x=>x.replace(/^[•\-–]\s*/,"").trim()).filter(Boolean);
+  wrap.innerHTML=`<div class="ph"><b>${esc(f.name||"New baby")}${f.mrn?" · "+esc(f.mrn):""}</b><span>${esc(locFull(b))} · ${esc(dmy(today()))} · printed ${esc(fmtD(new Date()))}</span></div>
+  <section class="pdata"><h2>Patient data</h2><div class="pdcols">
+   <ul><li class="h">Baby</li>${line("Sex",f.sex)}${line("Date of birth",f.dob?dmy(f.dob):"")}${line("GA at birth",cc.ga)}${line("Age (PND)",cc.age!=null?cc.age+" days":"")}${line("CGA / PMA",cc.cga)}${line("Severity",f.status)}</ul>
+   <ul><li class="h">At birth</li>${ms("Weight",f.bw,"g","w",f.dob,sz?"· "+sz:"")}${ms("Length",f.blen,"cm","l",f.dob)}${ms("Head circ.",f.bhc,"cm","h",f.dob)}</ul>
+   <ul><li class="h">Now${f.cwd?" ("+esc(dmy(f.cwd).slice(0,5))+")":""}</li>${ms("Weight",f.cw,"g","w",f.cwd||today(),wch)}${ms("Length",f.len,"cm","l",f.cwd||today())}${ms("Head circ.",f.hc,"cm","h",f.cwd||today())}</ul>
+  </div>${dxL.length?`<ul class="pdx"><li class="h">Diagnosis / problems</li>${dxL.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}</section>`;
   wrap.appendChild(out);document.body.appendChild(wrap);
 }
 document.addEventListener("input",e=>{if(e.target.tagName==="TEXTAREA")autoGrow(e.target)},true);
@@ -3260,17 +3314,82 @@ function prName(wp){const b=wp?null:cur(),n=wp?"Work-plan-"+String(S.view||"").r
 async function prShare(wp){const html=printHTML(wp),name=prName(wp),file=new File([html],name,{type:"text/html"});
   if(navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:name});return}catch(e){if(e&&e.name==="AbortError")return}}
   const u=URL.createObjectURL(file),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),60000);toast("File saved – open it to print or save as PDF")}
+/* ---------- PDF file (works also in the installed app, where Print does not open) ---------- */
+const PDF_MAP={"→":"->","←":"<-","↑":"(up) ","↓":"(down) ","≥":">=","≤":"<=","₂":"2","₃":"3","₄":"4","☐":"[ ]","☑":"[x]","⚠":"!","◦":"-","✓":"v","−":"-","Δ":"delta ","α":"a","β":"b","≈":"~","↻":"","⇪":"","⇩":"","⁣":"","​":""};
+const CP1252={0x20AC:0x80,0x201A:0x82,0x192:0x83,0x201E:0x84,0x2026:0x85,0x2020:0x86,0x2021:0x87,0x2C6:0x88,0x2030:0x89,0x160:0x8A,0x2039:0x8B,0x152:0x8C,0x17D:0x8E,0x2018:0x91,0x2019:0x92,0x201C:0x93,0x201D:0x94,0x2022:0x95,0x2013:0x96,0x2014:0x97,0x2DC:0x98,0x2122:0x99,0x161:0x9A,0x203A:0x9B,0x153:0x9C,0x17E:0x9E,0x178:0x9F};
+const pdfTxt=s=>String(s).replace(/[→←↑↓≥≤₂₃₄☐☑⚠◦✓−Δαβ≈↻⇪⇩⁣​]/g,c=>PDF_MAP[c]).replace(/\s+/g," ").trim();
+function pdfEnc(s){let o="";for(const ch of s){let c=ch.codePointAt(0);if(c>255)c=CP1252[c]||0x3F;const x=String.fromCharCode(c);o+=x==="("||x===")"||x==="\\"?"\\"+x:x}return o}
+// lines from the print layout: [kind, text] — kind h1 title, h2 section, h3 part, li bullet, ind sub-line
+function pdfLines(){printPrep();const P=$("#printout");if(!P)return[];P.style.cssText="display:block;position:absolute;left:-10000px;top:0;width:760px";
+  P.querySelectorAll(".req,.bpref,.bplab,.bplim,.bpnow,.mhint,details>summary,.log li:nth-last-child(n+5)").forEach(x=>x.remove());
+  P.querySelectorAll("[data-sheet] table.sheet tr").forEach(r=>[...r.children].forEach((c,i,a)=>{if(i>0&&i<a.length-4)c.remove()}));
+  P.querySelectorAll(".vchip,.hchip,.oxchip,.cbul li,.auto li").forEach(x=>x.append(" · "));P.querySelectorAll(".vchip small,.vhead").forEach(x=>x.append(" "));
+  const L=[],T=e=>pdfTxt(e.innerText||e.textContent||"");
+  const ph=P.querySelector(".ph");if(ph){L.push(["h1",T(ph.querySelector("b"))]);L.push(["meta",T(ph.querySelector("span"))])}
+  const pd=P.querySelector(".pdata");if(pd){L.push(["h2","Patient data"]);pd.querySelectorAll("li").forEach(li=>L.push([li.classList.contains("h")?"h3":"li",T(li)]))}
+  P.querySelectorAll(".cols>section.card").forEach(sc=>{const h=sc.querySelector("h2");L.push(["h2",h?T(h):""]);
+    const walk=el=>{for(const c of el.children){if(c.tagName==="H2"||c.matches("button,.hint"))continue;
+      if(c.classList.contains("sub")){const t=T(c);if(t)L.push(["h3",t]);continue}
+      if(c.classList.contains("fld")){const lb=c.querySelector(":scope>label,:scope>.lbl"),lt=lb?T(lb).replace(/:$/,""):"";
+        const rest=c.cloneNode(true);rest.querySelector(":scope>label,:scope>.lbl")?.remove();
+        if(c.querySelector("table,.list,.log,.auto,ul")){if(lt)L.push(["li",lt+":"]);const box=document.createElement("div");P.appendChild(box);box.appendChild(rest);walkIn(rest);box.remove();continue}
+        const parts=(rest.innerText||rest.textContent||"").split("\n").map(pdfTxt).filter(Boolean);
+        if(parts.length>1&&(!lt||parts.every(p=>p.length<6)))parts.splice(0,parts.length,parts.join(" "));
+        parts.forEach((p,i)=>parts[i]=p.replace(/(\s*·\s*)+$/,"").replace(/(\s*·\s*){2,}/g," · "));
+        if(parts.length<=1)L.push(["li",(lt?lt+": ":"")+(parts[0]||"")]);else{L.push(["li",lt+":"]);parts.forEach(p=>L.push(["ind",p]))}continue}
+      if(c.tagName==="TABLE"){c.querySelectorAll("tr").forEach(r=>{const cells=[...r.children].filter(x=>getComputedStyle(x).display!=="none").map(T).filter(Boolean);if(cells.length)L.push(["ind",cells.join("  |  ")])});continue}
+      if(c.tagName==="LI"||c.classList.contains("row")){const t=T(c).replace(/(\s*·\s*)+$/,"").replace(/(\s*·\s*){2,}/g," · ");if(t)L.push(["ind",t]);continue}
+      if(c.children.length)walk(c);else{const t=T(c);if(t)L.push(["ind",t])}}};
+    const walkIn=el=>walk(el);walk(sc)});
+  P.remove();return L.filter(([k,t])=>t)}
+function pdfBuild(lines){
+  const W=595,H=842,M=36,cv=document.createElement("canvas").getContext("2d");
+  const ST={h1:[13,1,[0,0,0],17],meta:[8,0,[.35,.35,.35],12],h2:[10.5,1,[.04,.42,.46],15],h3:[8.5,1,[.2,.2,.2],12],li:[8.5,0,[0,0,0],11],ind:[8.5,0,[.1,.1,.1],11]};
+  const wid=(t,sz,bo)=>{cv.font=`${bo?"bold ":""}${sz}px Helvetica, Arial, sans-serif`;return cv.measureText(t).width};
+  const pages=[];let ops=[],y=H-M;const np=()=>{if(ops.length)pages.push(ops.join("\n"));ops=[];y=H-M};
+  const put=(x,t,sz,bo,c)=>ops.push(`BT /${bo?"F2":"F1"} ${sz} Tf ${c.join(" ")} rg ${x.toFixed(1)} ${y.toFixed(1)} Td (${pdfEnc(t)}) Tj ET`);
+  lines.forEach(([k,t])=>{const [sz,bo,c,ld]=ST[k];const x0=M+(k==="li"?10:k==="ind"?20:0),mw=W-M-x0,bul=k==="li"?"•":k==="ind"?"-":"";
+    if(k==="h2"){y-=5;if(y<M+60)np()}
+    const words=t.split(" "),rows=[];let cur="";words.forEach(w=>{const tr=cur?cur+" "+w:w;if(wid(tr,sz,bo)>mw&&cur){rows.push(cur);cur=w}else cur=tr});if(cur)rows.push(cur);
+    rows.forEach((r,i)=>{if(y<M+ld)np();y-=ld;if(i===0&&bul)put(x0-9,bul,sz,1,k==="li"?[.04,.42,.46]:[.4,.4,.4]);put(x0,k==="h2"||k==="h3"?r.toUpperCase():r,sz,bo,c)});
+    if(k==="h2")ops.push(`0.6 0.75 0.77 RG 0.6 w ${M} ${(y-3).toFixed(1)} m ${W-M} ${(y-3).toFixed(1)} l S`),y-=4;
+    if(k==="h1"){ops.push(`0 0 0 RG 1 w ${M} ${(y-16).toFixed(1)} m ${W-M} ${(y-16).toFixed(1)} l S`)}});
+  np();
+  const objs=[],add=s=>{objs.push(s);return objs.length};
+  const cat=add(""),pgs=add(""),f1=add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>"),f2=add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+  const kids=pages.map((c,i)=>{const s=c+`\nBT /F1 7 Tf 0.45 0.45 0.45 rg ${W-M-40} 20 Td (Page ${i+1} / ${pages.length}) Tj ET`;const cs=add(`<< /Length ${s.length} >>\nstream\n${s}\nendstream`);
+    return add(`<< /Type /Page /Parent ${pgs} 0 R /MediaBox [0 0 ${W} ${H}] /Resources << /Font << /F1 ${f1} 0 R /F2 ${f2} 0 R >> >> /Contents ${cs} 0 R >>`)});
+  objs[cat-1]=`<< /Type /Catalog /Pages ${pgs} 0 R >>`;objs[pgs-1]=`<< /Type /Pages /Kids [${kids.map(k=>k+" 0 R").join(" ")}] /Count ${kids.length} >>`;
+  let out="%PDF-1.4\n%\xE2\xE3\xCF\xD3\n";const off=[];objs.forEach((o,i)=>{off.push(out.length);out+=`${i+1} 0 obj\n${o}\nendobj\n`});
+  const xr=out.length;out+=`xref\n0 ${objs.length+1}\n0000000000 65535 f \n`+off.map(o=>String(o).padStart(10,"0")+" 00000 n \n").join("")+`trailer\n<< /Size ${objs.length+1} /Root ${cat} 0 R >>\nstartxref\n${xr}\n%%EOF`;
+  const u=new Uint8Array(out.length);for(let i=0;i<out.length;i++)u[i]=out.charCodeAt(i)&255;return u}
+// inside a preview window (e.g. a file opened inside another app) printing and saving are blocked by that app:
+// show the PDF on the page with a Download button instead
+const inFrame=(()=>{try{return window.self!==window.top}catch(e){return true}})();
+function pdfView(file,name){$("#pdfv")?.remove();const u=URL.createObjectURL(file),el=document.createElement("div");el.id="pdfv";el.setAttribute("role","dialog");
+  el.innerHTML=`<div class="pvbox"><div class="pvbar"><b>${esc(name)}</b><span class="pvbtns"><a class="btn" href="${u}" download="${esc(name)}" target="_blank" rel="noopener">Download PDF</a><a class="btn ghost" href="${u}" target="_blank" rel="noopener">Open in new tab</a><button type="button" class="btn ghost" data-pv="close">Close</button></span></div>
+  ${inFrame?`<p class="pvnote">This preview blocks printing and saving. Open the file in Safari or Chrome (or the installed app) to print or save the PDF.</p>`:""}<iframe title="Print layout"></iframe></div>`;
+  {const fr=el.querySelector("iframe");try{fr.srcdoc=printHTML(false)}catch(e){fr.src=u}}
+  el.addEventListener("click",e=>{if(e.target.closest("[data-pv=close]")||e.target===el){el.remove();setTimeout(()=>URL.revokeObjectURL(u),1000)}});document.body.appendChild(el)}
+async function makePDF(){let bytes;try{bytes=pdfBuild(pdfLines())}catch(e){$("#printout")?.remove();toast("PDF could not be made");return}
+  const name=prName(false).replace(/\.html$/,".pdf"),file=new File([bytes],name,{type:"application/pdf"});
+  if(inFrame)return pdfView(file,name);
+  // computer (Chrome / Edge): "Save as" window to choose the folder
+  if(typeof window.showSaveFilePicker==="function"){try{const h=await window.showSaveFilePicker({suggestedName:name,types:[{description:"PDF",accept:{"application/pdf":[".pdf"]}}]});
+    const w=await h.createWritable();await w.write(file);await w.close();toast("PDF saved to the folder you chose");return}catch(e){if(e&&e.name==="AbortError")return}}
+  // iPhone / iPad / Android: share sheet → Save to Files (choose the folder there)
+  const touch=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  if(touch&&navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:name});return}catch(e){if(e&&e.name==="AbortError")return}}
+  const u=URL.createObjectURL(file),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),60000);toast("PDF saved to Downloads",3000)}
 function prFallback(wp){$("#prfb")?.remove();const el=document.createElement("div");el.id="prfb";el.setAttribute("role","dialog");el.setAttribute("aria-modal","true");
-  el.innerHTML=`<div class="prbox"><h3>Print did not open</h3><p>This phone does not allow printing from inside the installed app. Make a print file instead, then:</p>
-  <ul><li><b>iPhone / iPad:</b> Save to Files (or send by WhatsApp / AirDrop / email) → open the file → Share → <b>Print</b>. In the print screen, pinch out on the preview to save it as a PDF.</li>
-  <li><b>Android:</b> open the file in Chrome → ⋮ → Share → <b>Print</b> (or Save as PDF).</li>
-  <li>Or open this app in Safari / Chrome (not from the home-screen icon) and press Print there.</li></ul>
+  el.innerHTML=`<div class="prbox"><h3>Print did not open</h3><ul><li><b>iPad:</b> press <b>Save PDF</b> → <b>Save to Files</b> → choose the folder.</li>
+  <li><b>Computer:</b> press <b>Save PDF</b> → choose the folder.</li></ul>
   <p class="prwarn"><b>Patient data warning:</b> the print file is <b>not password-locked</b>. Anyone who receives it can read it. Send it only to yourself (Files / AirDrop to your own device), not to groups, and delete it after printing.</p>
-  <div class="prbtns"><button type="button" class="btn" data-prf="share">Share / save print file</button><button type="button" class="btn ghost" data-prf="again">Try Print again</button><button type="button" class="btn ghost" data-prf="close">Close</button></div></div>`;
+  <div class="prbtns">${wp?"":`<button type="button" class="btn" data-prf="pdf">Save PDF</button>`}<button type="button" class="btn ghost" data-prf="share">Share / save print file</button><button type="button" class="btn ghost" data-prf="again">Try Print again</button><button type="button" class="btn ghost" data-prf="close">Close</button></div></div>`;
   el.addEventListener("click",e=>{const t=e.target.closest("[data-prf]");if(!t){if(e.target===el)el.remove();return}
-    const k=t.dataset.prf;if(k==="close")el.remove();else if(k==="share")prShare(wp);else{el.remove();doPrint(wp,true)}});
+    const k=t.dataset.prf;if(k==="close")el.remove();else if(k==="pdf"){el.remove();makePDF()}else if(k==="share")prShare(wp);else{el.remove();doPrint(wp,true)}});
   document.body.appendChild(el)}
-function doPrint(wp,again){printFired=false;
+function doPrint(wp,again){if(inFrame&&!wp)return makePDF();printFired=false;
   if(wp)document.body.classList.add("pwp");else printPrep();
   try{window.print()}catch(e){}
   setTimeout(()=>{if(!printFired){$("#printout")?.remove();document.body.classList.remove("pwp");prFallback(wp)}},again?1500:1000)}
@@ -3322,7 +3441,7 @@ main.addEventListener("input",e=>{
   if(el.dataset.tq!=null){const b=cur(),t=b&&b.todos[+el.dataset.tq];if(t){t.x=el.checked;save(b);render()}return}
   const b=cur();if(!b||S.view)return;
   if(el.dataset.cht){const v=setCht(b,el.dataset.cht,el.value);
-    if(v&&v!==el.value.slice(0,16)){el.value=v;const dm=el.nextElementSibling&&el.nextElementSibling.querySelector(".dm");if(dm)dm.value=v.slice(8,10)+"/"+v.slice(5,7)}
+    if(v&&v!==el.value.slice(0,16)){el.value=v;const d=el._w&&el._w.querySelector("input[type=date]");if(d){d.value=v.slice(0,10);d._sync&&d._sync()}}
     save(b);renderLogsRaw(b);refresh();return}
   if(el.dataset.k){
     const k=el.dataset.k;const old=b.f[k];b.f[k]=el.value;delete b.example;if(k==="tot"||k==="ivf"||k==="fmlkg")fluidSync(b,k);if(/^(dex|girt|ivf|lip|ftype|tot|fmlkg)$/.test(k))girSync(b,k);if(/^rf_(tot|ivfv|fmlkg|dex|girt|ftype)$/.test(k))rfFluidSync(b,k);
@@ -3567,7 +3686,7 @@ document.addEventListener("change",e=>{if(e.target.id!=="restoreIn")return;recei
 document.addEventListener("dragover",e=>{if(e.dataTransfer&&[...e.dataTransfer.types].includes("Files"))e.preventDefault()});
 document.addEventListener("drop",e=>{const f=e.dataTransfer&&e.dataTransfer.files[0];if(f){e.preventDefault();receive(f)}});
 main.addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.dataset.wadd){e.preventDefault();addWP(e.target.dataset.wadd)}});
-function addWP(id){const b=byId(id),inp=$("#wpb_"+id),tm=$("#wpt_"+id);if(!inp.value.trim())return;if(/^now$/i.test(tm.value.trim())){const n=nowAt();tm.value=to12(pad(n.getHours())+":"+pad(n.getMinutes()))}b.todos.push({a:tm.value.trim(),b:inp.value.trim(),x:false});save(b);render();$("#wpb_"+id)?.focus()}
+function addWP(id){const b=byId(id),inp=$("#wpb_"+id);if(!inp.value.trim())return;b.todos.push({a:"",b:inp.value.trim(),x:false});save(b);render();$("#wpb_"+id)?.focus()}
 let armTimer;
 function arm(el,msg){if(el.classList.contains("arm"))return true;el.classList.add("arm");clearTimeout(armTimer);armTimer=setTimeout(()=>el.classList.remove("arm"),3000);toast(msg);return false}
 document.addEventListener("click",e=>{
@@ -3588,6 +3707,7 @@ document.addEventListener("click",e=>{
   if(a==="pwforget"){setPw("");toast("Password forgotten – you will be asked next time");return}
   if(a==="foldall"||a==="openall"){FOLDKEYS.forEach(k=>S.fold[k]=a==="foldall");save();render();return}
   if(a==="print"){doPrint(false);return}
+  if(a==="pdf"){makePDF();return}
   if(a==="printwp"){doPrint(true);return}
   if(a==="addbaby"){const nb=blank();S.babies.push(nb);S.cur=nb.id;S.view=null;S.tab="background";save(nb);render();window.scrollTo(0,0);$("#f_name")?.focus();return}
   if(a==="copywp"){const [fl,st]=S.view.split("|");return copy(`WORK PLAN – ${fl} ${st} – ${dmy(today())}\n\n`+visible().filter(b=>b.f.floor===fl&&b.f.station===st).map(wpText).join("\n\n"))}
