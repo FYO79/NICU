@@ -982,3 +982,20 @@ index.html · sw.js (nicu-duty-v126) · manifest.webmanifest · README-v2.md
 
 ### Files in this version
 index.html · sw.js (nicu-duty-v127) · manifest.webmanifest · README-v2.md
+
+## Update 104 (sw v128)
+- **Daily sheets:** anything entered on an earlier date (caffeine, surfactant, inotropes, all Today boxes) now carries forward to the later days that had not changed it.
+- **Obstetric & labour:** new "Maternal history (previous admissions, other relevant data)" box (bullets); Pregnancy and Para on one line; antenatal steroids on one line – Given/None/Unknown · Regimen · Doses given · Date & time · Course status (repeat course the same line); first-dose date box removed.
+- MgSO₄ started: date only.
+- Maternal investigations: HVS (GBS) · Antibiotic · Antibiotic date (no time, no number of doses); HVS other organisms moved to Extra investigations; Urine culture – date + result (organism suggestions incl. Candida growth).
+- Extra investigations: choose the investigation → Date (no time) + Result with organism suggestions.
+- Delayed cord clamping: "No" → "Not done".
+- Size at birth: SGA (< 10th centile), AGA (10th–90th centile), LGA (> 90th centile).
+- Bullet points in: Others (antenatal), Fluid & feed plan, Respiratory / CVS / Abdomen / Neuro / Infection notes, Culture notes, Bedside cranial US, Echo findings, X-ray, Growth and Examination notes.
+- Weight: change from the previous weight; from birth weight only when no weight was entered before.
+- Work plan: Age = GA · PND · CGA.
+- Last labs (work plan, handover): grouped – CBC & infection, Coagulation, RFT & electrolytes, LFT & bone, Cardiac, Special.
+- PDF: a PDF window opens with Save PDF (iPad: Save to Files → choose folder; Chrome/Edge: choose folder; Safari Mac: Downloads) and Open PDF.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v128) · manifest.webmanifest · README-v2.md
