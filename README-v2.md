@@ -1114,3 +1114,12 @@ index.html · sw.js (nicu-duty-v141) · manifest.webmanifest · README-v2.md
 
 ### Files in this version
 index.html · sw.js (nicu-duty-v142) · manifest.webmanifest · README-v2.md
+
+## Update 119 (sw v143)
+- **Daily round (A3)** – new view (Work plan → "Daily round (A3)", or the baby's "Daily round (A3)" button). Same layout as the unit's round endorsement sheet (A3 landscape): Unit census pages (4 beds per page: bed, name/MRN, CGA/PND, weight, resp support, feeds/IVF, main issue/pending/plan, status), then one page per baby (patient, diagnosis & problems, respiratory with mode ticks, settings, 2 blood gases, X-ray, respiratory notes, cardiovascular, PDA/echo, CNS, infection & lines, fluids/renal/feeds, blood sugars, UOP, abdomen, 2 lab sets, current medications, plan) – all filled automatically from the form. Long text shrinks to fit its box. **Print (A3)** prints it; **Save file** gives a file to open in Safari / Chrome and print (iPad app).
+- Scrolling strip: B/O + first name + first letters of the 2nd and 3rd names, no ID, larger text.
+- Dates: on a sheet date, a date after that day cannot be entered (e.g. sheet 11/10 → transfer 12/10 refused; the calendar stops at the sheet date). Planned dates (syndrome work-up, ROP action) are allowed.
+- Earlier dates no longer show data from later dates: a date with no sheet starts empty (it no longer copies a later day), Background / admission / readmission boxes filled on a later date (or dated later) are hidden on earlier dates, and list rows and History entries dated later are not shown. Everything comes back on the later dates.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v143) · manifest.webmanifest · README-v2.md
