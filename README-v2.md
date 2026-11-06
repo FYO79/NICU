@@ -1059,3 +1059,58 @@ index.html · sw.js (nicu-duty-v135) · manifest.webmanifest · README-v2.md
 
 ### Files in this version
 index.html · sw.js (nicu-duty-v136) · manifest.webmanifest · README-v2.md
+
+## Update 113 (sw v137)
+- Scrolling down: when the top part hides, a slim strip shows the room, baby's name, ID and severity above the tabs.
+- Typing in long text boxes no longer makes the page jump up (e.g. "Other events at the referring hospital").
+- Referring hospital course: bullet points in Echo, Details (Resp, Fluids, Infection, Lines, Neuro), Other events (CVS, Abdomen & renal, Other); "Referring hospital – other details" in bullets.
+  - Other cardiovascular medications: each drug on its own row with dose, unit, per, interval, route, start.
+  - Neuro: Seizures and Anticonvulsant (loading, maintenance, interval) on one line; the cooling box is shown only if it was filled before.
+  - Blood culture: result box (organism suggestions).
+  - New parts: **Investigations there** (blood gases, CBC & CRP with date, coagulation with date, profile, swabs / other cultures, imaging), **Medications given there** (one row per drug), **Consultations there**. All appear in the handover "Before transfer" summary.
+- Syndrome work-up: a date box (no time) beside each item.
+- Birth → Admission: **+ Transferred out & readmitted** – transferred out on (date), to hospital, reason / intervention, readmitted on (date & time), from, time away, course at the other hospital (bullets). Shown in the handover "Admitted" line.
+- **Surgical notes** section in Today, shown automatically when a diagnosis / current problem is surgical (e.g. laparotomy, NEC perforation, atresia, gastroschisis, CDH, stoma, ligation, shunt, post-op…): operation, date, post-op day, surgeon / team, operative findings, drains / stoma / wound, surgical plan, surgical team notes (bullets). In handover and work plan.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v137) · manifest.webmanifest · README-v2.md
+
+## Update 114 (sw v138)
+- Birth: the Cord & admission blood gases table now comes before the Admission part (Apgar → blood gases → Admission).
+
+### Files in this version
+index.html · sw.js (nicu-duty-v138) · manifest.webmanifest · README-v2.md
+
+## Update 115 (sw v139)
+- **Admission** is now its own section in Background, below Newborn examination (Patient · Antenatal · Birth · Exam · Admission · Referral): admission date & time, from, hospital, temperature + check, age at transfer, reason, transfer out & readmission, referring hospital other details.
+- Birth: Apgar → Cord & admission blood gases → Hepatitis B part.
+- History tab: new first card **Admission & transfers** – admitted (date, from, age), temperature, reason, transferred out, readmitted (time away), course at the other hospital.
+- SBAR Background and work plan: the line is now called **Admission** (with transfer out / readmission), followed by the course at the other hospital.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v139) · manifest.webmanifest · README-v2.md
+
+## Update 116 (sw v140)
+- Blood glucose: each reading on one line – Date & time · Glucose (with Low / High / In range) · Action / comment · ×. (On iPad / phone the action moves under.)
+- Weight & growth: Measurements (weight, length, head circ., measured on) → Centiles → Growth (weight change, growth notes).
+- Respiratory: Respiratory notes box directly after Respiratory support (after its Change box).
+- Fluids: Glucose ordered as GIR · Dextrose % · Dextrose % for this GIR on one line.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v140) · manifest.webmanifest · README-v2.md
+
+## Update 117 (sw v141)
+- Work plan → Plan: each task now uses the full line (the empty time column was squeezing the text); the "Add task" box is full width.
+
+### Files in this version
+index.html · sw.js (nicu-duty-v141) · manifest.webmanifest · README-v2.md
+
+## Update 118 (sw v142)
+- Respiratory: Blood gases (last 2) directly under Respiratory support, then Respiratory notes, CXR, surfactant, lung US.
+- Cardiovascular: Blood pressure → Inotropes → PDA (with PDA treatment) → Other cardiovascular medications → Echo.
+- Medications: the Change / DC box starts at the beginning of the line; drugs with a loading dose look like the other medicines – one line: Loading dose · Maintenance dose · Unit · Per · Interval · Route · Dose to give.
+- Referring hospital: a time box for each surfactant dose (Dose 1 / 2 / 3, carried to Today); Lowest glucose on the IV fluid line; Profile as separate boxes like CBC (date, Na, K, Cl, urea, Cr, Ca, Mg, PO₄, TSB, ALT, albumin) + Other results.
+- Whole form: a box that was alone on its line now reaches the end of the line (boxes aligned).
+
+### Files in this version
+index.html · sw.js (nicu-duty-v142) · manifest.webmanifest · README-v2.md
