@@ -1150,3 +1150,8 @@ index.html · sw.js (nicu-duty-v145) · manifest.webmanifest · README-v2.md
 
 ## Update 124 (sw v148)
 - Daily round: support-mode ticks and settings text shrink to stay inside their boxes (also re-checked before printing and when a saved round file is opened). Settings no longer repeat the ticked mode; Amplitude/Frequency shortened to Amp/Freq.
+
+## Update 125 (sw v149)
+- Metronidazole added to the drugs with a loading-dose box.
+- Antenatal MgSO₄: Course status chip (green Complete / amber Incomplete) like antenatal steroids.
+- Back-dated sheets: Diagnostics (blood gases, labs, TnECHO and other sheet columns), latest gas / X-ray / TSB / echo boxes, SBAR and work-plan summary leave out anything dated after the open date.
