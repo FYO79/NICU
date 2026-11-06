@@ -1123,3 +1123,27 @@ index.html · sw.js (nicu-duty-v142) · manifest.webmanifest · README-v2.md
 
 ### Files in this version
 index.html · sw.js (nicu-duty-v143) · manifest.webmanifest · README-v2.md
+
+## Update 120 (sw v144)
+- Name: **Daily round** (buttons and page title; Print button simply "Print").
+- Readmission: when a baby is transferred out / readmitted from another hospital, the **Referring hospital course** section and "Referring hospital – other details" now appear (the other hospital's name is used), and its summary shows in the handover and work plan ("Other hospital (before readmission)").
+
+### Files in this version
+index.html · sw.js (nicu-duty-v144) · manifest.webmanifest · README-v2.md
+
+## Update 121 (sw v145)
+- **Transfer out & readmission** is its own section in Background (after Admission). It appears when you press "+ Transferred out & readmitted" in Admission (or when it has data).
+- The **Referring hospital course** section appears with it (and, as before, when the baby was admitted from another hospital).
+
+### Files in this version
+index.html · sw.js (nicu-duty-v145) · manifest.webmanifest · README-v2.md
+
+## Update 122 (sw v146)
+- Background: **Transfer out / discharge / death** is its own section (Outcome: Transferred out / Discharged home / Died, date, to hospital + reason, or cause of death, notes). Opened with "+ Transferred out / discharged / died" in Admission.
+- **Readmission** is a separate section (readmitted on, from, time away, course at the other hospital), opened with "+ Readmitted".
+- Referring hospital course now appears with Readmission (or private / other-hospital admission) only, not with transfer out alone.
+- History and SBAR show the outcome.
+
+## Update 123 (sw v147)
+- Section renamed **NICU outcome** (button "+ NICU outcome"). Outcome: Discharged home / DAMA / Transferred to other hospital / Transferred to another department / Died.
+- To hospital (other hospital), To department (another department), Reason (transfers, DAMA), Cause of death (died). Older "Transferred out" entries become "Transferred to other hospital".

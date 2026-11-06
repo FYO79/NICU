@@ -596,6 +596,8 @@ details.calcref .reful{margin:10px 16px 6px;padding-left:22px;font-size:var(--fs
 #sec-abdomen,[data-jump=abdomen],#sec-habd,[data-jump=habd]{--sc0:#B0541B}
 #sec-surgery,[data-jump=surgery]{--sc0:#8A4B2A}
 #sec-admission,[data-jump=admission],#sec-hadm,[data-jump=hadm]{--sc0:#2C6E8F}
+#sec-readm,[data-jump=readm]{--sc0:#5B5FA8}
+#sec-outc,[data-jump=outc]{--sc0:#6B7280}
 #sec-neuro,[data-jump=neuro],#sec-hneuro,[data-jump=hneuro]{--sc0:#6343B8}
 #sec-infection,[data-jump=infection],#sec-hinf,[data-jump=hinf]{--sc0:#5B7A10}
 #sec-lines,[data-jump=lines],#sec-hlines,[data-jump=hlines]{--sc0:#4B5E70}
@@ -1153,9 +1155,15 @@ const respStr=f=>{const p=modeParams(f).filter(k=>f["rp_"+k]).map(k=>`${RP[k][0]
 const MILK={"EBM":{k:67,c:7.0},"Donor milk":{k:65,c:7.0},"EBM + fortifier":{k:80,c:8.0},"Donor + fortifier":{k:78,c:8.0},"Preterm formula":{k:80,c:8.4},"Term formula":{k:67,c:7.3}};
 const isNPO=f=>/^\s*npo/i.test(f.fmlkg||"");
 const inoRow=i=>(f,b)=>i===1||!!String(f["ino"+i]||"").trim()||!!f["ino"+i+"d"]||(!!b&&revOpen(b,"ino"+i));
-const readmOn=(f,b)=>!!(f.tro_d||f.tro_to||f.rea_d||f.rea_sum)||(!!b&&revOpen(b,"readm"));
-const readmStr=f=>{if(!(f.tro_d||f.tro_to||f.rea_d))return"";const away=f.tro_d&&f.rea_d?daysBetween(f.tro_d,f.rea_d):null;
-  return[f.tro_d||f.tro_to?`transferred${f.tro_to?" to "+f.tro_to:""}${f.tro_d?" on "+dmy(f.tro_d).slice(0,5):""}${f.tro_why?" for "+f.tro_why:""}`:"",f.rea_d&&`readmitted ${fmtDT(f.rea_d)}${f.rea_from?" from "+f.rea_from:""}${away!=null?" (after "+away+" days)":""}`].filter(Boolean).join("; ")};
+const readmOn=(f,b)=>!!(f.rea_d||f.rea_from||f.rea_sum)||(!!b&&revOpen(b,"readm"));
+// v146: outcome (transferred out / discharged / died) is its own section
+const OUTO=["","Discharged home","DAMA","Transferred to other hospital","Transferred to another department","Died"];
+const outT=f=>(f.out_type==="Transferred out"?"Transferred to other hospital":f.out_type)||(f.tro_d||f.tro_to||f.tro_why?"Transferred to other hospital":"");
+const outOn=(f,b)=>!!(outT(f)||f.dth_cause||f.out_note)||(!!b&&revOpen(b,"outc"));
+const outTr=f=>outT(f)==="Transferred to other hospital",outDep=f=>outT(f)==="Transferred to another department",outDied=f=>outT(f)==="Died",outWhy=f=>outTr(f)||outDep(f)||outT(f)==="DAMA";
+const outStr=f=>{const t=outT(f);if(!t)return"";return(outTr(f)?"transferred"+(f.tro_to?" to "+f.tro_to:" to other hospital"):outDep(f)?"transferred"+(f.tro_dep?" to "+f.tro_dep:" to another department"):t==="Died"?"died":t==="DAMA"?"DAMA":"discharged home")+(f.tro_d?" on "+dmy(f.tro_d).slice(0,5):"")+(outWhy(f)&&f.tro_why?" – "+f.tro_why:"")+(t==="Died"&&f.dth_cause?" – "+f.dth_cause:"")};
+const readmStr=f=>{if(!(outT(f)||f.rea_d))return"";const away=f.tro_d&&f.rea_d?daysBetween(f.tro_d,f.rea_d):null;
+  return[outStr(f),f.rea_d&&`readmitted ${fmtDT(f.rea_d)}${f.rea_from?" from "+f.rea_from:""}${away!=null?" (after "+away+" days)":""}`].filter(Boolean).join("; ")};
 // surgical diagnosis / problem (or surgical notes already written) → Surgical notes section in Today
 const SURG_RE=/surg|post-?op|operat|laparotom|gastroschisis|omphalocele|exomphalos|\bCDH\b|diaphragmatic hernia|o?esophageal atresia|\bTOF\b|\bTEF\b|tracheo-?o?esophageal|hirschsprung|malrotation|volvulus|atresia|anorectal|imperforate|stoma|ileostomy|colostomy|jejunostomy|hernia|ligation|clipping|shunt|myelomeningocele|meningocele|spina bifida|pyloric|perforat|intussusception|meconium ileus|kasai|fundoplication|gastrostomy|tracheostomy|thoracotomy|chest drain|VP shunt|reservoir/i;
 const isSurg=f=>SURG_RE.test((f.dx||"")+" "+(f.cprob||""))||["sx_proc","sx_date","sx_find","sx_drain","sx_plan","sx_note"].some(k=>String(f[k]||"").trim());
@@ -1206,8 +1214,10 @@ const isAmp=f=>/Aminoplasmin/.test(f.ftype||"");
 const lytesOn=f=>!!f.ftype&&!/^(TPN|Dextrose only|Dextrose \+ Aminoplasmin|Numeta.*)$/.test(f.ftype);
 const ADMFROM=["","PNW (postnatal ward)","LR (labour room)","OT (operating theatre)","Paediatric ward","Paediatric emergency","Private hospital","Other MOH hospital","Other hospital"];
 const privAdm=f=>/Private|Other/.test(f.admfrom||"");
+// referring-hospital section also for a baby readmitted from another hospital
+const rfOn=f=>privAdm(f)||!!(f.rea_d||f.rea_from);
 // ---- baby transferred from another hospital: what happened there, per system ----
-const rfHosp=f=>(f.admhosp||"").trim()||String(f.admfrom||"other hospital").replace(/ \(.*$/,"");
+const rfHosp=f=>(privAdm(f)?(f.admhosp||"").trim():"")||(!privAdm(f)&&(f.rea_from||f.tro_to)?String(f.rea_from||f.tro_to).trim():"")||String(f.admfrom||"other hospital").replace(/ \(.*$/,"");
 const rfModeP=f=>f.rf_mode?(MODES[f.rf_mode]||[]):[];
 const rfRespStr=f=>{const p=rfModeP(f).filter(k=>f["rf_rp_"+k]).map(k=>`${RP[k][0]}${k==="fio2"?" max":""} ${f["rf_rp_"+k]}${k==="fio2"?" %":""}`).join(" / ");return f.rf_mode?f.rf_mode+(p?" – "+p:""):""};
 const rfNPO=f=>/^\s*npo/i.test(f.rf_fmlkg||"");
@@ -1635,10 +1645,10 @@ function acHint(f,dk,lk,mk,wt){const d=acDose(f[dk]);if(!d)return null;const lv=
 const acSecOn=(f,b)=>[1,2,3].some(i=>!!(f["ac"+i]||f["ac"+i+"l"]||f["ac"+i+"m"]))||revOpen(b,"ac");
 const acOn=i=>(f,b)=>i===1||!!(f["ac"+i]||f["ac"+i+"l"]||f["ac"+i+"m"])||revOpen(b,"ac"+i);
 const rfInoOn=i=>(f,b)=>i===1||!!String(f["rf_ino"+i]||"").trim()||!!f["rf_ino"+i+"d"]||revOpen(b,"rfino"+i);
-const REVON={readm:readmOn,ster2:ster2On,ac:acSecOn,ino:inoOn,pda:pdaOn,echo:echoOn,ino2:(f,b)=>inoRow(2)(f,b),ino3:(f,b)=>inoRow(3)(f,b),loss:lossOn,nec:necOn,axr:axrOn,ac2:acOn(2),ac3:acOn(3),rfino2:rfInoOn(2),rfino3:rfInoOn(3)};
+const REVON={outc:outOn,readm:readmOn,ster2:ster2On,ac:acSecOn,ino:inoOn,pda:pdaOn,echo:echoOn,ino2:(f,b)=>inoRow(2)(f,b),ino3:(f,b)=>inoRow(3)(f,b),loss:lossOn,nec:necOn,axr:axrOn,ac2:acOn(2),ac3:acOn(3),rfino2:rfInoOn(2),rfino3:rfInoOn(3)};
 // a "+" button shows only once the row before it is in use
 const REVREADY={ino2:f=>!!String(f.ino1||"").trim(),ino3:f=>!!String(f.ino2||"").trim(),ac2:f=>!!f.ac1,ac3:f=>!!f.ac2,rfino2:f=>!!String(f.rf_ino1||"").trim(),rfino3:f=>!!String(f.rf_ino2||"").trim()};
-const REVFOCUS={readm:"f_tro_d",ster2:"f_sc2r",ac:"f_ac1",ino:"f_ino1",pda:"f_pda",echo:"f_echo",ino2:"f_ino2",ino3:"f_ino3",loss:"f_l1t",nec:"f_nec",axr:"f_axr",ac2:"f_ac2",ac3:"f_ac3",rfino2:"f_rf_ino2",rfino3:"f_rf_ino3"};
+const REVFOCUS={outc:"f_out_type",readm:"f_rea_d",ster2:"f_sc2r",ac:"f_ac1",ino:"f_ino1",pda:"f_pda",echo:"f_echo",ino2:"f_ino2",ino3:"f_ino3",loss:"f_l1t",nec:"f_nec",axr:"f_axr",ac2:"f_ac2",ac3:"f_ac3",rfino2:"f_rf_ino2",rfino3:"f_rf_ino3"};
 const pdaTxStr=f=>[f.pdatx,pdaMed(f)&&[f.pdadose&&f.pdadose+" mg/kg/dose",f.pdaint,f.pdast&&"from "+dmy(f.pdast),pdaDay(f)].filter(Boolean).join(" "),pdaSurg(f)&&f.pdasd&&"done "+dmy(f.pdasd),pdaSurg(f)&&f.pdasn].filter(Boolean).join(", ");
 const ropActed=f=>!!f.ropact&&!/^(No treatment|Discharge)/.test(f.ropact);
 const lineDayTxt=it=>it.d?(it.e?(daysBetween(it.d,it.e)+1)+" days":"Day "+dayN(it.d)):"—";
@@ -2057,14 +2067,20 @@ const SECTIONS=[
   F("CALC_admtemp","Admission temperature check","calc",{empty:"",show:f=>num(f.admtemp)!=null,span2:true}),
   R(F("CALC_admage","Age at transfer","calc",{empty:"needs birth + admission time",show:privAdm,g:.8,mw:130}),
     F("admwhy","Reason for transfer","text",{show:privAdm,g:2,mw:200})),
-  H("Transfer out &amp; readmission",readmOn),
-  F("REV_readm","","reveal",{items:[["readm","+ Transferred out & readmitted"]]}),
-  R(F("tro_d","Transferred out on","date",{show:readmOn,g:1,mw:150}),F("tro_to","To hospital","text",{show:readmOn,g:1.6,mw:180}),
-    F("tro_why","Reason / intervention","text",{show:readmOn,g:2,mw:220,ph:"e.g. PDA ligation, cardiac surgery, laparotomy"})),
-  R(F("rea_d","Readmitted on","dt",{show:readmOn,g:1.3,mw:250}),F("rea_from","Readmitted from","text",{show:readmOn,g:1.6,mw:180}),
-    F("CALC_readm","Time away","calc",{empty:"—",show:readmOn,g:.8,mw:130})),
-  F("rea_sum","Course at the other hospital","area",{wide:true,bul:1,show:readmOn,ph:"one item per line – operation, findings, complications, medications, plan on discharge"}),
-  F("admnote","Referring hospital – other details","area",{big:true,bul:1,show:privAdm,ph:"Anything not in the Referring hospital course card (condition on arrival, events during transport…)"})]},
+  F("REV_readm","","reveal",{items:[["outc","+ NICU outcome"],["readm","+ Readmitted"]]}),
+  F("admnote","Referring hospital – other details","area",{big:true,bul:1,show:rfOn,ph:"Anything not in the Referring hospital course card (condition on arrival, events during transport…)"})]},
+ {t:"NICU outcome",key:"outc",tab:"background",show:(f,b)=>outOn(f,b),f:[
+  R(F("out_type","Outcome","sel",{o:OUTO,g:1.4,mw:200}),
+    F("tro_d","Date","date",{g:1,mw:150}),
+    F("tro_to","To hospital","text",{show:outTr,g:1.6,mw:180}),
+    F("tro_dep","To department","text",{show:outDep,g:1.6,mw:180,ph:"e.g. PICU, paediatric surgery"}),
+    F("tro_why","Reason","text",{show:outWhy,g:2,mw:220,ph:"e.g. PDA ligation, surgery"}),
+    F("dth_cause","Cause of death","text",{show:outDied,g:3,mw:220})),
+  F("out_note","Notes","area",{wide:true,bul:1})]},
+ {t:"Readmission",key:"readm",tab:"background",show:(f,b)=>readmOn(f,b),f:[
+  R(F("rea_d","Readmitted on","dt",{g:1.3,mw:250}),F("rea_from","Readmitted from","text",{g:1.6,mw:180}),
+    F("CALC_readm","Time away","calc",{empty:"—",show:f=>!!(f.tro_d&&f.rea_d),g:.8,mw:130})),
+  F("rea_sum","Course at the other hospital","area",{wide:true,bul:1,ph:"one item per line – operation, findings, complications, medications, plan on discharge"})]},
  {t:"Referring hospital course",key:"referral",tab:"background",f:[
   H("Respiratory"),
   R(F("rf_mode","Respiratory support on admission","sel",{o:["",...Object.keys(MODES)],g:1.5,mw:120}),
@@ -2437,7 +2453,7 @@ function unhideLater(b){if(!b.fhide)return;Object.entries(b.fhide).forEach(([k,v
 function hideLater(b,D){if(!D||D>=todayISO())return;const dk=new Set(DAYK()),f=b.f,hide=k=>{if(f[k]!=null&&f[k]!==""){b.fhide=b.fhide||{};b.fhide[k]=f[k];delete f[k]}};
   Object.entries(b.fdate||{}).forEach(([k,d])=>{if(d>D&&!dk.has(k))hide(k)});
   // boxes whose own date is after the open date (e.g. transferred out / readmitted / discharged later)
-  const d10=v=>String(v||"").slice(0,10),RD_=["tro_d","tro_to","tro_why","rea_d","rea_from","rea_sum"];
+  const d10=v=>String(v||"").slice(0,10),RD_=["out_type","tro_d","tro_to","tro_dep","tro_why","dth_cause","out_note","rea_d","rea_from","rea_sum"];
   if(d10(f.tro_d)>D)RD_.forEach(hide);else if(d10(f.rea_d)>D)["rea_d","rea_from","rea_sum"].forEach(hide);
   Object.keys(f).forEach(k=>{if(!dk.has(k)&&/^\d{4}-\d{2}-\d{2}/.test(String(f[k]))&&d10(f[k])>D&&!/^(dob|tobt)$/.test(k))hide(k)})}
 function loadDay(D){S.babies.forEach(b=>{b.days=b.days||{};const cur=b.dayCur||todayISO();unhideLater(b);
@@ -2845,6 +2861,7 @@ function renderBeds(){
 }
 const CAFFK=["caff","caffd","caffun","caffu","caffi","caffr","caffs"];
 function caffMove(b){const f=b.f;if(!b||!f)return;b.meds=b.meds||[];
+  if(f.out_type==="Transferred out"||(!f.out_type&&(f.tro_d||f.tro_to||f.tro_why)))f.out_type="Transferred to other hospital";
   if(f.caff==="Yes"&&!b.meds.some(x=>/caffeine/i.test(x.a||"")))b.meds.push({a:"Caffeine citrate",d:f.caffs||"",ds:String(f.caffd||"").replace(/[^\d.]/g,""),un:f.caffun||"mg",bs:f.caffu||"/kg/day",iv:f.caffi||"",rt:f.caffr||""});
   if(CAFFK.some(k=>f[k]!=null&&f[k]!=="")){CAFFK.forEach(k=>delete f[k]);Object.values(b.days||{}).forEach(o=>{if(o&&o.f)CAFFK.forEach(k=>delete o.f[k])});b.caffLast=""}}
 function render(){S.babies&&S.babies.forEach(caffMove);
@@ -3107,7 +3124,7 @@ const REQ=[["name","Name"],["mrn","ID"],["sex","Sex"],["floor","Floor"],["statio
 const REQK=new Set(REQ.map(x=>x[0]));
 const missingReq=f=>REQ.filter(([k])=>!String(f[k]??"").trim()).map(x=>x[1]);
 const tabOf=()=>TABS.some(t=>t[0]===S.tab)?S.tab:"today";
-const SHORT={admission:"Admission",hadm:"Admission",surgery:"Surgery",exam:"Exam",hmeds:"Meds",referral:"Referral",hresp:"Resp",hcvs:"CVS",hfluids:"Fluids",habd:"Abdomen",hneuro:"Neuro",hinf:"Infection",hlines:"Lines",hjaun:"Jaundice",hrop:"ROP",diagnosis:"Dx",weight:"Weight",respiratory:"Resp",cardiovascular:"CVS",fluids:"Fluids",abdomen:"Abdomen",neuro:"Neuro",infection:"Infection",lines:"Lines",current:"Meds",jaundice:"Jaundice",plan:"Plan",blood:"Blood gases",investigations:"Labs",imaging:"Imaging",echo:"TnECHO",transfusions:"Transfusions",newborn:"Newborn screening",rop:"ROP",patient:"Patient",antenatal:"Antenatal",birth:"Birth",change:"Logs",previous:"Previous meds",consultations:"Consults",status:"Status",handover:"SBAR",backup:"Sync"};
+const SHORT={outc:"Outcome",readm:"Readmission",admission:"Admission",hadm:"Admission",surgery:"Surgery",exam:"Exam",hmeds:"Meds",referral:"Referral",hresp:"Resp",hcvs:"CVS",hfluids:"Fluids",habd:"Abdomen",hneuro:"Neuro",hinf:"Infection",hlines:"Lines",hjaun:"Jaundice",hrop:"ROP",diagnosis:"Dx",weight:"Weight",respiratory:"Resp",cardiovascular:"CVS",fluids:"Fluids",abdomen:"Abdomen",neuro:"Neuro",infection:"Infection",lines:"Lines",current:"Meds",jaundice:"Jaundice",plan:"Plan",blood:"Blood gases",investigations:"Labs",imaging:"Imaging",echo:"TnECHO",transfusions:"Transfusions",newborn:"Newborn screening",rop:"ROP",patient:"Patient",antenatal:"Antenatal",birth:"Birth",change:"Logs",previous:"Previous meds",consultations:"Consults",status:"Status",handover:"SBAR",backup:"Sync"};
 // ---- 6. open tasks strip (Today tab) ----
 const tasksStrip=()=>`<div class="tstrip" id="tstrip" hidden></div>`;
 function renderTasks(b){const el=$("#tstrip");if(!el)return;const open=b.todos.map((t,i)=>({t,i})).filter(x=>!x.t.x&&(x.t.b||"").trim());
@@ -3132,7 +3149,7 @@ function renderBaby(){
   let h=`<div class="sumbar"><div class="sumtop"><div class="sumid"><div class="idpill" id="hId"><span class="sumloc" id="hLoc"></span><h1 id="hName"></h1></div><div class="summeta" id="hMeta"></div></div>
     <div class="sumright"><span class="pill warn" id="hAnom" hidden>⚠ Anomaly</span><span class="pill" id="hSev"></span>${hid?`<span class="pill warn">Empty boxes hidden today</span>`:""}</div></div>
     <div class="tiles" id="hTiles"></div><div id="hReq"></div>
-    <div class="tools"><button class="btn ghost sm" data-act="hideempty" title="Hide boxes with no data for today; they come back tomorrow or when you tap again">${hid?"Show empty boxes":"Hide empty boxes"}</button><button class="btn ghost sm" data-act="foldall">Collapse all</button><button class="btn ghost sm" data-act="openall">Expand all</button><button class="btn ghost sm" data-act="print">Print</button><button class="btn ghost sm" data-act="pdf">PDF</button><button class="btn ghost sm" data-act="roundbaby">Daily round (A3)</button></div></div>
+    <div class="tools"><button class="btn ghost sm" data-act="hideempty" title="Hide boxes with no data for today; they come back tomorrow or when you tap again">${hid?"Show empty boxes":"Hide empty boxes"}</button><button class="btn ghost sm" data-act="foldall">Collapse all</button><button class="btn ghost sm" data-act="openall">Expand all</button><button class="btn ghost sm" data-act="print">Print</button><button class="btn ghost sm" data-act="pdf">PDF</button><button class="btn ghost sm" data-act="roundbaby">Daily round</button></div></div>
   <div class="stick"><div class="miniid" id="miniId" aria-hidden="true"></div><nav class="tabs" role="tablist" aria-label="Parts of the baby file">${TABS.map(([k,l])=>`<button type="button" role="tab" data-tab="${k}" aria-selected="${k===tab}">${l}</button>`).join("")}</nav>
   <nav class="jump" aria-label="Go to section">${jumps.map(([k,t],i)=>`<button type="button" data-jump="${k}" title="${esc(t)}"><b>${i+1}</b>${esc(SHORT[k]||t)}</button>`).join("")}</nav></div>${tasksStrip()}<div class="cols">`;
   for(const s of SECTIONS){
@@ -3144,7 +3161,8 @@ function renderBaby(){
     // Birth: cord / admission blood gases come just before the Admission part
     if(s.custom==="admhist"){const f=b.f,L=[f.admdt&&`<b>Admitted</b> ${esc(dtFull(f.admdt))}${f.admfrom?" from "+esc(f.admfrom)+(f.admhosp?" – "+esc(f.admhosp):""):""}${privAdm(f)&&admAgeH(f)!=null?" at "+Math.floor(admAgeH(f))+" h of life":""}`,
         num(f.admtemp)!=null&&`<b>Admission temperature</b> ${esc(f.admtemp)} °C`,privAdm(f)&&f.admwhy&&`<b>Reason for transfer</b> ${esc(f.admwhy)}`,
-        (f.tro_d||f.tro_to)&&`<b>Transferred out</b>${f.tro_d?" "+esc(dmy(f.tro_d)):""}${f.tro_to?" to "+esc(f.tro_to):""}${f.tro_why?" – "+esc(f.tro_why):""}`,
+        outT(f)&&`<b>${esc(outT(f))}</b>${f.tro_d?" "+esc(dmy(f.tro_d)):""}${outTr(f)&&f.tro_to?" to "+esc(f.tro_to):""}${outDep(f)&&f.tro_dep?" to "+esc(f.tro_dep):""}${outWhy(f)&&f.tro_why?" – "+esc(f.tro_why):""}${outDied(f)&&f.dth_cause?" – "+esc(f.dth_cause):""}`,
+        ...items(f.out_note).map(x=>"<b>Outcome note:</b> "+esc(x)),
         f.rea_d&&`<b>Readmitted</b> ${esc(dtFull(f.rea_d))}${f.rea_from?" from "+esc(f.rea_from):""}${f.tro_d?" (after "+daysBetween(f.tro_d,f.rea_d)+" days)":""}`,
         ...items(f.rea_sum).map(x=>"<b>At the other hospital:</b> "+esc(x))];
       h+=`<div class="grid"><div class="fld wide">${bullets(L)||'<p class="hint" style="display:block">No admission details yet – Background → Admission.</p>'}</div></div>`}
@@ -3237,7 +3255,7 @@ function refresh(){
   {const sv=$("#hSev");sv.className="pill"+(f.status?" sev-"+f.status:"");sv.textContent=f.status||"No severity"}
   $("#hTiles").innerHTML=[["GA",c.ga],["PND",c.age!=null?c.age+" d":""],["CGA / PMA",c.cga],["Weight",(f.cw||f.bw)?(f.cw||f.bw)+" g"+(f.cw&&f.cwd&&f.cwd<today()?" ("+dmy(f.cwd).slice(0,5)+")":""):""],["Support",f.resp]].map(([k,v])=>`<div class="tile"><span>${k}</span><b>${esc(v||"—")}</b></div>`).join("");
   {const m=missingReq(f),el=$("#hReq");el.innerHTML=m.length?`<button type="button" class="reqchip" data-gotab="background" data-jump="patient">${m.length} required box${m.length>1?"es":""} empty: ${esc(m.join(", "))}</button>`:""}
-  {const on=privAdm(f),sc=document.getElementById("sec-referral"),jb=document.querySelector('.jump [data-jump="referral"]');if(sc)sc.hidden=!on;if(jb)jb.hidden=!on;
+  {const on=rfOn(f)||readmOn(f,b),sc=document.getElementById("sec-referral"),jb=document.querySelector('.jump [data-jump="referral"]');if(sc)sc.hidden=!on;if(jb)jb.hidden=!on;
    const ah=admAgeH(f);setCalc("CALC_admage",ah!=null?(ah<72?Math.floor(ah)+" h of life":"day "+(Math.floor(ah/24)+1)+" ("+Math.floor(ah)+" h)"):null);
 {const h=$("#hAnom");if(h)h.hidden=!anyAnom(f)}
    setCalc("CALC_sc1",sterCalc(f,1));setCalc("CALC_sc2",sterCalc(f,2));
@@ -3388,7 +3406,7 @@ function wpRows(b){
   add("Born",j([f.dob&&dmy(f.dob)+(tobStr(f)?" "+tobStr(f):""),multStr(f)]));
   add("Admission",admStr(f));
   add("Other hospital",items(f.rea_sum));
-  if(privAdm(f))add("Before transfer",RFSYS.map(([k,l])=>{const c=rfChips(b,k);return c.length?`${l}: ${c.join(", ")}`:""}).filter(Boolean));
+  if(rfOn(f))add(privAdm(f)?"Before transfer":"Other hospital (before readmission)",RFSYS.map(([k,l])=>{const c=rfChips(b,k);return c.length?`${l}: ${c.join(", ")}`:""}).filter(Boolean));
   add("Age",j([c.ga&&`GA ${c.ga}`,c.age!=null&&`PND ${c.age}`,c.cga&&`CGA ${c.cga}`]));
   add("Weight",j([f.cw&&`CW ${f.cw} g${f.cwd&&f.cwd<today()?" ("+dmy(f.cwd).slice(0,5)+")":""}${gcShort(f,"w",f.cw,f.cwd)?" ("+gcShort(f,"w",f.cw,f.cwd).replace(/ centile,.*$/," centile")+")":""}`,f.bw&&`BW ${f.bw} g${birthCen(f,"w")?" ("+birthCen(f,"w").replace(/ centile,.*$/," centile")+(sizeCat(gcOne(f,"w",f.bw,f.dob))?", "+sizeCat(gcOne(f,"w",f.bw,f.dob)).split(" ")[0]:"")+")":""}`,wtChgTxt(b,1)]));
   add("Dx",items(f.dx),"key");
@@ -3525,7 +3543,7 @@ function roundHTML(babies,st){babies=[...babies].sort(byLoc);const cp=[];for(let
 // shrink text that does not fit its box (keeps the sheet layout fixed)
 function rdFit(root){(root||document).querySelectorAll(".rp .rv, .rp td").forEach(el=>{let s=parseFloat(getComputedStyle(el).fontSize);let k=0;while(el.scrollHeight>el.clientHeight+1&&s>7&&k<14){s-=.7;el.style.fontSize=s+"px";k++}})}
 function renderRound(){const [fl,st]=S.view.slice(6).split("|"),babies=visible().filter(b=>b.f.floor===fl&&b.f.station===st);
-  $("#main").innerHTML=`<div class="babyhead"><h1>Daily round · ${RD(fl)} ${RD(st)}</h1><span class="meta">${RD(rdDate())} · A3 landscape</span><div class="tools"><button class="btn sm" data-act="printround">Print (A3)</button><button class="btn ghost sm" data-act="saveround">Save file</button><button class="btn ghost sm" data-wp="${RD(fl+"|"+st)}">Back to work plan</button></div></div>
+  $("#main").innerHTML=`<div class="babyhead"><h1>Daily round · ${RD(fl)} ${RD(st)}</h1><span class="meta">${RD(rdDate())}</span><div class="tools"><button class="btn sm" data-act="printround">Print</button><button class="btn ghost sm" data-act="saveround">Save file</button><button class="btn ghost sm" data-wp="${RD(fl+"|"+st)}">Back to work plan</button></div></div>
   <div class="rwrap" id="rwrap">${roundHTML(babies,st)}</div>`;
   requestAnimationFrame(()=>{rdScale();rdFit($("#rwrap"))})}
 function rdScale(){const w=$("#rwrap");if(!w)return;const avail=w.clientWidth||1000;w.querySelectorAll(".rp").forEach(p=>{const pw=p.offsetWidth;const s=Math.min(1,avail/pw);p.style.setProperty("--rs",s);p.parentElement&&(p.style.marginBottom=(-(1-s)*p.offsetHeight+16)+"px")})}
@@ -3544,7 +3562,7 @@ async function saveRound(){const [fl,st]=S.view.slice(6).split("|");const name=`
 
 function renderWP(){
   const [fl,st]=S.view.split("|"), babies=visible().filter(b=>b.f.floor===fl&&b.f.station===st);
-  $("#main").innerHTML=`<div class="babyhead"><h1>Work plan · ${fl} ${st}</h1><span class="meta">${esc(dmy(today()))}</span><div class="tools"><button class="btn sm" data-act="round">Daily round (A3)</button><button class="btn ghost sm" data-act="printwp">Print work plan</button></div></div>
+  $("#main").innerHTML=`<div class="babyhead"><h1>Work plan · ${fl} ${st}</h1><span class="meta">${esc(dmy(today()))}</span><div class="tools"><button class="btn sm" data-act="round">Daily round</button><button class="btn ghost sm" data-act="printwp">Print work plan</button></div></div>
   <div class="wpgrid">${babies.map(b=>`<article class="wpc sev-${esc(b.f.status||"")}">
     <header class="wphead"><button class="wpname" data-pick="${b.id}" title="Open file"><i class="loc">${b.f.floor&&b.f.station&&b.f.bedno?esc(locFull(b)):`<span class="miss">⚠ location required</span>`}</i><b>${b.f.name?esc(b.f.name):`<span class="miss">⚠ name required</span>`}</b>${b.f.mrn?`<i>ID ${esc(b.f.mrn)}</i>`:""}</button>
     ${b.f.status?`<span class="pill sev-${esc(b.f.status)}">${esc(b.f.status)}</span>`:`<span class="pill">No severity</span>`}</header>
@@ -3610,9 +3628,9 @@ function handover(b){
   {const cp=new Set(items(f.cprob).map(x=>x.toLowerCase()));pt("Diagnosis","",items(f.dx).filter(x=>!cp.has(x.toLowerCase())))}
   pt("Antenatal",j([...items(f.m_hx),multStr(f),f.consang&&/Yes/.test(f.consang)&&"consanguineous ("+f.consang.replace(/^Yes – /,"")+")",gbsStr(f),...serPos(f),f.m_rub==="Non-immune"&&"mother rubella non-immune",mxWhy(f)&&mxWhy(f)!=="Other"&&"extra screening: "+(MRISK.find(x=>x[0]===f.m_risk)||[0,f.m_risk])[1].toLowerCase(),...mxLines(b),sterStr(f),mgStr(f),f.prom==="Yes"&&`PROM${f.promh?" "+f.promh+" h":""}`,
     num(f.mtemp)>=38&&`maternal temp ${f.mtemp}°C`,val(f.m_dm)&&f.m_dm,val(f.m_htn)&&f.m_htn,val(f.m_pre)&&f.m_pre,f.m_ill_o,val(f.iab)&&`IAP ${f.iab}`]));
-  pt("Admission",j([admStr(f),num(f.admtemp)!=null&&`admission temp ${f.admtemp} °C`,privAdm(f)&&nl(f.admnote)]));
+  pt("Admission",j([admStr(f),num(f.admtemp)!=null&&`admission temp ${f.admtemp} °C`,rfOn(f)&&nl(f.admnote)]));
   pt("Course at other hospital","",items(f.rea_sum));
-  if(privAdm(f))RFSYS.forEach(([k,l])=>{const c=rfChips(b,k);if(c.length)pt(`At ${rfHosp(f).slice(0,22)} · ${l}`,j(c))});
+  if(rfOn(f))RFSYS.forEach(([k,l])=>{const c=rfChips(b,k);if(c.length)pt(`At ${rfHosp(f).slice(0,22)} · ${l}`,j(c))});
   pt("Hepatitis B",hbStr(f));
   pt("Blood group",j([f.bgp,f.dct&&`DCT ${f.dct}`,f.g6pd==="Deficient"&&"G6PD deficient",f.m_bg&&`mother ${f.m_bg}`,f.m_ab&&/Positive/.test(f.m_ab)&&`maternal antibodies: ${f.m_ab.replace(/^Positive – /,"")}`]));
   // A – system by system, with changes from today / yesterday
@@ -4182,7 +4200,7 @@ document.addEventListener("click",e=>{
   const b=cur();if(!b||S.view)return;
   if(el.dataset.carry){rfCarry(b,el.dataset.carry);return}
   if(a==="surfopen"){b.surfOpen=today();save(b);refresh();return}
-  if(el.dataset.reveal){const x=el.dataset.reveal;b.rev=Object.assign({},b.rev,{[x]:today()});save(b);refresh();requestAnimationFrame(()=>{const t=document.getElementById(REVFOCUS[x]);if(t){t.scrollIntoView({block:"center",behavior:"smooth"});t.focus({preventScroll:true})}});return}
+  if(el.dataset.reveal){const x=el.dataset.reveal;b.rev=Object.assign({},b.rev,{[x]:today()});save(b);if(x==="readm"||x==="outc")render();else refresh();requestAnimationFrame(()=>{const t=document.getElementById(REVFOCUS[x]);if(t){t.scrollIntoView({block:"center",behavior:"smooth"});t.focus({preventScroll:true})}});return}
   if(el.dataset.chtclr){setCht(b,el.dataset.chtclr,"");renderBaby();toast("Changes in this section are timed now");return}
   if(a==="usedex"){const d=calc(b).dexFor;if(d!=null){const o=b.f.dex;b.f.dex=String(Math.round(d*10)/10);const el2=$("#f_dex");if(el2)el2.value=b.f.dex;
     if(String(o??"")!==b.f.dex){const fl=b.flast=b.flast||{};logSet(b,"flog","dex",String(fl.dex??""),b.f.dex,(o,n)=>o?`Dextrose ${o} → ${n} % (GIR ${b.f.girt})`:`Dextrose ${n} % (GIR ${b.f.girt})`);fl.dex=b.f.dex}
