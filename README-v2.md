@@ -1147,3 +1147,6 @@ index.html · sw.js (nicu-duty-v145) · manifest.webmanifest · README-v2.md
 ## Update 123 (sw v147)
 - Section renamed **NICU outcome** (button "+ NICU outcome"). Outcome: Discharged home / DAMA / Transferred to other hospital / Transferred to another department / Died.
 - To hospital (other hospital), To department (another department), Reason (transfers, DAMA), Cause of death (died). Older "Transferred out" entries become "Transferred to other hospital".
+
+## Update 124 (sw v148)
+- Daily round: support-mode ticks and settings text shrink to stay inside their boxes (also re-checked before printing and when a saved round file is opened). Settings no longer repeat the ticked mode; Amplitude/Frequency shortened to Amp/Freq.

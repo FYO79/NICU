@@ -1029,8 +1029,10 @@ table.sheet tr.grp>*{letter-spacing:.08em}
 .rv{flex:1 1 auto;font-size:11.5pt;line-height:1.25;overflow:hidden;font-weight:600;padding-top:.5mm}
 .rv ul{margin:0;padding-left:4mm}.rv li{margin:0}
 .rbx.cols2 .rv ul{columns:2;column-gap:6mm}
-.rticks{display:grid;grid-template-columns:repeat(4,1fr);gap:.6mm 2mm;align-content:start}
-.rticks .rtk{padding:0;font-size:9.5pt;min-width:0}
+.rticks{display:grid;grid-template-columns:repeat(4,1fr);gap:.4mm 2mm;align-content:start;font-size:10pt;line-height:1.15}
+.rticks .rtk{padding:0;font-size:1em;min-width:0;white-space:nowrap;gap:1mm}
+.rticks .rtk i{width:1.05em;height:1.05em;font-size:.8em;flex:0 0 auto}
+.rv{overflow-wrap:anywhere}
 .rticks .rtk.on{color:var(--t)}
 /* heights as proportions of the page (they always fit on one A3 page) */
 .rr{flex:20 1 0}.rr.h18{flex-grow:18}.rr.h19{flex-grow:19.5}.rr.h20{flex-grow:20}.rr.h21{flex-grow:20.5}.rr.h31{flex-grow:30.5}.rr.h32{flex-grow:31}.rr.h33{flex-grow:32.5}.rr.h34{flex-grow:33}
@@ -3476,7 +3478,7 @@ const rdName=f=>{const n=String(f.name||"").trim().replace(/^(baby\s+of|b\s*\/\s
 const rdDate=()=>dmy(today());
 const rdTick=(on,l)=>`<span class="rtk${on?" on":""}"><i>${on?"✓":""}</i>${l}</span>`;
 const rdMode=f=>{const m=f.resp||"";return{RA:m==="Room air",LFNC:/Low-flow/.test(m),HFNC:m==="HFNC",CPAP:m==="CPAP",NIPPV:/NIPPV|SiPAP|BiPAP/.test(m),SIMV:/SIMV/.test(m),"A/C":/^A\/C|^PC|^PSV/.test(m),HFOV:/HFOV|HFJV/.test(m)}};
-const rdSettings=f=>{const p=modeParams(f).filter(k=>f["rp_"+k]).map(k=>`${RP[k][0]} ${f["rp_"+k]}${RP[k][1]&&RP[k][1]!=="%"?"":k==="fio2"?"%":""}`);return [f.resp&&f.resp,...p,f.nitric==="On"||f.nitric==="Weaning"?`iNO ${f.nitricppm||""} ppm`.trim():""].filter(Boolean).join(" · ")};
+const rdSettings=f=>{const SH={Amplitude:"Amp",Frequency:"Freq"},p=modeParams(f).filter(k=>f["rp_"+k]).map(k=>`${SH[RP[k][0]]||RP[k][0]} ${f["rp_"+k]}${RP[k][1]&&RP[k][1]!=="%"?"":k==="fio2"?"%":""}`);const tk=["Room air","HFNC","CPAP","HFOV"].includes(f.resp);return [!tk&&f.resp,...p,f.nitric==="On"||f.nitric==="Weaning"?`iNO ${f.nitricppm||""} ppm`.trim():""].filter(Boolean).join(" · ")};
 const rdGas=g=>{if(!g)return null;const tm=[g.d?dmy(g.d).slice(0,5):"",g.tm?to12(g.tm):""].filter(Boolean).join(" ");return{t:[tm,g.src].filter(Boolean).join(" · "),ph:g.ph,pco2:g.pco2,po2:g.po2,hco3:g.hco3,be:g.be,lac:g.lac}};
 const rdMeds=b=>{const f=b.f,L=[];
   [...(b.abx||[]),...(b.meds||[]),...(b.cvmeds||[])].filter(x=>(x.a||"").trim()).forEach(x=>L.push(medLabel(x)+(x.d?" – D"+dayN(x.d):"")));
@@ -3541,21 +3543,21 @@ function rdPatient(b,st,pg,total){const f=b.f,c=calc(b),ch=wtChg(b),G=lastGasN(b
 function roundHTML(babies,st){babies=[...babies].sort(byLoc);const cp=[];for(let i=0;i<babies.length;i+=4)cp.push(babies.slice(i,i+4));if(!cp.length)cp.push([]);
   const total=cp.length+babies.length;let n=0;return cp.map(g=>rdCensus(st,g,++n,total)).join("")+babies.map(b=>rdPatient(b,st,++n,total)).join("")}
 // shrink text that does not fit its box (keeps the sheet layout fixed)
-function rdFit(root){(root||document).querySelectorAll(".rp .rv, .rp td").forEach(el=>{let s=parseFloat(getComputedStyle(el).fontSize);let k=0;while(el.scrollHeight>el.clientHeight+1&&s>7&&k<14){s-=.7;el.style.fontSize=s+"px";k++}})}
+function rdFit(root){(root||document).querySelectorAll(".rp .rv, .rp td").forEach(el=>{let s=parseFloat(getComputedStyle(el).fontSize);let k=0;const bx=el.closest(".rbx"),over=()=>el.scrollHeight>el.clientHeight+1||el.scrollWidth>el.clientWidth+1||(!!bx&&bx.scrollHeight>bx.clientHeight+1);while(over()&&s>6.5&&k<30){s-=.5;el.style.fontSize=s+"px";k++}})}
 function renderRound(){const [fl,st]=S.view.slice(6).split("|"),babies=visible().filter(b=>b.f.floor===fl&&b.f.station===st);
   $("#main").innerHTML=`<div class="babyhead"><h1>Daily round · ${RD(fl)} ${RD(st)}</h1><span class="meta">${RD(rdDate())}</span><div class="tools"><button class="btn sm" data-act="printround">Print</button><button class="btn ghost sm" data-act="saveround">Save file</button><button class="btn ghost sm" data-wp="${RD(fl+"|"+st)}">Back to work plan</button></div></div>
   <div class="rwrap" id="rwrap">${roundHTML(babies,st)}</div>`;
-  requestAnimationFrame(()=>{rdScale();rdFit($("#rwrap"))})}
+  requestAnimationFrame(()=>{rdScale();rdFit($("#rwrap"))});try{document.fonts.ready.then(()=>rdFit($("#rwrap")))}catch(e){}setTimeout(()=>rdFit($("#rwrap")),400)}
 function rdScale(){const w=$("#rwrap");if(!w)return;const avail=w.clientWidth||1000;w.querySelectorAll(".rp").forEach(p=>{const pw=p.offsetWidth;const s=Math.min(1,avail/pw);p.style.setProperty("--rs",s);p.parentElement&&(p.style.marginBottom=(-(1-s)*p.offsetHeight+16)+"px")})}
 addEventListener("resize",()=>{if(String(S.view||"").startsWith("round:"))rdScale()});
 function printRound(){const w=$("#rwrap");if(!w)return;const st=document.createElement("style");st.id="pgA3";st.textContent="@media print{@page{size:A3 landscape;margin:6mm}}";document.head.appendChild(st);document.body.classList.add("pround");
   w.querySelectorAll(".rp").forEach(p=>p.style.removeProperty("--rs"));rdFit(w);
   const done=()=>{document.body.classList.remove("pround");$("#pgA3")?.remove();rdScale()};window.addEventListener("afterprint",done,{once:true});
-  let fired=false;const bp=()=>{fired=true};window.addEventListener("beforeprint",bp,{once:true});
+  let fired=false;const bp=()=>{fired=true};window.addEventListener("beforeprint",bp,{once:true});window.addEventListener("beforeprint",()=>rdFit(w),{once:true});
   try{window.print()}catch(e){}setTimeout(()=>{if(!fired){done();toast("Print did not open here – press Save file, open it in Safari / Chrome and print (A3 landscape)",6000)}},1200)}
 function roundFile(){const css=[...document.querySelectorAll("style")].filter(x=>x.id!=="pgA3").map(x=>x.textContent).join("\n").replace(/@media\s+screen/g,"@media speech");
   const body=$("#rwrap").innerHTML;return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Daily round</title><style>${css}
-@page{size:A3 landscape;margin:6mm} body{background:#fff;margin:0} .rp{--rs:1}</style></head><body class="pround roundfile"><div id="rwrap">${body}</div></body></html>`}
+@page{size:A3 landscape;margin:6mm} body{background:#fff;margin:0} .rp{--rs:1}</style></head><body class="pround roundfile"><div id="rwrap">${body}</div><script>${rdFit.toString()};addEventListener("load",()=>rdFit(document));addEventListener("beforeprint",()=>rdFit(document))<\/script></body></html>`}
 async function saveRound(){const [fl,st]=S.view.slice(6).split("|");const name=`Daily-round-${fl}-${st}-${today()}.html`,file=new File([roundFile()],name,{type:"text/html"});
   if(isTouch()&&navigator.canShare&&navigator.canShare({files:[file]})){try{await navigator.share({files:[file],title:name});return}catch(e){if(e&&e.name==="AbortError")return}}
   const u=URL.createObjectURL(file),a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),60000);toast("File saved – open it and print (A3 landscape)",4000)}
