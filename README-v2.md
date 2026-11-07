@@ -1155,3 +1155,26 @@ index.html · sw.js (nicu-duty-v145) · manifest.webmanifest · README-v2.md
 - Metronidazole added to the drugs with a loading-dose box.
 - Antenatal MgSO₄: Course status chip (green Complete / amber Incomplete) like antenatal steroids.
 - Back-dated sheets: Diagnostics (blood gases, labs, TnECHO and other sheet columns), latest gas / X-ray / TSB / echo boxes, SBAR and work-plan summary leave out anything dated after the open date.
+
+## Update 126 (sw v150)
+- SBAR: no MRN in the heading line.
+- NICU outcome: Outcome box wide enough for "Transferred to other hospital / another department".
+- Loading-dose drugs: loading dose shows only on the start day (and in the referring-hospital record); afterwards only the maintenance dose.
+- Current medications: "+ Stat medication" opens stat doses (drug, dose, given at); only that day's doses show; each is logged in History.
+- Background jump button "Referring H course".
+- Referring hospital course: Cardiovascular = BP · PDA, Echo, Other events; then "Inotropes & cardiovascular medications" together. "+ Surgical notes" (operation, date, surgeon, findings, drains/stoma/plan). "+ Investigation" lines (name, date, result). Transfusions there.
+- Medications given there / cardiovascular medications there: Change / DC like everywhere; not-DC'd ones appear in Today (Current / cardiovascular medications, Day 1 = start there); start, changes and DC go to History.
+
+## Update 127 (sw v151)
+- Removed the "Anomaly" badge from the top patient strip (anomalies still show in Exam and SBAR).
+
+## Update 128 (sw v152)
+- SBAR: "Stat today" line lists stat doses given on that day.
+
+## Update 129 (sw v153)
+- Drop-down boxes widen to show the whole chosen text (e.g. steroid regimen, MgSO₄, NICU outcome); the line wraps instead of cutting words.
+- Current medications: Stat medication moved to the end. "From other sections" now shows antibiotics and cardiovascular medications as full rows (Change / DC), inotrope dose and anticonvulsant maintenance / interval – the same data as in their own sections, so a change in either place shows in both.
+- "Before transfer · referring hospital" lines removed from Today; shown only in History, as a list under each system.
+
+## Update 130 (sw v154)
+- Daily round – Unit census: Name column shows the name with diagnoses and current problems (no MRN); last column is Pending / Plan.
