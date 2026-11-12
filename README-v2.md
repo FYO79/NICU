@@ -1192,3 +1192,30 @@ index.html · sw.js (nicu-duty-v145) · manifest.webmanifest · README-v2.md
 - Jaundice: guideline automatic (< 35 wk NICE, ≥ 35 wk AAP), can be changed; albumin + bilirubin/albumin ratio (AAP exchange-consideration levels 8.0 / 7.2 / 6.8) when TSB is within 50 µmol/L of exchange or albumin entered.
 - PROM duration in hours or days.
 - Unit census columns: Bed · Name/diagnosis & problems · CGA/PND/weight · Respiratory (support, surfactant, caffeine, last BGA) · Cardiovascular (last BP, inotropes, CV medications, PDA) · Abdomen/renal/lines (abdomen, UOP, TFI, feeds/IVF, central lines) · Last investigations · Status & plan.
+
+## Update 132 (sw v156)
+- Gas "Action taken": bigger box with a bullet on each line (Diagnostics sheet and Today last 2 gases).
+- Antenatal steroids / MgSO₄: "Course status" boxes removed; the Regimen box (steroids) and MgSO₄ box turn green = complete, orange = partial, red = not given.
+- Labels and units on one line in rows (e.g. blood glucose row) so boxes line up.
+- Jaundice: B/A ratio only ≥ 35 wk; "TSB vs phototherapy / exchange level" boxes removed; threshold sources as bullet points incl. B/A values; levels box full width.
+- POCUS lung ultrasound in Today: date + score table; zones in a fold.
+- Extravasation: opens only with the button; otherwise a one-line summary with "Open".
+- Stat medication: Route added.
+
+## Update 133 (sw v157)
+- Last TSB follows the newest TSB in the lab table automatically (date from the lab column; time kept for the same day, otherwise 00:00 with "set the TSB time").
+- Blood gases: Glucose and iCa rows; a gas glucose is added to the blood glucose list ("from gas"), kept in step. Fluids: "Latest electrolytes (lab and gas)" box.
+- Medications (Today, cardiovascular, antibiotics): "⚠ Weight up/down > 10 % since this dose was checked – recheck dose" with a "Dose checked" button.
+- Diagnosis & current problems are entered once (Today → Dx); Background → Patient shows them with an Edit button. Echo free-text box renamed "Other echo (cardiology / outside TnECHO)".
+
+## Update 134 (sw v158)
+- Diagnostics → Labs: each column has a date and a time box (like blood gases); a new column starts with now. Older columns written as "dd/mm" get their date automatically.
+- Jaundice Last TSB takes the date and time of the newest lab TSB; "set the TSB time" shows only when the lab column has no time.
+
+## Update 135 (sw v159)
+- Gas "Action taken" box fills the column (wider and taller); every line gets a bullet.
+- POCUS lung ultrasound in Today back to the previous layout (full score sheet).
+
+## Update 136 (sw v160)
+- **Unit today ⚑** button in the top bar: one card per baby (unstable first, then most flags) with what needs attention – status, positive cultures, cultures ≥ 36 h without result, antibiotic day ≥ 7, UVC ≥ 7 d / UAC ≥ 5 d, extravasation, low / high glucose in the last 24 h, TSB near exchange or above phototherapy without phototherapy, ventilated without a gas in 12 h, NPO days, weight not updated, weight change > 10 % (recheck doses), ROP / newborn screening due, pending investigations, open tasks. Tap a card to open the baby.
+- **Discharge summary** (Handover): built automatically from the recorded data – identity, diagnoses, antenatal & birth, referring hospital, readmission, course by system from the logs (respiratory, cardiovascular, fluids/growth, surgery, infection, neurology, jaundice, lines, transfusions, screening / ROP), medications at discharge, pending / follow-up. Editable before saving; PDF and Copy.
