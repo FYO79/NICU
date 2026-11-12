@@ -1178,3 +1178,17 @@ index.html · sw.js (nicu-duty-v145) · manifest.webmanifest · README-v2.md
 
 ## Update 130 (sw v154)
 - Daily round – Unit census: Name column shows the name with diagnoses and current problems (no MRN); last column is Pending / Plan.
+
+## Update 131 (sw v155)
+- Feeds: NPO day count (Day 1 = first day of the current NPO run); "Trophic" option with volume per feed (ml) + frequency → ml/kg/d; frequencies every 6 h and every 12 h.
+- Bullet boxes: lines written on an earlier day show their date and PND; sub-levels by starting a line with ">" (○) or ">>" (■).
+- Referring hospital: "Respiratory support"; "Surgical notes" (operation, findings, drains/stoma/wound as bullets); antibiotics there have Change / DC (DC'd ones are not carried to Today).
+- Lines: CVC added; "+ Extravasation" (date/time, site, infusate, grade, management, follow-up).
+- Drugs: teicoplanin (loading + maintenance), cisatracurium, dexmedetomidine (Precedex), clonazepam, ferrous sulphate, domperidone, fusidic acid (Fucidin) cream, dexpanthenol (Bepanthen).
+- Labs: CSF group (WBC, RBC, neutrophils, protein, glucose, paired blood glucose, Gram stain, culture).
+- TnECHO PDA exam shows under PDA in Today Cardiovascular; other TnECHO exams under Echo.
+- Last 2 gases: "Action taken" box under each gas (also a row in the gases sheet).
+- Stat medication: drug · dose · unit · date & time.
+- Jaundice: guideline automatic (< 35 wk NICE, ≥ 35 wk AAP), can be changed; albumin + bilirubin/albumin ratio (AAP exchange-consideration levels 8.0 / 7.2 / 6.8) when TSB is within 50 µmol/L of exchange or albumin entered.
+- PROM duration in hours or days.
+- Unit census columns: Bed · Name/diagnosis & problems · CGA/PND/weight · Respiratory (support, surfactant, caffeine, last BGA) · Cardiovascular (last BP, inotropes, CV medications, PDA) · Abdomen/renal/lines (abdomen, UOP, TFI, feeds/IVF, central lines) · Last investigations · Status & plan.

@@ -319,7 +319,8 @@ textarea.inp{height:auto;min-height:var(--h);padding:11px 12px;line-height:1.4;r
 .srcchip{justify-self:start;align-self:center;font-size:var(--fs-xs);font-weight:700;color:var(--muted,#5b6b73);background:color-mix(in srgb,var(--accent) 10%,transparent);border-radius:999px;padding:2px 10px;white-space:nowrap}
 .row.omx .omname{font-weight:700;text-align:center}
 .row.omx .l2{display:flex;gap:12px;flex-wrap:wrap}.row.omx .l2 .mini{flex:0 1 260px}
-.row.metinv.statr{grid-template-columns:minmax(0,1.6fr) minmax(0,1.3fr) minmax(250px,1.2fr) 40px;align-items:end}
+.gact{display:block;margin:6px 0 12px;font-size:var(--fs-xs);font-weight:700;color:var(--muted,#5b6b73)}.gact textarea{display:block;width:100%;margin-top:3px;text-align:left}
+.row.metinv.statr{grid-template-columns:minmax(0,1.8fr) minmax(70px,.7fr) minmax(110px,.8fr) minmax(250px,1.3fr) 40px;align-items:end}
 .mhint.rfdcd{color:#B42318;font-weight:700}
 .row.ctemp{grid-template-columns:max-content minmax(110px,160px) 40px}
 .row.med{display:flex;flex-direction:column;gap:10px;background:var(--sunk)}
@@ -833,6 +834,8 @@ section.card .lastchg span{color:var(--sc)}
 .bulw{width:100%}.bulw.has:not(.ed) textarea{display:none}.bulw:not(.has) .bulv,.bulw.ed .bulv{display:none}
 .bulv{margin:0;padding:10px 14px 10px 34px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel);cursor:text;min-height:44px}
 .bulv li{font-weight:700;padding:3px 0;line-height:1.35}.bulv li::marker{color:var(--accent)}
+.bulv li.bl1{margin-left:22px;list-style-type:circle;font-weight:600}.bulv li.bl2{margin-left:44px;list-style-type:square;font-weight:500}
+.bdt{display:inline-block;margin-left:6px;font-size:var(--fs-xs);font-weight:700;color:var(--muted,#5b6b73);background:color-mix(in srgb,var(--accent) 9%,transparent);border-radius:6px;padding:0 6px;vertical-align:1px}
 .chgbox{margin:12px 0 2px;border:1px solid var(--line);border-radius:12px;background:var(--sunk);padding:8px 10px}
 .chgh{display:flex;align-items:center;gap:10px;font-size:var(--fs-s);font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:0 2px 6px}
 .chgh .linkish{text-transform:none;letter-spacing:0;margin-left:auto}
@@ -1018,6 +1021,7 @@ table.sheet tr.grp>*{letter-spacing:.08em}
 .rct td{vertical-align:top;padding:2mm;border-left:.3mm solid var(--tl);border-bottom:.3mm solid var(--tl);font-size:12pt;line-height:1.3;overflow:hidden;max-height:57mm;height:57mm}
 .rct td i{display:block;font-style:normal;color:#444;font-size:10.5pt;margin-top:1mm}
 .rct td ul{margin:0;padding-left:4mm}
+.rct td>.rst{display:block;margin-bottom:1mm}
 .rct td .rnm{display:block;margin-bottom:1mm}.rct td .rnm+ul{font-size:.9em}
 .rct .rnm{font-size:12.5pt}
 .rbed{display:inline-block;background:var(--t);color:#fff;font-weight:800;font-size:13pt;padding:1mm 3mm;border-radius:1.5mm}
@@ -1090,7 +1094,7 @@ body.roundfile .rp{margin:0 auto 10mm;box-shadow:none}
 <datalist id="mxinv"><option>HVS (other organisms)</option><option>Urine culture (repeat)</option><option>Rubella IgG</option><option>Hepatitis C antibody</option><option>HCV RNA (PCR)</option><option>HBeAg / HBV DNA (viral load)</option><option>HIV viral load</option><option>VDRL / RPR</option><option>TPHA / TPPA</option><option>Urine drug screen – mother</option><option>Urine drug screen – baby</option><option>Meconium toxicology</option><option>CMV IgG / IgM</option><option>Toxoplasma IgG / IgM</option><option>HSV PCR / serology</option><option>Varicella IgG</option><option>Parvovirus B19</option><option>HTLV I / II</option><option>Chlamydia / gonorrhoea NAAT</option><option>TB screen (IGRA / CXR)</option><option>TSH / FT4</option><option>HbA1c / OGTT</option><option>Hb electrophoresis</option><option>Anti-Ro / anti-La</option><option>Platelet antibodies</option><option>Kleihauer</option><option>Blood culture (mother)</option><option>Placental histology / culture</option><option>COVID-19 PCR</option><option>Malaria film</option></datalist>
 <datalist id="metinvs"><option>Plasma amino acids</option><option>Urine organic acids</option><option>Acylcarnitine profile (dried blood spot)</option><option>Free &amp; total carnitine</option><option>Ammonia</option><option>Lactate</option><option>Pyruvate / lactate : pyruvate ratio</option><option>Blood ketones (β-hydroxybutyrate)</option><option>Free fatty acids</option><option>Insulin &amp; C-peptide (critical sample)</option><option>Cortisol</option><option>Growth hormone</option><option>Urine reducing substances</option><option>Urine ketones</option><option>Urine orotic acid</option><option>Succinylacetone</option><option>Plasma total homocysteine</option><option>GALT enzyme (galactosaemia)</option><option>Biotinidase</option><option>Very long chain fatty acids (VLCFA)</option><option>Transferrin isoelectric focusing (CDG)</option><option>CSF amino acids (glycine – NKH)</option><option>CSF lactate / glucose (paired)</option><option>Plasma / urine AASA, pipecolic acid (pyridoxine-dependent epilepsy)</option><option>Urine sulphite / S-sulphocysteine</option><option>Copper &amp; caeruloplasmin</option><option>7-dehydrocholesterol (SLO)</option><option>Uric acid</option><option>CK</option><option>Lysosomal enzymes</option><option>Urine glycosaminoglycans</option><option>17-OHP</option><option>Renin / aldosterone</option><option>Thyroid function (TSH / FT4)</option><option>Chromosomal microarray</option><option>Gene panel / exome sequencing</option></datalist>
 <datalist id="orgs"><option>Awaiting result</option><option>No growth</option><option>Contaminant (likely)</option><option>Group B Streptococcus (GBS)</option><option>Escherichia coli</option><option>E. coli – ESBL</option><option>Klebsiella pneumoniae</option><option>Klebsiella pneumoniae – ESBL</option><option>Klebsiella – carbapenem-resistant (CRE)</option><option>Enterobacter spp.</option><option>Serratia marcescens</option><option>Citrobacter spp.</option><option>Pseudomonas aeruginosa</option><option>Acinetobacter baumannii</option><option>Staphylococcus aureus (MSSA)</option><option>MRSA</option><option>Coagulase-negative Staphylococcus (CoNS)</option><option>Enterococcus faecalis</option><option>Enterococcus – VRE</option><option>Listeria monocytogenes</option><option>Streptococcus pneumoniae</option><option>Haemophilus influenzae</option><option>Candida albicans</option><option>Candida parapsilosis</option><option>Candida auris</option><option>Other fungi</option></datalist>
-<datalist id="feedopts"><option>NPO</option></datalist>
+<datalist id="feedopts"><option>NPO</option><option>Trophic</option></datalist>
 <datalist id="swabsites"><option>Stoma</option><option>Eye</option><option>Nose</option><option>Ear</option><option>Umbilical</option><option>Rectal</option><option>Throat</option><option>Axilla</option><option>Groin</option><option>Skin / wound</option><option>Line / catheter site</option><option>Surgical wound</option><option>ETT</option></datalist>
 <datalist id="repfl"><option>0.9% NaCl</option><option>0.9% NaCl + KCl 10 mmol/L</option><option>0.9% NaCl + KCl 20 mmol/L</option><option>0.45% NaCl + KCl 10 mmol/L</option><option>Ringer's lactate (Hartmann's)</option></datalist>
 <datalist id="tasktimes"></datalist>
@@ -1170,10 +1174,18 @@ const respStr=f=>{const p=modeParams(f).filter(k=>f["rp_"+k]).map(k=>`${RP[k][0]
 // typical values per 100 ml (k = kcal, c = carbohydrate g); brands vary
 const MILK={"EBM":{k:67,c:7.0},"Donor milk":{k:65,c:7.0},"EBM + fortifier":{k:80,c:8.0},"Donor + fortifier":{k:78,c:8.0},"Preterm formula":{k:80,c:8.4},"Term formula":{k:67,c:7.3}};
 const isNPO=f=>/^\s*npo/i.test(f.fmlkg||"");
+const isTroph=f=>/^\s*troph/i.test(f.fmlkg||"");
+// trophic feeds: ml per feed × feeds per day ÷ weight (kg)
+const trophMlkg=(f,wt)=>{const v=num(f.fvol),ff=num(f.ff);if(v==null||!ff||!wt)return null;return v*(24/ff)/wt};
+// NPO: counted from the first day of the current NPO run (saved daily sheets), Day 1 = that day
+function npoDays(b){if(!b||!isNPO(b.f))return 0;const T=today();let st=T;for(let d=addDays(T,-1),k=0;k<400;k++,d=addDays(d,-1)){const x=b.days&&b.days[d];if(x&&x.f&&/^\s*npo/i.test(x.f.fmlkg||""))st=d;else break}
+  if(b.npoFrom&&b.npoFrom<st&&b.npoFrom<=T)st=b.npoFrom;return daysBetween(st,T)+1}
+const feedTxt=f=>isNPO(f)?"NPO":isTroph(f)?`Trophic ${f.fvol?f.fvol+" ml":""}${ffStr(f.ff)}`.trim():f.fmlkg?`${f.fmlkg} ml/kg/d`:"";
 const inoRow=i=>(f,b)=>i===1||!!String(f["ino"+i]||"").trim()||!!f["ino"+i+"d"]||(!!b&&revOpen(b,"ino"+i));
 const readmOn=(f,b)=>!!(f.rea_d||f.rea_from||f.rea_sum)||(!!b&&revOpen(b,"readm"));
 // v146: outcome (transferred out / discharged / died) is its own section
 const OUTO=["","Discharged home","DAMA","Transferred to other hospital","Transferred to another department","Died"];
+const exvOn=(f,b)=>!!(f.exv_dt||f.exv_site||f.exv_inf||f.exv_gr||f.exv_mx||f.exv_fu)||(!!b&&revOpen(b,"exv"));
 const rfsxOn=(f,b)=>!!(f.rfsx_proc||f.rfsx_date||f.rfsx_find||f.rfsx_note||f.rfsx_surg)||(!!b&&revOpen(b,"rfsx"));
 const statOn=(f,b)=>!!b&&((b.stat||[]).some(x=>!x.d||String(x.d).slice(0,10)===today())||revOpen(b,"stat"));
 const outT=f=>(f.out_type==="Transferred out"?"Transferred to other hospital":f.out_type)||(f.tro_d||f.tro_to||f.tro_why?"Transferred to other hospital":"");
@@ -1254,7 +1266,7 @@ function rfChips(b,k){const f=b.f;const t=v=>v?" "+fmtDT(v):"";let c=[];
     (f.rf_asp||f.rf_aspc)&&"aspirates "+[f.rf_asp&&f.rf_asp+" ml",f.rf_aspc].filter(Boolean).join(" "),f.rf_stool&&"stool "+f.rf_stool,
     num(f.rf_uop)!=null&&`UOP ${f.rf_uop} ml/kg/h`,
     f.rf_axr&&"AXR "+f.rf_axr,f.rf_abus&&"US "+f.rf_abus,f.rf_surg&&f.rf_surg+(f.rf_surgt?t(f.rf_surgt):""),...items(f.rf_abdn),
-    f.rfsx_proc&&"operation: "+f.rfsx_proc+(f.rfsx_date?" ("+dmy(f.rfsx_date).slice(0,5)+")":"")+(f.rfsx_surg?" – "+f.rfsx_surg:""),...items(f.rfsx_find),...items(f.rfsx_note)];
+    ...items(f.rfsx_proc).map((x,i)=>i?x:"operation: "+x+(f.rfsx_date?" ("+dmy(f.rfsx_date).slice(0,5)+")":"")+(f.rfsx_surg?" – "+f.rfsx_surg:"")),...items(f.rfsx_find),...items(f.rfsx_note)];
   else if(k==="fl")c=[num(f.rf_tot)!=null&&`total ${f.rf_tot} ml/kg/d`,(num(f.rf_ivfv)!=null||f.rf_ftype)&&`IVF${num(f.rf_ivfv)!=null?" "+f.rf_ivfv+" ml/kg/d":""}${f.rf_ftype?" "+f.rf_ftype:""}${num(f.rf_dex)!=null&&!/Numeta|Normal saline/.test(f.rf_ftype||"")?" D"+f.rf_dex+"%":""}`,rfNPO(f)?"NPO":f.rf_fmlkg&&`feeds ${f.rf_fmlkg} ml/kg/d${f.rf_feedt?" "+f.rf_feedt:""}${f.rf_route?" "+f.rf_route:""}${ffStr(f.rf_ff)}`,f.rf_ivf&&"IVF "+f.rf_ivf,f.rf_feed&&"feeds: "+f.rf_feed,num(f.rf_glu)!=null&&`lowest glucose ${f.rf_glu} mmol/L`,...items(f.rf_fln)];
   else if(k==="inf")c=[...rfAbx(b).map(x=>medLabel(x)+(x.d?" from"+t(x.d):"")),f.rf_cult==="Yes"&&`${f.rf_cults||"Blood"} culture sent${t(f.rf_cultt)}${f.rf_cultr?" – "+f.rf_cultr:""}`,...items(f.rf_infn)];
   else if(k==="lines")c=[1,2].map(i=>f["rf_line"+i]&&f["rf_line"+i]+t(f["rf_line"+i+"t"])).concat(items(f.rf_linen));
@@ -1277,7 +1289,7 @@ function rfCarryHTML(b,keys){const f=b.f,L={surf:`surfactant ×${rfSurfN(f)}`,ab
   return ok.length?ok.map(k=>rfDone(b,k)?`<span class="oxchip ok">✓ ${esc(L[k])} added to Today</span>`:`<button type="button" class="btn ghost sm" data-carry="${k}">+ ${esc(L[k])} to Today</button>`).join(" ")+` <small>adds it with the time it was started there, so Day counts are right</small>`:null}
 function rfCarry(b,k){const f=b.f,h=rfHosp(f),at=v=>v?v+":00":null;
   if(k==="surf"){const n=rfSurfN(f);if((+f.surf||0)<n)f.surf=String(n);if(f.rf_surft&&!f.surf_t1)f.surf_t1=f.rf_surft;if(f.rf_surft2&&!f.surf_t2)f.surf_t2=f.rf_surft2;if(f.rf_surft3&&!f.surf_t3)f.surf_t3=f.rf_surft3;if(f.rf_surft)f.surfSet=f.rf_surft.slice(0,10);logAdd(b,"rlog",`Surfactant ×${n} at ${h}`,at(f.rf_surft))}
-  else if(k==="abx")rfAbx(b).forEach(x=>{const nm=x.a.trim();if(b.abx.some(y=>(y.a||"").trim().toLowerCase()===nm.toLowerCase()))return;const it=Object.assign({},x,{a:nm,d:x.d||nowDT(),lg:nm,rf:1});
+  else if(k==="abx")rfAbx(b).filter(x=>!x.dc).forEach(x=>{const nm=x.a.trim();if(b.abx.some(y=>(y.a||"").trim().toLowerCase()===nm.toLowerCase()))return;const it=Object.assign({},x,{a:nm,d:x.d||nowDT(),lg:nm,rf:1});
     b.abx.push(it);drugLog(b,"abxlog",nm,`${medLabel(it)} (at ${h})`,"start",at(x.d))});
   else if(/^ino\d$/.test(k)){const i=k.slice(3),dr=String(f["rf_ino"+i]).trim(),x=rfInoCur(f,i),st=f["rf_ino"+i+"st"]||nowDT(),j=[1,2,3].find(n=>!String(f["ino"+n]||"").trim());
     if(!j){toast("All 3 inotrope rows in Today are in use");return}
@@ -1394,7 +1406,7 @@ function gcChip(f,m,v,at,lab,ref){const r=gcOne(f,m,v,at);if(!r)return"";if(r.er
   return `<span class="vchip gc ${cls}"><small>${lab||GCN[m]} · ${esc(r.src)}</small><b>${esc(r.txt)} <i>${r.cp.toFixed(1)} %</i>${ch}</b></span>`}
 const J_GUIDES=[["AAP","AAP 2022 (≥ 35 wk)"],["NICE","NICE CG98"],["Manual","Type levels by hand"]];
 const J_RF=["","No risk factor","≥ 1 risk factor"];
-const jGuide=f=>f.jguide||((f.thr||f.exthr)?"Manual":"AAP");
+const jGuide=f=>f.jguide||((f.thr||f.exthr)?"Manual":(GAwk(f)!=null&&GAwk(f)<35?"NICE":"AAP"));
 const jAAP=f=>jGuide(f)==="AAP";
 // age in hours at the TSB (TSB date / time, else now)
 function jAgeH(f){const bd=birthDate(f);if(!bd)return null;const at=f.tsbt?new Date(f.tsbt.length>10?f.tsbt+":00":f.tsbt+"T12:00:00"):new Date();const h=(at-bd)/3600000;return isNaN(h)||h<0?null:h}
@@ -1426,6 +1438,13 @@ const jSrc=f=>{const t=jThr(f);return t&&t.ph!=null?(t.g==="AAP"?"AAP":"NICE"):"
 const jAgeTxt=h=>h<72?Math.floor(h)+" h":Math.floor(h)+" h (day "+Math.floor(h/24)+")";
 // BIND-M box opens when the TSB is within 30 µmol/L of the exchange level (AAP / NICE or typed by hand)
 const EXNEAR=30;
+// v155: B/A ratio (AAP 2004 / 2022): consider exchange at ≥ 8.0 (≥ 38 wk, well) · 7.2 (≥ 38 wk + risk, or 35–37+6 well) · 6.8 (35–37+6 + risk) mg/dL per g/dL
+const labAlb=b=>{if(!b)return null;for(let i=(b.inv||[]).length-1;i>=0;i--){const c=b.inv[i];if(num(c.alb)!=null)return{v:c.alb,t:c.t||""}}return null};
+const baOn=(f,b)=>num(f.jalb)!=null||(num(f.tsb)!=null&&(()=>{const g=exGap(f);return g!=null&&g<=50})());
+function baCalc(f,b){const t=num(f.tsb),al=num(f.jalb)!=null?num(f.jalb):(labAlb(b)?num(labAlb(b).v):null);if(t==null||al==null||al<=0)return null;
+  const mg=(t/17.1)/(al/10),mol=t/(al*15.04),ga=GAwk(f),rf=/≥ 1/.test(f.jrf||"");let lim=null,why="";
+  if(ga!=null&&ga>=35){if(ga>=38&&!rf){lim=8.0;why="≥ 38 wk, no risk factor"}else if(ga>=38||!rf){lim=7.2;why=ga>=38?"≥ 38 wk with risk factor":"35–37+6 wk, no risk factor"}else{lim=6.8;why="35–37+6 wk with risk factor"}}
+  return{mg:mg.toFixed(1),mol:mol.toFixed(2),lim,why,src:num(f.jalb)!=null?"":"albumin from lab table",hi:lim!=null&&mg>=lim}}
 const exGap=f=>{const t=num(f.tsb),e=exLv(f);return t!=null&&e!=null?e-t:null};
 const phGap=f=>{const t=num(f.tsb),p=photoLv(f);return t!=null&&p!=null?t-p:null};
 const nearEx=f=>{const g=exGap(f);return g!=null&&g<=EXNEAR};
@@ -1627,7 +1646,7 @@ const sterStr=f=>{if(!f.ster)return"";if(f.ster!=="Given")return"steroids "+f.st
   const C=[1,2].map(i=>{const c=sterCourse(f,i);return c?`${i===2?"repeat course":"course 1"}${c.d?" "+dmy(c.d).slice(0,5):""}${c.r?" "+c.r.replace(/ IM/,""):""}${c.st?" – "+c.st:""}${c.gap?", "+c.gap:""}`:""}).filter(Boolean);
   return"steroids: "+(C.join("; ")||"given")};
 function sterCalc(f,i){const c=sterCourse(f,i);if(!c||!c.st)return null;const ok=/^complete/i.test(c.st);return `<span class="oxchip ${ok?"ok":"warn"}">${esc(c.st.replace(/^./,x=>x.toUpperCase()))}</span>${c.gap?` <small>${esc(c.gap)}</small>`:""}`}
-const FFO=[["","—"],["1","every 1 h"],["2","every 2 h"],["3","every 3 h"],["4","every 4 h"],["cont","Continuous (milk drip)"]];
+const FFO=[["","—"],["1","every 1 h"],["2","every 2 h"],["3","every 3 h"],["4","every 4 h"],["6","every 6 h"],["12","every 12 h"],["cont","Continuous (milk drip)"]];
 const ffOpts=v=>v&&!FFO.some(o=>o[0]===v)?[...FFO,[v,"every "+v+" h"]]:FFO;
 const ffStr=v=>!v?"":v==="cont"?" continuous milk drip":" q"+v+"h";
 const MGO=["","No","Loading dose only","Loading + maintenance (complete)","Started – still running at birth","Unknown"];
@@ -1643,7 +1662,7 @@ const inoHas=f=>range(3).some(i=>String(f["ino"+i]||"").trim()||f["ino"+i+"d"]||
 const pdaHas=f=>!!(f.pda||f.pdasz||f.pdatx||f.pdadose||f.pdast||f.pdasd||f.pdasn);
 const echoHas=(f,b)=>!!String(f.echo||"").trim()||(!!b&&["echoh","echop","echoph"].some(k=>(b[k]||[]).length>0));
 const inoOn=(f,b)=>inoHas(f)||revOpen(b,"ino");
-const pdaOn=(f,b)=>pdaHas(f)||revOpen(b,"pda");
+const pdaOn=(f,b)=>pdaHas(f)||revOpen(b,"pda")||(!!b&&(b.echop||[]).length>0);
 const echoOn=(f,b)=>echoHas(f,b)||revOpen(b,"echo");
 const lossOn=(f,b)=>!!(f.l1t||f.l1v||f.l2t||f.l2v)||revOpen(b,"loss");
 const necOn=(f,b)=>!!f.nec||revOpen(b,"nec");
@@ -1666,10 +1685,10 @@ function acHint(f,dk,lk,mk,wt){const d=acDose(f[dk]);if(!d)return null;const lv=
 const acSecOn=(f,b)=>[1,2,3].some(i=>!!(f["ac"+i]||f["ac"+i+"l"]||f["ac"+i+"m"]))||revOpen(b,"ac");
 const acOn=i=>(f,b)=>i===1||!!(f["ac"+i]||f["ac"+i+"l"]||f["ac"+i+"m"])||revOpen(b,"ac"+i);
 const rfInoOn=i=>(f,b)=>i===1||!!String(f["rf_ino"+i]||"").trim()||!!f["rf_ino"+i+"d"]||revOpen(b,"rfino"+i);
-const REVON={stat:(f,b)=>statOn(f,b),rfsx:rfsxOn,outc:outOn,readm:readmOn,ster2:ster2On,ac:acSecOn,ino:inoOn,pda:pdaOn,echo:echoOn,ino2:(f,b)=>inoRow(2)(f,b),ino3:(f,b)=>inoRow(3)(f,b),loss:lossOn,nec:necOn,axr:axrOn,ac2:acOn(2),ac3:acOn(3),rfino2:rfInoOn(2),rfino3:rfInoOn(3)};
+const REVON={exv:exvOn,stat:(f,b)=>statOn(f,b),rfsx:rfsxOn,outc:outOn,readm:readmOn,ster2:ster2On,ac:acSecOn,ino:inoOn,pda:pdaOn,echo:echoOn,ino2:(f,b)=>inoRow(2)(f,b),ino3:(f,b)=>inoRow(3)(f,b),loss:lossOn,nec:necOn,axr:axrOn,ac2:acOn(2),ac3:acOn(3),rfino2:rfInoOn(2),rfino3:rfInoOn(3)};
 // a "+" button shows only once the row before it is in use
 const REVREADY={ino2:f=>!!String(f.ino1||"").trim(),ino3:f=>!!String(f.ino2||"").trim(),ac2:f=>!!f.ac1,ac3:f=>!!f.ac2,rfino2:f=>!!String(f.rf_ino1||"").trim(),rfino3:f=>!!String(f.rf_ino2||"").trim()};
-const REVFOCUS={rfsx:"f_rfsx_proc",outc:"f_out_type",readm:"f_rea_d",ster2:"f_sc2r",ac:"f_ac1",ino:"f_ino1",pda:"f_pda",echo:"f_echo",ino2:"f_ino2",ino3:"f_ino3",loss:"f_l1t",nec:"f_nec",axr:"f_axr",ac2:"f_ac2",ac3:"f_ac3",rfino2:"f_rf_ino2",rfino3:"f_rf_ino3"};
+const REVFOCUS={exv:"f_exv_site",rfsx:"f_rfsx_proc",outc:"f_out_type",readm:"f_rea_d",ster2:"f_sc2r",ac:"f_ac1",ino:"f_ino1",pda:"f_pda",echo:"f_echo",ino2:"f_ino2",ino3:"f_ino3",loss:"f_l1t",nec:"f_nec",axr:"f_axr",ac2:"f_ac2",ac3:"f_ac3",rfino2:"f_rf_ino2",rfino3:"f_rf_ino3"};
 const pdaTxStr=f=>[f.pdatx,pdaMed(f)&&[f.pdadose&&f.pdadose+" mg/kg/dose",f.pdaint,f.pdast&&"from "+dmy(f.pdast),pdaDay(f)].filter(Boolean).join(" "),pdaSurg(f)&&f.pdasd&&"done "+dmy(f.pdasd),pdaSurg(f)&&f.pdasn].filter(Boolean).join(", ");
 const ropActed=f=>!!f.ropact&&!/^(No treatment|Discharge)/.test(f.ropact);
 const lineDayTxt=it=>it.d?(it.e?(daysBetween(it.d,it.e)+1)+" days":"Day "+dayN(it.d)):"—";
@@ -1715,7 +1734,7 @@ const isMA=g=>{const ph=num(g.ph),h=num(g.hco3),be=num(g.be);return ph!=null&&ph
 const agCalc=g=>{if(!isMA(g))return null;const na=num(g.na),cl=num(g.cl),h=num(g.hco3);return na!=null&&cl!=null&&h!=null?Math.round((na-cl-h)*10)/10:null};
 const agChip=v=>`<span class="oxchip${v>16?" hi":""}">${v}</span>${v>16?` <b class="oxband">high</b>`:""}`;
 const GAS_ROWS=[{k:"src",l:"Site",o:["","Cap","Art","Ven"]},{k:"ph",l:"pH"},{k:"pco2",l:"pCO₂",u:"GASU"},{k:"po2",l:"pO₂",u:"GASU"},{k:"hco3",l:"HCO₃",u:"mmol/L"},{k:"be",l:"BE",u:"mmol/L"},{k:"lac",l:"Lact.",u:"mmol/L"},{k:"na",l:"Na",u:"mmol/L"},{k:"k",l:"K",u:"mmol/L"},{k:"cl",l:"Cl",u:"mmol/L"},{k:"ag",l:"Anion gap",u:"mmol/L",calc:true,ma:1},
- {k:"fio2",l:"FiO₂ %",pph:1},{k:"mapaw",l:"MAP cmH₂O",pph:1},{k:"spo2",l:"SpO₂ %",pph:1},{k:"oi",l:"OI",calc:true,pph:1},{k:"osi",l:"OSI",calc:true,pph:1}];
+ {k:"fio2",l:"FiO₂ %",pph:1},{k:"mapaw",l:"MAP cmH₂O",pph:1},{k:"spo2",l:"SpO₂ %",pph:1},{k:"oi",l:"OI",calc:true,pph:1},{k:"osi",l:"OSI",calc:true,pph:1},{k:"act",l:"Action taken",wide:1}];
 // blood-gas pressure unit: the unit reports pCO₂ / pO₂ in kPa (default). mmHg can be chosen in Handover → Sync & settings.
 // OI is always calculated in mmHg (pO₂ kPa × 7.50062).
 const gasU=()=>S&&S.gasu==="mmHg"?"mmHg":"kPa";
@@ -1804,7 +1823,8 @@ const INV_ROWS=[{g:"Blood count & infection"},{k:"tlc",l:"TLC",u:"×10⁹/L",r:[
   {g:"Renal & electrolytes"},{k:"na",l:"Na",u:"mmol/L",r:[135,145]},{k:"k",l:"K",u:"mmol/L",r:[3.5,5.5]},{k:"urea",l:"Urea",u:"mmol/L",r:[null,5.4]},{k:"cr",l:"Cr",u:"µmol/L",cr:1},{k:"ca",l:"Ca",u:"mmol/L",r:b=>[termOf(b)?2.0:1.75,2.75]},{k:"ica",l:"Ionised Ca",u:"mmol/L",r:[1.0,1.35]},{k:"mg",l:"Mg",u:"mmol/L",r:[0.6,1.0]},{k:"po4",l:"PO₄",u:"mmol/L",r:[1.29,null]},
   {g:"Liver & bone"},{k:"tsb",l:"TSB",u:"µmol/L",tsb:1},{k:"dsb",l:"DSB",u:"µmol/L",dsb:1},{k:"alb",l:"Alb",u:"g/L"},{k:"alt",l:"ALT",u:"U/L"},{k:"ast",l:"AST",u:"U/L"},{k:"ggt",l:"GGT",u:"U/L"},
   {k:"alp",l:"ALP",u:"U/L",r:alpG},{k:"vitd",l:"Vit D",u:"nmol/L"},{k:"pth",l:"PTH",u:"pmol/L"},
-  {g:"Cardiac"},{k:"bnp",l:"BNP / NT-proBNP",u:"pg/mL"},{k:"trop",l:"Troponin",u:"ng/L"}];
+  {g:"Cardiac"},{k:"bnp",l:"BNP / NT-proBNP",u:"pg/mL"},{k:"trop",l:"Troponin",u:"ng/L"},
+  {g:"CSF"},{k:"csfwbc",l:"CSF WBC",u:"/mm³"},{k:"csfrbc",l:"CSF RBC",u:"/mm³"},{k:"csfpmn",l:"CSF neutrophils",u:"%"},{k:"csfprot",l:"CSF protein",u:"g/L"},{k:"csfglu",l:"CSF glucose",u:"mmol/L"},{k:"csfbg",l:"Paired blood glucose",u:"mmol/L"},{k:"csfgram",l:"CSF Gram stain"},{k:"csfcult",l:"CSF culture"}];
 // "N:" text for rows without a fixed one
 INV_ROWS.forEach(r=>{if(r.k&&r.r&&!r.n)r.n=typeof r.r==="function"?nAge(r.r):fmtR(r.r)});
 // day of life of a lab column ("dd/mm" header) – used for age-dependent ranges
@@ -1903,7 +1923,7 @@ function echoRef(){return `<details class="calcref"><summary>Echo forms – how 
 const SHEETS={echoh:{btn:"+ New exam",empty:"",newT:ddmm},echop:{btn:"+ New exam",empty:"",newT:ddmm},echoph:{btn:"+ New exam",empty:"",newT:ddmm},lus:{btn:"+ New score",empty:"No lung ultrasound scores yet. Tap + New score.",newT:ddmm},sarn:{btn:"+ New hourly exam",empty:"No Sarnat staging yet. Tap + New stage.",newT:ddmm},thomp:{btn:"+ New exam",empty:"No Thompson scores yet. Tap + New score.",newT:ddmm},gases:{btn:"+ New gas",empty:"No gases yet. Tap + New gas.",newT:stamp},inv:{btn:"+ New date",empty:"No results yet. Tap + New date.",newT:ddmm}};
 const sheetRows=(key,b)=>isEchoS(key)?ECHO_SHEETS[key][1]:key==="gases"?GAS_ROWS:key==="lus"?LUS_ROWS:key==="thomp"?THOMP_ROWS:key==="sarn"?SARN_ROWS:[...INV_ROWS,{g:"Special investigations"},{k:"tg",l:"TG",u:"mmol/L",r:[null,2.26],n:"< 2.26"},...b.invx.map(x=>({k:"x_"+x.id,l:x.name,x:x.id}))];
 const INVROW=(b,k)=>sheetRows("inv",b).find(r=>r.k===k);
-const LINE_TYPES=["","UVC","UAC","PICC","Peripheral IV (PIV)","Peripheral arterial line (PAL)","Central line (other)","ETT (oral)","ETT (nasal)","NIV prongs / mask","NG tube","OG tube","Chest drain","Urinary catheter","Surgical drain","Stoma","Other"];
+const LINE_TYPES=["","UVC","UAC","PICC","CVC","Peripheral IV (PIV)","Peripheral arterial line (PAL)","Central line (other)","ETT (oral)","ETT (nasal)","NIV prongs / mask","NG tube","OG tube","Chest drain","Urinary catheter","Surgical drain","Stoma","Other"];
 const CONS_TYPES=["","Paediatric surgery","Neurology","Neurosurgery","Haematology","Cardiology","Nephrology","Ophthalmology (ROP)","ENT","Genetics","Metabolic","Endocrine","GI / hepatology","Orthopaedics","Plastic surgery","Urology","Dermatology","Physiotherapy","Nutrition / dietitian","Social work","Palliative care","Other"];
 const IMG_TYPES=["","Cranial US","Abdominal US","Renal US","Hip US","X-ray","CT","MRI","Echo","Other"];
 /* ---------- medicines: units, bases, intervals, suggestions ---------- */
@@ -1914,9 +1934,13 @@ const BASES=["/kg/dose","/kg/day","/kg/h","/kg/min","/dose","/day"];
 const DSTR={"Nystatin":[100000,"units"]};
 const DRUGS={"Caffeine citrate":["mg","/kg/day",""],"Benzylpenicillin (Penicillin G)":["units","/kg/dose","q12h (< 7 days) · q8h (≥ 7 days); higher dose for meningitis – unit protocol"],"Procaine penicillin":["units","/kg/dose","q24h IM (congenital syphilis) – unit protocol"],"Benzathine penicillin":["units","/kg/dose","once IM (syphilis exposure) – unit protocol"],"Nystatin":["mL","/dose","q6h (oral suspension 100,000 units/mL)"],"Ampicillin": ["mg", "/kg/dose", "q8–12h (by GA / postnatal age)"], "Amoxicillin": ["mg", "/kg/dose", "q8–12h"], "Gentamicin": ["mg", "/kg/dose", "q24–48h (by GA / postnatal age; check levels)"], "Amikacin": ["mg", "/kg/dose", "q24–48h (check levels)"], "Cefotaxime": ["mg", "/kg/dose", "q8–12h"], "Ceftazidime": ["mg", "/kg/dose", "q8–12h"], "Ceftriaxone": ["mg", "/kg/dose", "q24h"], "Cloxacillin": ["mg", "/kg/dose", "q8–12h"], "Flucloxacillin": ["mg", "/kg/dose", "q8–12h"], "Meropenem": ["mg", "/kg/dose", "q8–12h"], "Piperacillin-tazobactam": ["mg", "/kg/dose", "q8–12h"], "Vancomycin": ["mg", "/kg/dose", "q8–24h (by GA / levels)"], "Colistin": ["mg", "/kg/dose", "q8–12h"], "Metronidazole": ["mg", "/kg/dose", "q8–24h"], "Azithromycin": ["mg", "/kg/dose", "q24h"], "Erythromycin": ["mg", "/kg/dose", "q6–8h"], "Fluconazole": ["mg", "/kg/dose", "q24–72h (by GA / postnatal age)"], "Amphotericin B": ["mg", "/kg/dose", "q24h"], "Acyclovir": ["mg", "/kg/dose", "q8–12h"], "Caffeine citrate": ["mg", "/kg/day", "q24h"], "Paracetamol": ["mg", "/kg/dose", "q6–12h (by GA)"], "Ibuprofen": ["mg", "/kg/dose", "q24h"], "Indomethacin": ["mg", "/kg/dose", "q12–24h"], "Phenobarbitone": ["mg", "/kg/day", "q12–24h (loading: once)"], "Levetiracetam": ["mg", "/kg/dose", "q12h"], "Phenytoin": ["mg", "/kg/dose", "q8–12h"], "Midazolam": ["mcg", "/kg/h", "continuous"], "Morphine": ["mcg", "/kg/h", "continuous"], "Fentanyl": ["mcg", "/kg/h", "continuous"], "Furosemide": ["mg", "/kg/dose", "q12–24h"], "Spironolactone": ["mg", "/kg/day", "q12–24h"], "Hydrochlorothiazide": ["mg", "/kg/day", "q12h"], "Hydrocortisone": ["mg", "/kg/dose", "q6–12h"], "Dexamethasone": ["mg", "/kg/dose", "q12h"], "Vitamin D": ["IU", "/day", "q24h"], "Iron (elemental)": ["mg", "/kg/day", "q24h"], "Omeprazole": ["mg", "/kg/dose", "q12–24h"], "Calcium gluconate": ["mL", "/kg/dose", "q6–12h"], "Sodium bicarbonate": ["mmol", "/kg/dose", "once / PRN"], "Vitamin K": ["mg", "/dose", "once"], "Sildenafil": ["mg", "/kg/dose", "q6–8h"], "Propranolol": ["mg", "/kg/dose", "q6–8h"], "Cholecalciferol": ["IU", "/day", "q24h"],
   "Melatonin": ["mg", "/kg/dose", "q24h (adjuvant in HIE – unit protocol)"], "Aminophylline": ["mg", "/kg/dose", "q8–12h (loading dose: once)"],
-  "Budesonide (Pulmicort)": ["mg", "/dose", "q12h (nebulised)"], "Salbutamol": ["mg", "/dose", "q4–8h / PRN (nebulised)"]};
+  "Budesonide (Pulmicort)": ["mg", "/dose", "q12h (nebulised)"], "Salbutamol": ["mg", "/dose", "q4–8h / PRN (nebulised)"],
+  "Teicoplanin": ["mg", "/kg/dose", "loading 16 mg/kg once, then 8 mg/kg q24h"], "Cisatracurium": ["mcg", "/kg/min", "continuous – unit protocol"],
+  "Dexmedetomidine (Precedex)": ["mcg", "/kg/h", "continuous – titrate, unit protocol"], "Clonazepam": ["mcg", "/kg/dose", "q8–12h – neurology / unit protocol"],
+  "Ferrous sulphate": ["mg", "/kg/day", "elemental iron, q12–24h"], "Domperidone": ["mg", "/kg/dose", "q8h – unit protocol"],
+  "Fusidic acid (Fucidin) cream": ["", "", "apply q8h (topical)"], "Dexpanthenol (Bepanthen) ointment": ["", "", "apply with nappy changes (topical)"]};
 // usual route filled in when the drug is chosen (can be changed)
-const DROUTE={"budesonide (pulmicort)":"Nebulised","budesonide":"Nebulised","pulmicort":"Nebulised","salbutamol":"Nebulised","nystatin":"PO / NG / OG","vitamin d":"PO / NG / OG","cholecalciferol":"PO / NG / OG","iron (elemental)":"PO / NG / OG",
+const DROUTE={"teicoplanin":"IV","cisatracurium":"IV infusion","dexmedetomidine (precedex)":"IV infusion","clonazepam":"PO / NG / OG","ferrous sulphate":"PO / NG / OG","domperidone":"PO / NG / OG","fusidic acid (fucidin) cream":"Topical","dexpanthenol (bepanthen) ointment":"Topical","budesonide (pulmicort)":"Nebulised","budesonide":"Nebulised","pulmicort":"Nebulised","salbutamol":"Nebulised","nystatin":"PO / NG / OG","vitamin d":"PO / NG / OG","cholecalciferol":"PO / NG / OG","iron (elemental)":"PO / NG / OG",
   "spironolactone":"PO / NG / OG","hydrochlorothiazide":"PO / NG / OG","propranolol":"PO / NG / OG","ampicillin":"IV","gentamicin":"IV","amikacin":"IV","cefotaxime":"IV","ceftazidime":"IV","ceftriaxone":"IV",
   "cloxacillin":"IV","flucloxacillin":"IV","meropenem":"IV","piperacillin-tazobactam":"IV","vancomycin":"IV","colistin":"IV","acyclovir":"IV","amphotericin b":"IV","midazolam":"IV infusion","benzylpenicillin (penicillin g)":"IV","procaine penicillin":"IM","benzathine penicillin":"IM","melatonin":"PO / NG / OG","aminophylline":"IV","morphine":"IV infusion","fentanyl":"IV infusion"};
 const DRUGKEY=Object.fromEntries(Object.keys(DRUGS).map(k=>[k.toLowerCase(),DRUGS[k]]));
@@ -2028,7 +2052,7 @@ const SECTIONS=[
     F("mgst","MgSO₄ started","date",{show:f=>!!f.mgso4&&!/^(No|Unknown)$/.test(f.mgso4),g:1.4,mw:200}),
     F("CALC_mg","Course status","calc",{empty:"—",show:f=>!!f.mgso4&&!/^(No|Unknown)$/.test(f.mgso4),g:1.1,mw:140}),
     F("mtemp","Max maternal temp","num",{u:"°C",mw:80}),
-    F("prom","PROM","sel",{o:["","No","Yes"],g:.8,mw:64}),F("promh","PROM duration","num",{u:"hours",show:f=>f.prom==="Yes",mw:76})),
+    F("prom","PROM","sel",{o:["","No","Yes"],g:.8,mw:64}),F("promh","PROM duration","num",{show:f=>f.prom==="Yes",mw:76}),F("promu","","sel",{o:[["","hours"],["d","days"]],show:f=>f.prom==="Yes",g:.6,mw:90})),
   R(F("iab","Intrapartum antibiotics","sel",{o:["","None","Yes, ≥ 4 h before birth","Yes, < 4 h before birth","Unknown"],g:1.6,mw:130}),
     F("iabd","Antibiotic given","text",{show:f=>f.iab&&f.iab!=="None",g:1.2,mw:110})),
   F("abcl","Antenatal antibiotic courses","list",{L:{key:"abcl",kind:"abc",btn:"+ Antibiotic course"}}),
@@ -2105,7 +2129,7 @@ const SECTIONS=[
   F("rea_sum","Course at the other hospital","area",{wide:true,bul:1,ph:"one item per line – operation, findings, complications, medications, plan on discharge"})]},
  {t:"Referring hospital course",key:"referral",tab:"background",f:[
   H("Respiratory"),
-  R(F("rf_mode","Respiratory support on admission","sel",{o:["",...Object.keys(MODES)],g:1.5,mw:120}),
+  R(F("rf_mode","Respiratory support","sel",{o:["",...Object.keys(MODES)],g:1.5,mw:120}),
   ...Object.entries(RP).map(([k,[l,u]])=>k==="ie"?F("rf_rp_ie","I:E ratio","sel",{o:["","1:1","1:1.5","1:2","1:2.5","1:3"],show:f=>rfModeP(f).includes(k),g:1,mw:78}):F("rf_rp_"+k,l+(k==="fio2"?" max":""),"num",{u,show:f=>rfModeP(f).includes(k),g:1,mw:70}))),
   R(F("rf_surf","Surfactant","sel",{o:["","None","1 dose","2 doses","3 doses"],g:.9,mw:130}),
     F("rf_surft","Dose 1 at","dt",{show:f=>rfSurfN(f)>0,g:1.2,mw:250}),
@@ -2137,10 +2161,11 @@ const SECTIONS=[
   R(F("rf_axr","X-ray","text",{g:1.3,mw:150}),F("rf_abus","Ultrasound","text",{g:1.5,mw:170})),
   F("rf_abdn","Other events","area",{wide:true,bul:1,ph:"e.g. bilious vomiting, abdominal distension, anuria, antenatal hydronephrosis, surgical review"}),
   F("REV_rfsx","","reveal",{items:[["rfsx","+ Surgical notes"]]}),
-  H("Surgery there",rfsxOn),
-  R(F("rfsx_proc","Operation / procedure","text",{show:rfsxOn,g:2,mw:220}),F("rfsx_date","Date","date",{show:rfsxOn,g:1,mw:150}),F("rfsx_surg","Surgeon / team","text",{show:rfsxOn,g:1.3,mw:160})),
+  H("Surgical notes",rfsxOn),
+  R(F("rfsx_date","Date","date",{show:rfsxOn,g:1,mw:150}),F("rfsx_surg","Surgeon / team","text",{show:rfsxOn,g:1.3,mw:160})),
+  F("rfsx_proc","Operation / procedure","area",{wide:true,bul:1,show:rfsxOn}),
   F("rfsx_find","Operative findings","area",{wide:true,bul:1,show:rfsxOn}),
-  F("rfsx_note","Drains, stoma, wound, surgical plan","area",{wide:true,bul:1,show:rfsxOn}),
+  F("rfsx_note","Drains, stoma, wound","area",{wide:true,bul:1,show:rfsxOn}),
   H("Fluids & feeds"),
   R(F("rf_tot","Total intake","num",{u:"ml/kg/d",g:1,mw:100}),F("rf_ivfv","IV fluids","num",{u:"ml/kg/d",g:1,mw:100}),
     F("rf_ftype","Fluid type","sel",{o:FTYPES,g:1.6,mw:170}),F("rf_dex","Dextrose","num",{u:"%",show:f=>!!f.rf_ftype&&!/Numeta|Normal saline/.test(f.rf_ftype),g:.7,mw:80}),
@@ -2152,7 +2177,7 @@ const SECTIONS=[
   F("CALC_rf_fl","Calculated (birth weight)","calc",{empty:"needs birth weight + IV fluids or feeds",wide:true}),
   F("rf_fln","Details","area",{wide:true,bul:1,ph:"e.g. glucose 1.9 at 1 h → D10% 2 ml/kg bolus"}),
   H("Infection"),
-  F("rfabxl","Antibiotics started there","list",{L:{key:"rfabx",kind:"dated",dose:true,dt:true,ph:["Antibiotic","start"],btn:"+ Antibiotic"}}),
+  F("rfabxl","Antibiotics started there","list",{L:{key:"rfabx",kind:"dated",stop:true,dose:true,dt:true,ph:["Antibiotic","start"],btn:"+ Antibiotic"}}),
   R(F("rf_cult","Culture sent","sel",{o:["","Not sent","Yes"],g:.8,mw:110}),F("rf_cults","Site","sel",{o:CULT_SITES,show:f=>f.rf_cult==="Yes",g:.9,mw:110}),
     F("rf_cultt","Sent at","dt",{show:f=>f.rf_cult==="Yes",g:1.2,mw:200}),
     F("rf_cultr","Result","dl",{dl:"orgs",show:f=>f.rf_cult==="Yes",g:1.4,mw:180,ph:"choose or type"})),
@@ -2245,6 +2270,7 @@ const SECTIONS=[
   R(F("CALC_pdadrug","PDA treatment","calc",{empty:"",show:pdaMed,g:1.2,mw:150}),F("pdadose","Dose","text",{u:"mg/kg/dose",show:pdaMed,mw:90}),F("pdaint","Interval","sel",{o:INTERVALS,show:pdaMed,mw:90}),
     F("pdast","Start date","date",{show:pdaMed,g:1.3,mw:130}),
     F("CALC_pda","Course day","calc",{empty:"needs start date",show:pdaMed,g:1,mw:110})),
+  F("AUTO_pdaecho","Latest PDA TnECHO","autobox",{show:(f,b)=>!!b&&(b.echop||[]).length>0}),
   H("Other cardiovascular medications"),
   F("cvml","","list",{L:{key:"cvmeds",kind:"dated",stop:true,dose:true,ph:["e.g. Hydrocortisone, PGE1, Sildenafil, Hydralazine, Captopril","start"],btn:"+ Medication"}}),
   F("inoo","Other drugs (earlier text)","text",{wide:true,show:f=>!!String(f.inoo||"").trim()}),
@@ -2278,7 +2304,10 @@ const SECTIONS=[
   R(F("fmlkg","Feeds","dl",{dl:"feedopts",u:"ml/kg/d or NPO",g:1,mw:110}),
     F("feed","Feed type","sel",{o:FEEDS,show:f=>!isNPO(f),g:1.2,mw:130}),
     F("route","Route","sel",{o:FROUTES,show:f=>!isNPO(f),g:1,mw:110}),
-    F("ff","Frequency","sel",{o:b=>ffOpts(b.f.ff),show:f=>!isNPO(f),g:1.2,mw:130})),
+    F("fvol","Volume per feed","num",{u:"ml",show:isTroph,g:.8,mw:100}),
+    F("ff","Frequency","sel",{o:b=>ffOpts(b.f.ff),show:f=>!isNPO(f),g:1.2,mw:130}),
+    F("CALC_troph","Trophic","calc",{empty:"needs volume, frequency, weight",show:isTroph,g:.9,mw:120}),
+    F("CALC_npo","NPO","calc",{empty:"",show:isNPO,g:.9,mw:120})),
   F("CHG_f2","","chgp",{lc:"flog",keys:["fmlkg","feed","route","ff"]}),
   F("feedo","Other feed / special formula","dl",{dl:"milks",show:f=>!isNPO(f)&&f.feed==="Other",ph:"choose or type",wide:true}),
   R(F("feedk","kcal / 100 ml","num",{show:f=>!isNPO(f)&&f.feed==="Other",ph:"from the tin",mw:100}),F("feedc","Carbs g / 100 ml","num",{show:f=>!isNPO(f)&&f.feed==="Other",ph:"from the tin",mw:100})),
@@ -2366,7 +2395,13 @@ const SECTIONS=[
   F("cults","","list",{L:{key:"cults",kind:"cult",btn:"+ Culture / swab"}}),
   F("cult","Culture notes (sensitivity, repeat cultures)","area",{bul:1}),
   H("Notes"),F("inote","Infection notes","area",{bul:1})]},
- {t:"Lines & tubes",tab:"today",lc:"linelog",f:[],list:{key:"lines",kind:"line",btn:"+ Line or tube"}},
+ {t:"Lines & tubes",tab:"today",lc:"linelog",f:[
+  F("REV_exv","","reveal",{items:[["exv","+ Extravasation"]]}),
+  H("Extravasation",exvOn),
+  R(F("exv_dt","Date &amp; time","dt",{show:exvOn,g:1.3,mw:240}),F("exv_site","Site","text",{show:exvOn,g:1.3,mw:160,ph:"e.g. right foot"}),
+    F("exv_inf","Infusate / drug","text",{show:exvOn,g:1.5,mw:180,ph:"e.g. TPN, calcium, dextrose 12.5%"}),F("exv_gr","Grade","sel",{o:["","Grade 1","Grade 2","Grade 3","Grade 4"],show:exvOn,g:.8,mw:120})),
+  F("exv_mx","Management","area",{wide:true,bul:1,show:exvOn,ph:"one per line, e.g. infusion stopped, limb elevated, hyaluronidase / saline flush-out, plastics review"}),
+  F("exv_fu","Follow-up","area",{wide:true,bul:1,show:exvOn})],fend:1,list:{key:"lines",kind:"line",btn:"+ Line or tube"}},
  {t:"Current medications",tab:"today",lc:"medlog",f:[
   F("REV_stat","","reveal",{items:[["stat","+ Stat medication"]]}),
   H("Stat medication",(f,b)=>statOn(f,b)),
@@ -2383,6 +2418,7 @@ const SECTIONS=[
   F("exthr","Exchange level","num",{u:"µmol/L",ph:"type the level",show:f=>jGuide(f)==="Manual"}),
   F("CALC_phgap","TSB vs phototherapy level","calc",{empty:"needs TSB + phototherapy level",span2:true}),
   F("CALC_exgap","TSB vs exchange level","calc",{empty:"needs TSB + exchange level",span2:true}),
+  R(F("jalb","Albumin","num",{u:"g/L",show:baOn,g:.8,mw:110}),F("CALC_ba","Bilirubin / albumin ratio (AAP)","calc",{empty:"needs TSB + albumin",show:baOn,g:3,mw:260})),
   H("Modified BIND score (BIND-M)",bindOn),
   F("bind_ms","Mental status","sel",{o:BINDO.ms,show:bindOn,wide:true}),
   F("bind_mt","Muscle tone","sel",{o:BINDO.mt,show:bindOn,wide:true}),
@@ -2619,7 +2655,7 @@ function calc(b){
   if(f.dob)o.age=daysBetween(f.dob,today());
   const gaw=num(f.gaw), gad=num(f.gad)||0;
   if(gaw!=null){o.ga=gaw+"+"+gad;if(o.age!=null){const t=gaw*7+gad+o.age;o.cga=Math.floor(t/7)+"+"+(t%7);}}
-  const ivf=num(f.ivf), dex=num(f.dex), tot=num(f.tot), fm=isNPO(f)?0:num(f.fmlkg);
+  const ivf=num(f.ivf), dex=num(f.dex), tot=num(f.tot), fm=isNPO(f)?0:isTroph(f)?trophMlkg(f,wt):num(f.fmlkg);
   if(wt&&ivf!=null)o.rate=ivf*wt/24;
   if(ivf!=null||fm!=null)o.tot=(ivf||0)+(fm||0);
   if(tot!=null&&ivf!=null)o.remain=tot-ivf;
@@ -2689,7 +2725,7 @@ function lastGas(b){const g=[...b.gases].reverse().find(x=>["ph","pco2","po2","h
   return `${(g.d||g.tm?gTime(g):g.t)||""}${g.src?" "+g.src:""}: `+[["ph","pH"],["pco2","pCO₂"],["po2","pO₂"],["hco3","HCO₃"],["be","BE"],["lac","Lac"]].filter(([k])=>g[k]).map(([k,l])=>`${l} ${g[k]}`).join(" · ")}
 const rr=n=>n>=100?String(Math.round(n)):n>=10?r1(n):String(Math.round(n*100)/100);
 // drugs with a loading dose (box shown for these, or when a loading dose was entered)
-const hasLD=it=>!!it.ld||/caffeine|phenobarb|aminophylline|theophylline|levetiracetam|phenytoin|fosphenytoin|fluconazole|digoxin|metronidazole/i.test(it.a||"");
+const hasLD=it=>!!it.ld||/caffeine|phenobarb|aminophylline|theophylline|levetiracetam|phenytoin|fosphenytoin|fluconazole|digoxin|metronidazole|teicoplanin/i.test(it.a||"");
 const ldDay=it=>!it.d||String(it.d).slice(0,10)===today();
 const medLabel=(it,keepLD)=>(it.a||"")+(it.ld&&(keepLD||ldDay(it))?` loading ${it.ld} ${it.un||"mg"}/kg${it.ldt?" ("+fmtDT(it.ldt)+")":""}, maintenance`:"")+(it.ds?` ${it.ds} ${it.un||""}${it.bs||""}`.replace(/\s+$/,""):"")+(it.un==="mL"&&num(it.cs)&&it.cu?` (${num(it.cs).toLocaleString("en")} ${it.cu}/mL)`:"")+(it.iv?` ${it.iv}`:"")+(it.rt?` ${it.rt}`:"");
 const dRoute=a=>DROUTE[(a||"").trim().toLowerCase()]||"";
@@ -3050,7 +3086,8 @@ function listHTML(L,b){
       ${(it.n||"").trim()?`<label class="mini">Date<input class="inp" type="date" ${a} data-p="d" value="${esc(it.d||"")}"></label>
       <label class="mini">Result<input class="inp" list="morgs" autocomplete="off" ${a} data-p="r" value="${esc(it.r)}" placeholder="choose or type"></label>`:""}${del}</div>`;
     if(L.kind==="stat")return (it.d&&String(it.d).slice(0,10)!==today())?"":`<div class="row metinv statr"><label class="mini">Drug<input class="inp" ${a} data-p="a" data-ac="drug" autocomplete="off" value="${esc(it.a)}"></label>
-      <label class="mini">Dose<input class="inp" ${a} data-p="ds" value="${esc(it.ds)}" placeholder="e.g. 10 mg/kg IV"></label>
+      <label class="mini">Dose<input class="inp" ${a} data-p="ds" inputmode="decimal" value="${esc(it.ds)}"></label>
+      <label class="mini">Unit<select class="inp" ${a} data-p="un">${["","mg/kg","mg","mcg/kg","mcg","g/kg","ml/kg","ml","units/kg","units","mmol/kg","mEq/kg"].concat(it.un&&!["","mg/kg","mg","mcg/kg","mcg","g/kg","ml/kg","ml","units/kg","units","mmol/kg","mEq/kg"].includes(it.un)?[it.un]:[]).map(o=>`<option value="${esc(o)}"${(it.un||"")===o?" selected":""}>${esc(o||"—")}</option>`).join("")}</select></label>
       <label class="mini">Given at<input class="inp" type="datetime-local" ${a} data-p="d" value="${esc(it.d)}"></label>${del}</div>`;
     if(L.kind==="metinv")return `<div class="row metinv"><label class="mini">Investigation<input class="inp"${L.dl===""?"":' list="metinvs"'} autocomplete="off" ${a} data-p="n" value="${esc(it.n)}" placeholder="choose or type"></label>
       <label class="mini">Date<input class="inp" type="date" ${a} data-p="d" value="${esc(it.d)}"></label>${del}
@@ -3238,7 +3275,7 @@ function renderBaby(){
     <p class="hint">IV: dextrose 3.4 kcal/g · amino acids 4 kcal/g · lipid 10 kcal/g.<br>GIR = dextrose % × IVF ml/kg/d ÷ 144. Glucose from feeds = carbs g/kg/d × 1000 ÷ 1440 (mg/kg/min).</p></details>`;
     if(s.custom==="resp")h+=`<div class="sub subx">Lung ultrasound</div>`+lusToday(b);
     if(s.custom==="gases")h+=sheetHTML("gases","One column per gas",b);
-    if(s.custom==="cvs")h+=`<div data-rev="echo">${autoBox("AUTO_echo","Latest TnECHO (Diagnostics tab)")}</div>`+`<div class="grid">${fieldHTML(F("cnote","CVS notes","area",{bul:1}))}</div>`;
+    if(s.custom==="cvs")h+=`<div data-rev="echo">${autoBox("AUTO_echo","Latest TnECHO")}</div>`+`<div class="grid">${fieldHTML(F("cnote","CVS notes","area",{bul:1}))}</div>`;
     if(s.custom==="echo")h+=Object.entries(ECHO_SHEETS).map(([k,[t]])=>(b[k].length?`<details class="echofold"${S.echoOpen&&S.echoOpen[k]?" open":""} data-echofold="${k}"><summary>${t} <span>${b[k].length} exam${b[k].length>1?"s":""}</span></summary>${sheetHTML(k,t,b)}</details>`:sheetHTML(k,t,b))+(b[k].length?autoBox("AUTO_"+k,k==="echop"?"PDA size, shunt score & treatment criteria (latest exam)":"Abnormal findings (latest exam)"):"")).join("")+echoRef();
     if(s.custom==="log")h+=logHTML(s.log,"Changes, oldest first",LOGT[s.log][1]);
     if(s.custom==="curmeds")h+=`<div class="tblbar"><div class="sub">From other sections</div></div><div id="othmeds" class="list">${otherMedsHTML(b)}</div><ul class="auto" id="automeds"></ul><div class="tblbar"><div class="sub">Other medications</div></div>`;
@@ -3295,8 +3332,15 @@ function applyHide(b){
 }
 function setCalc(id,html){const el=document.getElementById(id);if(!el)return;const d=FLAT.find(x=>x.k===id);
   if(html==null){el.className="calc empty";el.textContent=d&&d.empty||"needs weight + inputs"}else{el.className="calc";el.innerHTML=html}}
-function bulUpd(u){const ta=document.getElementById(u.dataset.bulv);if(!ta)return;const L=String(ta.value||"").split("\n").map(x=>x.replace(/^\s*[•\-*·]\s*/,"").trim()).filter(Boolean);
-  u.innerHTML=L.map(x=>`<li>${esc(x)}</li>`).join("");u.parentNode.classList.toggle("has",!!L.length)}
+const bulLv=x=>{const m=/^(\s*)([>›»]*)/.exec(x);const sp=(m[1]||"").replace(/\t/g,"  ").length;return Math.min(2,(m[2]||"").length+(sp>=2?Math.floor(sp/2):0))};
+const bulTxt=x=>x.replace(/^\s*[>›»]*\s*[•\-*·]?\s*/,"").trim();
+function bulUpd(u){const ta=document.getElementById(u.dataset.bulv);if(!ta)return;const raw=String(ta.value||"").split("\n").filter(x=>bulTxt(x));
+  const b=typeof cur==="function"?cur():null,f=b&&b.f,M=b&&b.bdate&&b.bdate[ta.dataset.k]||{},T=today();
+  const tag=x=>{const d=M[x];if(!d||d>=T)return"";const pnd=f&&f.dob?daysBetween(f.dob,d):null;return ` <span class="bdt">${dmy(d).slice(0,5)}${pnd!=null&&pnd>=0?" · PND "+pnd:""}</span>`};
+  u.innerHTML=raw.map(x=>{const t=bulTxt(x);return `<li class="bl${bulLv(x)}">${esc(t)}${tag(t)}</li>`}).join("");u.parentNode.classList.toggle("has",!!raw.length)}
+// remember the day each bullet line was first written (shown on later days)
+function bulDates(b,k,oldV,newV){const L=v=>String(v||"").split("\n").map(bulTxt).filter(Boolean);b.bdate=b.bdate||{};let M=b.bdate[k];
+  if(!M){M=b.bdate[k]={};L(oldV).forEach(x=>{M[x]=""})}const now=L(newV),T=today();now.forEach(x=>{if(!(x in M))M[x]=T});Object.keys(M).forEach(x=>{if(!now.includes(x))delete M[x]})}
 const bulAll=()=>document.querySelectorAll("[data-bulv]").forEach(u=>{if(!u.parentNode.classList.contains("ed"))bulUpd(u)});
 document.addEventListener("click",e=>{const u=e.target.closest&&e.target.closest("[data-bulv]");if(!u)return;const ta=document.getElementById(u.dataset.bulv);if(!ta)return;u.parentNode.classList.add("ed");ta.focus();if(typeof autoGrow==="function")autoGrow(ta)});
 document.addEventListener("focusout",e=>{const t=e.target;if(t&&t.tagName==="TEXTAREA"&&t.parentNode&&t.parentNode.classList.contains("bulw")){t.parentNode.classList.remove("ed");const u=t.parentNode.querySelector("[data-bulv]");if(u)bulUpd(u)}});
@@ -3325,11 +3369,15 @@ function refresh(){
   {const x=lastXr(asOf(b));setCalc("CALC_xr",x?`${esc(x.d?dmy(x.d)+": ":"")}${esc(x.a)}`:null)}
   {const t=labTsb(asOf(b));setCalc("CALC_labtsb",t?`${esc(t.v)} µmol/L${t.t?" <small>"+esc(t.t)+"</small>":""}${String(t.v)!==String(f.tsb||"")?` <button type="button" class="btn ghost sm" data-act="usetsb">Use this</button>`:" <small>· same as Last TSB</small>"}`:null)}
   {const r=cchdCalc(f);setCalc("CALC_cchd",r?`<span class="oxchip ${r.c}">${esc(r.t)}</span> <small>${esc(r.why)}</small>`:null)}
-  {const L=lastGasN(asOf(b),3);setAuto("AUTO_lastgas",L.length?gasBoxes(L[0],L[1],"Latest")+(L[1]?gasBoxes(L[1],L[2],"Previous"):""):"","No gases yet – add them in Diagnostics → Blood gases")}
-  {const L=Object.keys(ECHO_SHEETS).map(k=>{const c=echoLast(asOf(b),k);if(!c)return"";const it=echoItems(k,c);
+  {const ae=document.activeElement,box=document.getElementById("AUTO_lastgas");if(!(ae&&box&&box.contains(ae))){const L=lastGasN(asOf(b),3),act=g=>{const i=b.gases.indexOf(g);return i<0?"":`<label class="gact">Action taken<textarea class="inp grow" rows="1" data-s="gases" data-c="${i}" data-r="act" placeholder="e.g. PEEP 5 → 6, repeat gas in 4 h">${esc(g.act||"")}</textarea></label>`};
+   setAuto("AUTO_lastgas",L.length?gasBoxes(L[0],L[1],"Latest")+act(L[0])+(L[1]?gasBoxes(L[1],L[2],"Previous")+act(L[1]):""):"","No gases yet – add them in Diagnostics → Blood gases")}}
+  {const c=echoLast(asOf(b),"echop"),it=c?echoItems("echop",c):[];setAuto("AUTO_pdaecho",c?`<div class="vhead">${c.t?esc(c.t):""}</div>`+(it.length?bullets(it.map(x=>esc(x).replace(/^rec: /,"<b>Recommendation:</b> "))):`<ul class="cbul"><li>No abnormal findings</li></ul>`):"","")}
+  {const L=Object.keys(ECHO_SHEETS).filter(k=>k!=="echop").map(k=>{const c=echoLast(asOf(b),k);if(!c)return"";const it=echoItems(k,c);
     return `<div class="vhead">${esc(ECHO_SHEETS[k][2])}${c.t?" · "+esc(c.t):""}</div>`+(it.length?bullets(it.map(x=>esc(x).replace(/^rec: /,"<b>Recommendation:</b> "))):`<ul class="cbul"><li>No abnormal findings</li></ul>`)}).filter(Boolean);
-   setAuto("AUTO_echo",L.join(""),"No TnECHO exams yet – Diagnostics → TnECHO")}
+   setAuto("AUTO_echo",L.join(""),"No TnECHO exams yet – Diagnostics → TnECHO");{const bx=document.getElementById("AUTO_echo"),w=bx&&(bx.closest(".fld")||bx.parentElement);if(w)w.hidden=!L.length&&(b.echop||[]).length>0}}
   setCalc("CALC_age",c.age!=null?String(c.age):null);
+  {if(isNPO(f)&&!b.npoFrom&&!backDate())b.npoFrom=today();if(!isNPO(f)&&b.npoFrom&&!backDate())delete b.npoFrom;const n=npoDays(b);setCalc("CALC_npo",n?"Day "+n:null);
+   const t=trophMlkg(f,c.wt);setCalc("CALC_troph",t!=null?`${(Math.round(t*10)/10)} ml/kg/d`:null)}
   {const ch=[f.bw&&gcChip(f,"w",f.bw,f.dob,"Birth weight"),f.blen&&gcChip(f,"l",f.blen,f.dob,"Birth length"),f.bhc&&gcChip(f,"h",f.bhc,f.dob,"Birth head circ.")].filter(Boolean),sc=sizeCat(gcOne(f,"w",f.bw,f.dob));
    const old=[["bw_c","weight"],["blen_c","length"],["bhc_c","head circ."]].filter(([k])=>f[k]).map(([k,l])=>`${l} ${esc(f[k])}`);
    setCalc("CALC_bcen",ch.length?`<div class="vchips">${ch.join("")}${sc?vbox("Size at birth",sc,"",/SGA|LGA/.test(sc)?"hi":"calc"):""}</div>`+(old.length?bullets(["centiles typed before v62: "+old.join(", ")]):""):null)}
@@ -3381,6 +3429,7 @@ function refresh(){
    setCalc("CALC_jthr",!t?null:t.err?`<small>${esc(t.err)}${t.h!=null?` · age ${jAgeTxt(t.h)}`:""}</small>`:`<div class="vchips">${vbox("Phototherapy",t.ph,"µmol/L")}${t.esc!=null?vbox("Escalation of care",t.esc,"µmol/L",num(f.tsb)!=null&&num(f.tsb)>=t.esc?"hi":""):""}${vbox("Exchange",t.ex,"µmol/L")}</div>`+bullets([esc(t.why),"age "+jAgeTxt(t.h)+(f.tsbt?" at TSB":" now")]))}
   {const g=phGap(f);setCalc("CALC_phgap",g==null?null:g>=0?`${Math.round(g)} µmol/L above phototherapy level <small>TSB ${esc(f.tsb)} ≥ ${photoLv(f)} µmol/L${jSrc(f)?" ("+jSrc(f)+")":""}</small>`:`${Math.round(-g)} µmol/L below phototherapy level <small>threshold ${photoLv(f)} µmol/L${jSrc(f)?" ("+jSrc(f)+")":""}</small>`)}
   {const g=exGap(f);setCalc("CALC_exgap",g==null?null:g<=0?`At / above exchange level <small>TSB ${esc(f.tsb)} ≥ ${exLv(f)} µmol/L</small>`:`${Math.round(g)} µmol/L below exchange`+(g<=EXNEAR?` <small>⚠ within ${EXNEAR} µmol/L of exchange – score BIND-M below</small>`:""))}
+  {const r=baCalc(f,b);setCalc("CALC_ba",r?`<span class="oxchip ${r.hi?"warn":"ok"}">${r.mg} mg/dL per g/dL · ${r.mol} µmol/µmol</span> <small>${r.lim!=null?(r.hi?"≥ ":"below ")+r.lim+" – exchange consideration level ("+r.why+")":"AAP B/A levels are for ≥ 35 wk"}${r.src?" · "+r.src:""}</small>`:null)}
   {const t=bindTot(f);setCalc("CALC_bind",t?`${t.s}/12 <small>${bindCat(t.s)}${t.s>=3?" · ≥ 3 strongly suggests ABE":""}${t.n<4?` · ${t.n}/4 items`:""}</small>`:null)}
   setCalc("CALC_rop",f.roplast&&num(f.ropwk)!=null?dmy(addDays(f.roplast,Math.round(num(f.ropwk)*7))):null);
   {const el=document.querySelector("[data-coolchk]");if(el){const ga=GAwk(f);el.hidden=!(ga==null||ga>=35||isHIE(f));
@@ -3463,7 +3512,7 @@ const hbStr=f=>!hbOn(f)?"":j0([f.hepb&&`Hep B vaccine ${f.hepb.toLowerCase()}${f
 const j0=a=>a.filter(Boolean).join(", ");
 const mxLines=b=>[...(b.f.ucx||b.f.ucx_d?[`urine culture${b.f.ucx_d?" "+dmy(b.f.ucx_d).slice(0,5):""}: ${b.f.ucx||"pending"}`]:[]),...(b.mx||[]).filter(x=>(x.n||"").trim()).map(x=>`${x.n}${x.d?" "+dmy(x.d).slice(0,5):""}: ${x.r||"pending"}`)];
 // last labs grouped: CBC together, RFT & electrolytes together, LFT together …
-const LABG={"Blood count & infection":"CBC & infection","Coagulation":"Coagulation","Renal & electrolytes":"RFT & electrolytes","Liver & bone":"LFT & bone","Cardiac":"Cardiac","Special investigations":"Special"};
+const LABG={"Blood count & infection":"CBC & infection","Coagulation":"Coagulation","Renal & electrolytes":"RFT & electrolytes","Liver & bone":"LFT & bone","Cardiac":"Cardiac","CSF":"CSF","Special investigations":"Special"};
 function labGroups(b,col,skip){const out=[];let g="Other";sheetRows("inv",b).forEach(r=>{if(r.g){g=LABG[r.g]||r.g;return}if(!r.k||!col[r.k]||(skip&&skip(r)))return;let o=out.find(x=>x[0]===g);if(!o)out.push(o=[g,[]]);o[1].push([r,col[r.k]])});return out}
 function wpRows(b){b=asOf(b);
   const f=b.f,c=calc(b),r=[],j=a=>a.filter(Boolean).join(" · "),E=esc;
@@ -3495,7 +3544,7 @@ function wpRows(b){b=asOf(b);
     c.num&&`${f.ftype} ${f.numbag?f.numbag.split(" ")[0]+" ":""}${r1(c.num.v)} ml/kg/d: GIR ${r1(c.gir)}, AA ${r1(c.num.aa)} g/kg${c.num.l?`, lipid ${r1(c.num.l)} g/kg`:""}`,
     !c.num&&num(f.girt)!=null&&`GIR ordered ${f.girt}${c.dexFor!=null?` → D${r1(c.dexFor)}%`:""}`,
     (()=>{const L=giLoss(b);if(!L||L.kg==null||L.kg<=20)return"";const p=num(f.lrepp)!=null?num(f.lrepp)/100:1,n={q6h:4,q8h:3,q12h:2}[f.lrepi];return `GI losses ${r1(L.kg)} ml/kg/d → replace${n?` ${r1(L.ml*p/n)} ml ${f.lrepi}`:""}${f.lrepf?" "+f.lrepf:""}`})(),
-    isNPO(f)?"Feeds: NPO":f.fmlkg&&`Feeds ${f.fmlkg} ml/kg/d${feedName(f)?" "+feedName(f):""}${f.route?" "+f.route:""}${ffStr(f.ff)}`,
+    isNPO(f)?"Feeds: NPO"+(npoDays(b)?" (day "+npoDays(b)+")":""):isTroph(f)?"Feeds: "+feedTxt(f)+(feedName(f)?" "+feedName(f):""):f.fmlkg&&`Feeds ${f.fmlkg} ml/kg/d${feedName(f)?" "+feedName(f):""}${f.route?" "+f.route:""}${ffStr(f.ff)}`,
     f.uop&&`UOP ${f.uop} ml/kg/h`,c.bal!=null&&`Balance ${balStr(c)}`,
     gS&&`BS ${gS.t}${gl!=null&&(gl<2.6||gl>10)?" ⚠":""}`,...chg(lastLog(b,"flog"))],gl!=null&&(gl<2.6||gl>10)?"flag":"");
   const abd=[necStr(f),f.abd&&f.abd!=="Soft, non-tender"&&f.abd,f.vom&&f.vom!=="None"&&`Vomiting ${f.vom}`,aspConcern(f)&&`Aspirates ${aspStr(f)}`,f.axr&&!NORMAL.test(f.axr)&&`AXR ${f.axr}`];
@@ -3554,17 +3603,28 @@ const rdMeds=b=>{const f=b.f,L=[];
 const rdLabs=b=>{const cols=[...(b.inv||[])].filter(c=>["hb","tlc","plt","crp","na","k","ca","urea","cr","tsb"].some(k=>c[k])||Object.keys(c).some(k=>k!=="t"&&k!=="d"&&c[k]));return cols.slice(-2).reverse().map(c=>{
   const other=sheetRows("inv",b).filter(r=>r.k&&c[r.k]&&!["hb","tlc","plt","crp","na","k","ca","urea","cr","tsb"].includes(r.k)).map(r=>`${r.l} ${c[r.k]}`).join(", ");
   return{t:c.t||"",cbc:[c.hb&&"Hb "+c.hb,c.tlc&&"WBC "+c.tlc,c.plt&&"Plt "+c.plt].filter(Boolean).join(" / "),crp:c.crp,na:c.na,k:c.k,ca:c.ca,uc:[c.urea,c.cr].filter(Boolean).join(" / "),tsb:c.tsb,oth:other}})};
-function rdCensusRow(b){const f=b.f,c=calc(b),w=f.cw||f.bw,ch=wtChg(b);
-  const feeds=[isNPO(f)?"NPO":f.fmlkg&&`Feeds ${f.fmlkg} ml/kg/d${f.feed?" "+f.feed:""}${f.ff?" "+ffStr(f.ff).trim():""}`,f.ivf&&`IVF ${f.ivf} ml/kg/d${f.ftype?" "+f.ftype:""}`,num(c.tot)!=null&&`TFI ${Math.round(c.tot)} ml/kg/d`].filter(Boolean);
+function rdCensusRow(b){b=asOf(b);const f=b.f,c=calc(b),w=f.cw||f.bw,ch=wtChg(b);
   const dxp=(()=>{const seen=new Set();return[...items(f.dx),...items(f.cprob)].filter(x=>{const k=x.toLowerCase();if(seen.has(k))return false;seen.add(k);return true})})();
-  const issue=[...exPend(f).map(x=>"Pending: "+x),...b.todos.filter(t=>t.b&&!t.x).slice(0,4).map(t=>"☐ "+t.b)];
-  return `<td><b class="rnm">${RD(f.name||"")}</b>${rdList(dxp)}</td><td>${RD(c.cga||"")}${c.age!=null?`<i>PND ${c.age}</i>`:""}</td>
-  <td>${w?RD(w):""}${ch?`<i>${ch.d>0?"+":""}${ch.d} g</i>`:""}</td><td>${RD(respStr(f)||"")}</td><td>${rdList(feeds)}</td><td>${rdList(issue)}</td>
-  <td class="rst ${RD(f.status||"")}">${RD({Stable:"STABLE",Watcher:"WATCH",Unstable:"CRITICAL"}[f.status]||"")}</td>`}
+  const g=rdGas(lastGasN(b,1)[0]);
+  const resp=[respStr(f),num(f.surf)>0&&`Surfactant ×${f.surf}`,(isCaff(f)||(b.meds||[]).some(x=>/caffeine/i.test(x.a||"")))&&"Caffeine",g&&`BGA ${g.t}: `+[g.ph&&"pH "+g.ph,g.pco2&&"pCO₂ "+g.pco2,g.be&&"BE "+g.be,g.lac&&"lact "+g.lac].filter(Boolean).join(", ")];
+  const bp=[...(b.bps||[])].filter(x=>x.s||x.m).sort((p,q)=>String(p.d||"").localeCompare(String(q.d||""))).pop();
+  const cvs=[bp&&`BP ${[bp.s,bp.di].filter(Boolean).join("/")}${bp.m?" ("+bp.m+")":""}${bp.d?" · "+fmtDT(bp.d):""}`,
+    ...[1,2,3].filter(i=>String(f["ino"+i]||"").trim()).map(i=>`${f["ino"+i]}${f["ino"+i+"d"]?" "+f["ino"+i+"d"]+" mcg/kg/min":""}`),
+    ...(b.cvmeds||[]).filter(x=>(x.a||"").trim()).map(x=>x.a.trim()+(x.ds?` ${x.ds} ${x.un||""}${x.bs||""}`:"")),
+    pdaMed(f)?`PDA: ${pdaDrug(f)}${f.pdast?" day "+dayN(f.pdast):""}`:f.pdatx?"PDA: "+f.pdatx:(f.pda&&f.pda!=="No PDA"?"PDA: "+f.pda:"")];
+  const cl=(b.lines||[]).filter(x=>x.a&&!x.e&&/UVC|UAC|PICC|CVC|Central|arterial/i.test(x.a)).map(x=>`${x.a.replace(/ \(.*\)$/,"")} – ${lineDayTxt(x)}`);
+  const abd=[f.abd&&f.abd,num(f.uop)!=null&&`UOP ${f.uop} ml/kg/h`,num(c.tot)!=null&&`TFI ${Math.round(c.tot)} ml/kg/d`,
+    isNPO(f)?"NPO"+(npoDays(b)?" day "+npoDays(b):""):isTroph(f)?feedTxt(f):f.fmlkg&&`Feeds ${f.fmlkg} ml/kg/d${f.ff?" "+ffStr(f.ff).trim():""}`,f.ivf&&`IVF ${f.ivf} ml/kg/d${f.ftype?" "+f.ftype:""}`,...cl];
+  const L=rdLabs(b)[0],lab=L?[L.t&&"Date "+L.t,L.cbc,L.crp&&"CRP "+L.crp,(L.na||L.k)&&[L.na&&"Na "+L.na,L.k&&"K "+L.k,L.ca&&"Ca "+L.ca].filter(Boolean).join(", "),L.uc&&"U/Cr "+L.uc,L.tsb&&"TSB "+L.tsb,L.oth]:[];
+  const plan=[...exPend(f).map(x=>"Pending: "+x),...b.todos.filter(t=>t.b&&!t.x).slice(0,5).map(t=>"☐ "+t.b)];
+  return `<td><b class="rnm">${RD(f.name||"")}</b>${rdList(dxp)}</td>
+  <td>${c.cga?`<b>${RD(c.cga)}</b>`:""}${c.age!=null?`<i>PND ${c.age}</i>`:""}${w?`<i><b>${RD(w)} g</b>${ch?` (${ch.d>0?"+":""}${ch.d})`:""}</i>`:""}</td>
+  <td>${rdList(resp)}</td><td>${rdList(cvs)}</td><td>${rdList(abd)}</td><td>${rdList(lab)}</td>
+  <td><span class="rst ${RD(f.status||"")}">${RD({Stable:"STABLE",Watcher:"WATCH",Unstable:"CRITICAL"}[f.status]||"")}</span>${rdList(plan)}</td>`}
 function rdCensus(st,babies,pg,total){const rows=babies.map(b=>`<tr><th><span class="rbed">${RD(rdBed(b))}</span></th>${rdCensusRow(b)}</tr>`);while(rows.length<4)rows.push(`<tr><th></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>`);
   return `<section class="rp rpc"><header class="rph"><span class="rbig">UNIT CENSUS</span><span class="rst2">${RD(rdStation(st))}</span><span class="rdate"><small>DATE</small>${RD(rdDate())}</span></header>
-  <table class="rct"><colgroup><col style="width:6%"><col style="width:27%"><col style="width:7.5%"><col style="width:7.5%"><col style="width:12%"><col style="width:13%"><col style="width:20%"><col style="width:7%"></colgroup>
-  <thead><tr><th>BED</th><th>NAME · DIAGNOSIS &amp; PROBLEMS</th><th>CGA / PND</th><th>WEIGHT (G)</th><th>RESP SUPPORT</th><th>FEEDS / IVF</th><th>PENDING / PLAN</th><th>STATUS</th></tr></thead><tbody>${rows.join("")}</tbody></table>
+  <table class="rct"><colgroup><col style="width:5.5%"><col style="width:19%"><col style="width:7.5%"><col style="width:13%"><col style="width:12%"><col style="width:13%"><col style="width:13%"><col style="width:17%"></colgroup>
+  <thead><tr><th>BED</th><th>NAME · DIAGNOSIS &amp; PROBLEMS</th><th>CGA / PND / WEIGHT</th><th>RESPIRATORY</th><th>CARDIOVASCULAR</th><th>ABDOMEN / RENAL / LINES</th><th>LAST INVESTIGATIONS</th><th>STATUS &amp; PLAN</th></tr></thead><tbody>${rows.join("")}</tbody></table>
   <footer class="rpf"><span>${RD(rdStation(st))} · Census ${RD(babies.length?rdBed(babies[0])+" – "+rdBed(babies[babies.length-1]):"")} · Confidential patient information</span><span>Page ${pg} of ${total}</span></footer></section>`}
 const rbx=(l,v,cls)=>`<div class="rbx ${cls||""}"><span class="rl">${l}</span><div class="rv">${v||""}</div></div>`;
 function rdPatient(b,st,pg,total){const f=b.f,c=calc(b),ch=wtChg(b),G=lastGasN(b,2).map(rdGas),M=rdMode(f),L=rdLabs(b);
@@ -3575,7 +3635,7 @@ function rdPatient(b,st,pg,total){const f=b.f,c=calc(b),ch=wtChg(b),G=lastGasN(b
   const inf=[f.sep&&f.sep!=="No concern"?"Sepsis: "+f.sep:"",...(b.cults||[]).filter(x=>x.s||x.sw).map(x=>`${cultSite(x)||"Culture"}${x.d?" "+dmy(String(x.d).slice(0,10)).slice(0,5):""}: ${x.o||x.st||""}`),...(b.abx||[]).filter(x=>(x.a||"").trim()).map(x=>`${x.a}${x.d?" – D"+dayN(String(x.d).slice(0,10)):""}`)];
   const lines=(b.lines||[]).filter(x=>x.a&&!x.e).map(x=>`${x.a}${x.sz?" ("+x.sz+")":""} – ${lineDayTxt(x)}`);
   const ac=[1,2,3].map(i=>f["ac"+i]).filter(Boolean);
-  const feedAmt=isNPO(f)?"NPO":[f.fmlkg&&f.fmlkg+" ml/kg/d",f.ff&&ffStr(f.ff).trim()].filter(Boolean).join(" ");
+  const feedAmt=isNPO(f)?"NPO"+(npoDays(b)?" day "+npoDays(b):""):isTroph(f)?feedTxt(f):[f.fmlkg&&f.fmlkg+" ml/kg/d",f.ff&&ffStr(f.ff).trim()].filter(Boolean).join(" ");
   const ivfType=[f.ftype,f.dex&&!isNum(f)?"D"+f.dex+"%":"",num(f.girt)!=null?"GIR "+f.girt:"",isTPN(f)&&f.aa?"AA "+f.aa+" g/kg":"",isTPN(f)&&f.lip?"lipid "+f.lip+" g/kg":"",f.lytes||""].filter(Boolean).join(" · ");
   return `<section class="rp rpp"><header class="rph"><span class="rbed big">${RD(rdBed(b))}</span><span class="rnmb"><small>B/O</small>${RD(rdName(f))}</span><span class="rdate"><small>DATE</small>${RD(rdDate())}</span>
     <span class="rstat"><small>STATUS</small>${rdTick(f.status==="Stable","STABLE")}${rdTick(f.status==="Watcher","WATCH")}${rdTick(f.status==="Unstable","CRITICAL")}</span></header>
@@ -3672,7 +3732,7 @@ function renderSBAR(t){const el=document.getElementById("hoSecs");if(!el)return;
 
 /* ---------- handover text (SBAR, bullet per category, essentials only) ---------- */
 // split a free-text box into items (one per line or "; ")
-const items=t=>String(t||"").split(/\n|;\s+/).map(x=>x.replace(/^\s*(?:[•\-–*]|\d+[.)])\s*/,"").trim()).filter(Boolean);
+const items=t=>String(t||"").split(/\n|;\s+/).map(x=>x.replace(/^\s*[>›»]*\s*(?:[•\-–*]|\d+[.)])?\s*/,"").trim()).filter(Boolean);
 // log entries from today and the day before
 const recentLog=(b,key,n)=>byWhen(b[key]).filter(({e})=>e.x&&e.k&&recent(e.k)).slice(-(n||6)).map(({e})=>`${fmtD(new Date(e.k))} ${e.x}`);
 function handover(b){b=asOf(b);
@@ -3695,7 +3755,7 @@ function handover(b){b=asOf(b);
   pt("Birth",j([f.dob&&`${dmy(f.dob)}${tobStr(f)?" "+tobStr(f):""}`,meas("BW",f.bw,"g"),(()=>{const z=sizeCat(gcOne(f,"w",f.bw,f.dob));return z&&/SGA|LGA/.test(z)?z.split(" ")[0]:""})(),f.mod&&f.mod+(f.modi?` (${f.modi})`:""),
     ap.length&&`Apgar ${ap.map(m=>f["ap"+m]).join("/")}`,f.resus&&`resus: ${f.resus}`]));
   {const cp=new Set(items(f.cprob).map(x=>x.toLowerCase()));pt("Diagnosis","",items(f.dx).filter(x=>!cp.has(x.toLowerCase())))}
-  pt("Antenatal",j([...items(f.m_hx),multStr(f),f.consang&&/Yes/.test(f.consang)&&"consanguineous ("+f.consang.replace(/^Yes – /,"")+")",gbsStr(f),...serPos(f),f.m_rub==="Non-immune"&&"mother rubella non-immune",mxWhy(f)&&mxWhy(f)!=="Other"&&"extra screening: "+(MRISK.find(x=>x[0]===f.m_risk)||[0,f.m_risk])[1].toLowerCase(),...mxLines(b),sterStr(f),mgStr(f),f.prom==="Yes"&&`PROM${f.promh?" "+f.promh+" h":""}`,
+  pt("Antenatal",j([...items(f.m_hx),multStr(f),f.consang&&/Yes/.test(f.consang)&&"consanguineous ("+f.consang.replace(/^Yes – /,"")+")",gbsStr(f),...serPos(f),f.m_rub==="Non-immune"&&"mother rubella non-immune",mxWhy(f)&&mxWhy(f)!=="Other"&&"extra screening: "+(MRISK.find(x=>x[0]===f.m_risk)||[0,f.m_risk])[1].toLowerCase(),...mxLines(b),sterStr(f),mgStr(f),f.prom==="Yes"&&`PROM${f.promh?" "+f.promh+(f.promu==="d"?" days":" h"):""}`,
     num(f.mtemp)>=38&&`maternal temp ${f.mtemp}°C`,val(f.m_dm)&&f.m_dm,val(f.m_htn)&&f.m_htn,val(f.m_pre)&&f.m_pre,f.m_ill_o,val(f.iab)&&`IAP ${f.iab}`]));
   pt("Admission",j([admStr(f),num(f.admtemp)!=null&&`admission temp ${f.admtemp} °C`,rfOn(f)&&nl(f.admnote)]));
   pt("Course at other hospital","",items(f.rea_sum));
@@ -3711,7 +3771,7 @@ function handover(b){b=asOf(b);
   pt("Fluids & nutrition",j([c.tot!=null&&`total ${Math.round(c.tot)} ml/kg/d`,f.ivf&&`IVF ${f.ivf} ml/kg/d${f.ftype&&!isNum(f)?" "+f.ftype:""}${f.dex&&!isNum(f)?` D${f.dex}%`:""}${isTPN(f)&&f.lip?` lipid ${f.lip} g/kg${f.lipt?" "+f.lipt:""}`:""}`,
     c.num&&`${f.ftype} ${r1(c.num.v)} ml/kg/d (AA ${r1(c.num.aa)} g/kg${c.num.l?", lipid "+r1(c.num.l)+" g/kg":""})`,!c.num&&num(f.girt)!=null&&`GIR ordered ${f.girt}`,
     (()=>{const L=giLoss(b);return L&&L.kg!=null&&L.kg>20?`GI losses ${r1(L.kg)} ml/kg/d – replacing${f.lrepi?" "+f.lrepi:""}${f.lrepf?" with "+f.lrepf:""}`:""})(),
-    isNPO(f)?"NPO":f.fmlkg&&`feeds ${f.fmlkg} ml/kg/d${feedName(f)?" "+feedName(f):""}${f.route?" "+f.route:""}${ffStr(f.ff)}`,
+    isNPO(f)?"NPO"+(npoDays(b)?" (day "+npoDays(b)+")":""):isTroph(f)?"feeds "+feedTxt(f).toLowerCase()+(feedName(f)?" "+feedName(f):""):f.fmlkg&&`feeds ${f.fmlkg} ml/kg/d${feedName(f)?" "+feedName(f):""}${f.route?" "+f.route:""}${ffStr(f.ff)}`,
     c.tgir!=null&&`GIR ${r1(c.tgir)}`,c.kcal!=null&&`${Math.round(c.kcal)} kcal/kg/d`,gluStr(b,f)&&`BG ${gluStr(b,f).t}`]));
   pt("Renal / abdomen",j([necStr(f),f.uop&&`UOP ${f.uop} ml/kg/h`,c.bal!=null&&`balance ${balStr(c)}`,f.abd&&f.abd!=="Soft, non-tender"&&f.abd,
     aspConcern(f)&&`aspirates ${aspStr(f)}`,val(f.vom)&&`vomiting ${f.vom}`,f.axr&&!NORMAL.test(f.axr)&&`AXR ${f.axr}`]));
@@ -3726,7 +3786,7 @@ function handover(b){b=asOf(b);
   pt("Metabolic",metLine(f),[...metInvLines(b),...(metOn(f)?items(f.metmx):[])]);
   pt("Lines",b.lines.filter(x=>x.a&&!x.e).map(x=>`${lineTxt(x)}${x.d?" D"+dayN(x.d):""}`).join(", "));
   pt("Other meds",[...autoMeds(b).filter(m=>!m.k),...b.meds.filter(x=>x.a).map(x=>({a:medLabel(x),day:dayN(x.d)}))].map(medStr).join(", "));
-  {const st=(b.stat||[]).filter(x=>(x.a||"").trim()&&(!x.d||String(x.d).slice(0,10)===today()));if(st.length)pt("Stat today",st.map(x=>`${x.a.trim()}${x.ds?" "+x.ds:""}${x.d?" at "+fmtDT(x.d).replace(/^\S+ /,""):""}`).join(", "))}
+  {const st=(b.stat||[]).filter(x=>(x.a||"").trim()&&(!x.d||String(x.d).slice(0,10)===today()));if(st.length)pt("Stat today",st.map(x=>`${x.a.trim()}${x.ds?" "+x.ds:""}${x.un?" "+x.un:""}${x.d?" at "+fmtDT(x.d).replace(/^\S+ /,""):""}`).join(", "))}
   pt("Transfusions",txTxt(b));
   const hbLine=!!(topThr(b)&&latestHb(b));
   {const t=topThr(b),hb=latestHb(b);if(t&&hb)pt("Hb",`${hb.raw}${hb.t?" ("+hb.t+")":""} – TOP threshold ${t.thr} g/L (${hb.v<t.thr?"below – PRBC transfusion indicated":"above"})`)}
@@ -3992,7 +4052,7 @@ main.addEventListener("input",e=>{
     if(v&&v!==el.value.slice(0,16)){el.value=v;const d=el._w&&el._w.querySelector("input[type=date]");if(d){d.value=v.slice(0,10);d._sync&&d._sync()}}
     save(b);renderLogsRaw(b);refresh();return}
   if(el.dataset.k){
-    const k=el.dataset.k;const old=b.f[k];b.f[k]=el.value;delete b.example;if(!DAYK().includes(k)){b.fdate=b.fdate||{};if(el.value)b.fdate[k]=today();else delete b.fdate[k];if(b.fhide)delete b.fhide[k]}if(k==="tot"||k==="ivf"||k==="fmlkg")fluidSync(b,k);if(/^(dex|girt|ivf|lip|ftype|tot|fmlkg)$/.test(k))girSync(b,k);if(/^rf_(tot|ivfv|fmlkg|dex|girt|ftype)$/.test(k))rfFluidSync(b,k);
+    const k=el.dataset.k;const old=b.f[k];b.f[k]=el.value;delete b.example;{const d=FLAT.find(x=>x.k===k);if(d&&d.t==="area"&&d.bul)bulDates(b,k,old,el.value)}if(!DAYK().includes(k)){b.fdate=b.fdate||{};if(el.value)b.fdate[k]=today();else delete b.fdate[k];if(b.fhide)delete b.fhide[k]}if(k==="tot"||k==="ivf"||k==="fmlkg")fluidSync(b,k);if(/^(dex|girt|ivf|lip|ftype|tot|fmlkg)$/.test(k))girSync(b,k);if(/^rf_(tot|ivfv|fmlkg|dex|girt|ftype)$/.test(k))rfFluidSync(b,k);
     // the same box can appear twice (Diagnosis / Current problems in Today and Patient): keep the copies in step
     document.querySelectorAll(`[data-k="${k}"]`).forEach(x=>{if(x!==el&&x.value!==el.value){x.value=el.value;if(x.tagName==="TEXTAREA")autoGrow(x)}});
     if(k==="surf")b.f.surfSet=today();
@@ -4002,7 +4062,7 @@ main.addEventListener("input",e=>{
     if(k==="station"){b.f.bedno="";save();render();$("#f_bedno")?.focus();return}
     if(k==="bedno"){save();render();$("#f_bedno")?.focus();return}
   }
-  else if(el.dataset.s){const col=b[el.dataset.s][+el.dataset.c];col[el.dataset.r]=el.value;if(el.dataset.s==="gases"&&(el.dataset.r==="d"||el.dataset.r==="tm"))col.t=gTime(col);if((el.dataset.s==="sarn"||el.dataset.s==="thomp")&&el.dataset.r==="dt"&&el.value)col.t=fmtDT(el.value)}
+  else if(el.dataset.s){const col=b[el.dataset.s][+el.dataset.c];col[el.dataset.r]=el.value;document.querySelectorAll(`[data-s="${el.dataset.s}"][data-c="${el.dataset.c}"][data-r="${el.dataset.r}"]`).forEach(x=>{if(x!==el&&x.value!==el.value)x.value=el.value});if(el.dataset.s==="gases"&&(el.dataset.r==="d"||el.dataset.r==="tm"))col.t=gTime(col);if((el.dataset.s==="sarn"||el.dataset.s==="thomp")&&el.dataset.r==="dt"&&el.value)col.t=fmtDT(el.value)}
   else if(el.dataset.xname){b.invx.find(x=>x.id===el.dataset.xname).name=el.value}
   else if(el.dataset.l){const it=b[el.dataset.l][+el.dataset.i];if(!it)return;
     if(el.dataset.l==="todos"&&el.dataset.p==="a"&&/^now$/i.test(el.value.trim())){const n=nowAt();el.value=to12(pad(n.getHours())+":"+pad(n.getMinutes()))}
@@ -4072,7 +4132,7 @@ main.addEventListener("change",e=>{
       if(it.e){const x=`${nm} removed${it.d?` (${daysBetween(it.d,it.e)+1} days)`:""}`;if(r){r.x=x;put(r,it.e)}else if(p==="e"){const n=logAdd(b0,"linelog",x,at(it.e));if(n){n.li=it.id;n.ty="rem"}}}
       else if(r&&p==="e")L.splice(L.indexOf(r),1)}
     save();renderLogs(b0);refresh()}return}
-  if(t.dataset.l==="stat"&&!S.view){const b0=cur(),it=b0.stat[+t.dataset.i];if(it&&(it.a||"").trim()&&(it.ds||"").trim()){const x=`Stat: ${it.a.trim()} ${it.ds.trim()}`,at=it.d?it.d+":00":null;
+  if(t.dataset.l==="stat"&&!S.view){const b0=cur(),it=b0.stat[+t.dataset.i];if(it&&(it.a||"").trim()&&(it.ds||"").trim()){const x=`Stat: ${it.a.trim()} ${it.ds.trim()}${it.un?" "+it.un:""}`,at=it.d?it.d+":00":null;
       const e=it.lid&&b0.medlog.find(z=>z.sid===it.lid);if(e){e.x=x;if(at){e.k=at;e.t=fmtD(new Date(at))}}else{it.lid=uid();const n=logAdd(b0,"medlog",x,at);if(n)n.sid=it.lid}save();renderLogs(b0)}}
   if(t.dataset.l&&t.dataset.p==="a"&&!S.view&&/^(abx|meds|rfabx|rfmeds|rfcvmeds|cvmeds)$/.test(t.dataset.l)){
     const b0=cur(),it=b0[t.dataset.l][+t.dataset.i],d=DRUGKEY[(it.a||"").trim().toLowerCase()];
@@ -4275,7 +4335,7 @@ document.addEventListener("click",e=>{
   const b=cur();if(!b||S.view)return;
   if(el.dataset.carry){rfCarry(b,el.dataset.carry);return}
   if(a==="surfopen"){b.surfOpen=today();save(b);refresh();return}
-  if(el.dataset.reveal){const x=el.dataset.reveal;b.rev=Object.assign({},b.rev,{[x]:today()});save(b);if(x==="readm"||x==="outc"||x==="stat")render();else refresh();requestAnimationFrame(()=>{const t=document.getElementById(REVFOCUS[x]);if(t){t.scrollIntoView({block:"center",behavior:"smooth"});t.focus({preventScroll:true})}});return}
+  if(el.dataset.reveal){const x=el.dataset.reveal;b.rev=Object.assign({},b.rev,{[x]:today()});save(b);if(x==="readm"||x==="outc"||x==="stat"||x==="exv")render();else refresh();requestAnimationFrame(()=>{const t=document.getElementById(REVFOCUS[x]);if(t){t.scrollIntoView({block:"center",behavior:"smooth"});t.focus({preventScroll:true})}});return}
   if(el.dataset.chtclr){setCht(b,el.dataset.chtclr,"");renderBaby();toast("Changes in this section are timed now");return}
   if(a==="usedex"){const d=calc(b).dexFor;if(d!=null){const o=b.f.dex;b.f.dex=String(Math.round(d*10)/10);const el2=$("#f_dex");if(el2)el2.value=b.f.dex;
     if(String(o??"")!==b.f.dex){const fl=b.flast=b.flast||{};logSet(b,"flog","dex",String(fl.dex??""),b.f.dex,(o,n)=>o?`Dextrose ${o} → ${n} % (GIR ${b.f.girt})`:`Dextrose ${n} % (GIR ${b.f.girt})`);fl.dex=b.f.dex}
